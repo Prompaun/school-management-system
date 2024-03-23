@@ -261,9 +261,9 @@ function CheckEnroll_status() {
       <br />
       <div className="container d-flex align-items-center justify-content-center"style={{ flexWrap: 'wrap' }}>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontFamily: 'Kanit, sans-serif', fontSize: '18px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontFamily: 'Kanit, sans-serif', fontSize: '20px' }}>
         <div className="d-flex align-items-center">
-          <span style={{ marginRight: "10px" }}>ตรวจสอบข้อมูลผู้สมัคร :</span>
+          <span style={{ marginRight: "10px",fontWeight:"bolder" }}>ตรวจสอบข้อมูลผู้สมัคร :</span>
         </div>
         <div className="dropdown" style={{ maxWidth: '100%' }}>
           <select value={selectedApplicantData} onChange={handleApplicantDataChange} className="custom-select">
@@ -345,7 +345,7 @@ function CheckEnroll_status() {
           <br/>
           <div className="mx-auto" style={{ maxWidth: '90%', fontFamily: 'Kanit, sans-serif' }}>
               {Enroll_statusList.map((val, key) => (
-                <div className="card mx-auto" style={{ maxWidth: '90%' }}>
+                <div className="card" style={{ width: "100%" , boxShadow: "2px 7px 7px rgba(0, 0, 0.2, 0.1)" }}>
             <div className="card-body">
             
             <div style={{display:"flex", flexWrap: 'wrap',justifyContent:"left"}}>

@@ -359,9 +359,10 @@ function Request_cert() {
         )}
 
       <Header header="ระบบยื่นคำร้องขอใบรับรอง" subhead=""/>
-      
+      <br />
       <div className="d-flex flex-column align-items-center"style={{ height: '100vh',fontFamily: 'Kanit, sans-serif'}}>
-        <div class="card my-5" style={{ maxWidth: '90%',Height: '100vh'}}>  
+      <div className="container d-flex align-items-center justify-content-center"style={{ flexWrap: 'wrap' }}>
+        <div class="card" style={{ maxWidth: "100%" , boxShadow: "2px 7px 7px rgba(0, 0, 0.2, 0.1)" }}>  
             <div class="card-body">
                 
         {/* <label class="card-heading px-3" style={{fontSize: '20px',fontWeight: 'bolder'}}>ยื่นคำร้องขอใบรับรอง</label> */}
@@ -386,7 +387,12 @@ function Request_cert() {
              {/* <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', fontSize: '16px',marginLeft: '15px' }}> */}
                 <div class="form-group col-md-15 fone">
                     <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px"}}>
-                        <input class="form-check-input" type="checkbox" value="ปพ.7" onChange={handleCheckRequestStudentChange} id="CheckRequestStudent"/>
+                        <input class="form-check-input" type="checkbox" 
+                        value="ปพ.7" 
+                        onChange={handleCheckRequestStudentChange} 
+                        id="CheckRequestStudent"
+                        style={{border: "1px solid #a7a7a7"}}/>
+
                         <label class="form-check-label custom-body" style={{ fontSize: '18px'}} for="flexCheckDefault">
                             กรณีขอใบรับรองการเป็นนักเรียน (ปพ.7)
                         </label>
@@ -398,7 +404,7 @@ function Request_cert() {
                             id = "AmountRequestStudent"
                             className="form-control ml-3 px-3"
                             placeholder="จำนวน"
-                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif'}}
+                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7"}}
                             value={AmountRequestStudent}
                             onChange={handleAmountRequestStudentChange}
                             required
@@ -407,7 +413,13 @@ function Request_cert() {
                     </div>
                     )}       
                     <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px"}}>
-                        <input class="form-check-input" type="checkbox" value="ปพ.1" onChange={handleCheckRequestTranscriptChange} id="flexCheckChecked"/>
+                        <input class="form-check-input"
+                        type="checkbox" 
+                        value="ปพ.1" 
+                        onChange={handleCheckRequestTranscriptChange} 
+                        id="flexCheckChecked"
+                        style={{border: "1px solid #a7a7a7"}}/>
+
                         <label class="form-check-label custom-body" style={{ fontSize: '18px'}} for="flexCheckChecked">
                             กรณีขอหนังสือรับรองผลการเรียนรายวิชา
                         </label>
@@ -419,7 +431,7 @@ function Request_cert() {
                             id="AmountRequestTranscript"
                             className="form-control ml-3 px-3"
                             placeholder="จำนวน"
-                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif'}}
+                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7"}}
                             value={AmountRequestTranscript}
                             onChange={handleAmountRequestTranscriptChange}
                             required
@@ -468,7 +480,7 @@ function Request_cert() {
             </div>
         </div>
     </div>
-   
+    </div>
      
       </>
       ) 

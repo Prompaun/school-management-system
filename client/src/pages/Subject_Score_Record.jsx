@@ -167,8 +167,8 @@ const Subject_Score_Record = () => {
       
       const handleChangeScore = (id, field, value) => {
         setStudentScore(
-            StudentScore.map((row) =>
-            row.id === id ? { ...row, [field]: value } : row
+          StudentScore.map((row) =>
+            row.id === id ? { ...row, scores: { ...row.scores, [field]: value } } : row
           )
         );
       };

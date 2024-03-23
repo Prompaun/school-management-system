@@ -8,7 +8,7 @@ function Parent_Information() {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
   };
-  const [HouseholdData,setStudentData] = useState(
+  const [HouseholdData,setHouseholdData] = useState(
     [
         {
           Address_Number : "11/1",
