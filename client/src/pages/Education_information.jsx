@@ -7,6 +7,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 // import { getSearchParamsForLocation } from 'react-router-dom/dist/dom';
 // import { URLSearchParams } from 'url';
+import axios from 'axios';
 
 const Education_information = () => {
 
@@ -21,44 +22,93 @@ const Education_information = () => {
         textDecoration: 'none'
       };
 
-      const [Yeardata, setYearData] = useState(
-        {
-          Year : ["2565","2564","2563"],
-          Semester : ["1","2"]
-        }
-             
-      );
-
-      const [StudentData,setStudentData] = useState(
-        [
-            // {
-            //     StudentID : "6301012630095",
-            //     NameTitle : "เด็กหญิง",
-            //     Surname : "รักดี",
-            //     Lastname : "น้ำใจงาม"
-            // }
-            {
-                StudentID : "",
-                Name: "",
-                NameTitle : "",
-                Surname : "",
-                Lastname : ""
+    async function getYearByStudentId(studentId) {
+    try {
+        const response = await axios.get('http://localhost:8080/get-years-by-student-id', {
+            params: {
+                studentId: studentId
             }
-        ]
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching year by student ID:', error);
+        throw error;
+    }
+    };
 
-      );
-      const { Year,Semester } = Yeardata;
-      
-      const [subjectObject, setSubjectObject] = useState(
-        [
-          { id: '001', name: 'วิชา A', score: 85, credits:'0.5', between_full:'80', final_full:'20', between_get:'79', final_get:'20', totalScore:'99', grade: 'A', result: 'ดีเด่น' },
-          { id: '002', name: 'วิชา B', score: 92, credits:'1', between_full:'70', final_full:'30', between_get:'56', final_get:'24',  totalScore:'80', grade: 'A', result: 'ดีมาก' },
-          { id: '003', name: 'วิชา C', score: 78, credits:'1', between_full:'70', final_full:'30', between_get:'53', final_get:'20', totalScore:'73', grade: 'B', result: 'ดี' },
-        ]
-        
-        );
+    async function getSemesterByStudentId(selectedStudent_ID, selectedYear) {
+    try {
+        const response = await axios.get('http://localhost:8080/get-semesters-by-student-id', {
+            params: {
+                studentId: selectedStudent_ID,
+                Year: selectedYear
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching Semester by student ID:', error);
+        throw error;
+    }
+    };
+
+    async function getGradeInfo(selectedStudent_ID, selectedYear, Semesters) {
+        try {
+            const response = await axios.get('http://localhost:8080/get-grade-info', {
+                params: {
+                    studentId: selectedStudent_ID,
+                    year: selectedYear,
+                    semester: Semesters
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching Grade by student ID:', error);
+            throw error;
+        }
+      };
+
+    const [Yeardata, setYearData] = useState(
+    {
+        // Year : ["2565","2564","2563"],
+        // Semester : ["1","2"]
+        Year: [],
+        Semester: []
+    }
+            
+    );
+
+    const [StudentData,setStudentData] = useState(
+    [
+        // {
+        //     StudentID : "6301012630095",
+        //     NameTitle : "เด็กหญิง",
+        //     Surname : "รักดี",
+        //     Lastname : "น้ำใจงาม"
+        // }
+        {
+            StudentID : "",
+            Name: "",
+            NameTitle : "",
+            Surname : "",
+            Lastname : ""
+        }
+    ]
+
+    );
+    const { Year,Semester } = Yeardata;
+
+    const [subjectObject, setSubjectObject] = useState([]);
     
-        const [selectedYear, setSelectedYear] = useState("");
+    // const [subjectObject, setSubjectObject] = useState(
+    // [
+    //     { id: '001', name: 'วิชา A', score: 85, credits:'0.5', between_full:'80', final_full:'20', between_get:'79', final_get:'20', totalScore:'99', grade: 'A', result: 'ดีเด่น' },
+    //     { id: '002', name: 'วิชา B', score: 92, credits:'1', between_full:'70', final_full:'30', between_get:'56', final_get:'24',  totalScore:'80', grade: 'A', result: 'ดีมาก' },
+    //     { id: '003', name: 'วิชา C', score: 78, credits:'1', between_full:'70', final_full:'30', between_get:'53', final_get:'20', totalScore:'73', grade: 'B', result: 'ดี' },
+    // ]
+    
+    // );
+
+    const [selectedYear, setSelectedYear] = useState("");
     
     const [selectedSemester, setSelectedSemester] = useState("");
     const [tableHeader, setTableHeader] = useState("");
@@ -73,50 +123,165 @@ const Education_information = () => {
         // } else {
         //   setChapters([]); // เมื่อไม่ได้เลือกปีการศึกษาให้ล้าง chapters
         // }
-      };
+    };
       
-      const handleSemesterChange = (event) => {
-        const selectedSemesterValue = event.target.value;
-        setSelectedSemester(selectedSemesterValue);
-      };
-      
-      useEffect(() => {
-        if (selectedYear && selectedSemester) {
-          setTableHeader(`ปีการศึกษา ${selectedYear} ภาคการศึกษาที่ ${selectedSemester}`);
-        }
-        else {
-          setTableHeader(`ปีการศึกษา ${Year[0]} ภาคการศึกษาที่ ${Semester[0]}`);
-        }
-      }, [selectedYear, selectedSemester]);
+    const handleSemesterChange = (event) => {
+    const selectedSemesterValue = event.target.value;
+    setSelectedSemester(selectedSemesterValue);
+    };
+    
+    useEffect(() => {
+    if (selectedYear && selectedSemester) {
+        setTableHeader(`ปีการศึกษา ${selectedYear} ภาคการศึกษาที่ ${selectedSemester}`);
+    }
+    // else {
+    //     setTableHeader(`ปีการศึกษา ${Year[0]} ภาคการศึกษาที่ ${Semester[0]}`);
+    // }
+    }, [selectedYear, selectedSemester]);
 
-      const location = useLocation();
-      //   console.log("Student_ID:", location);
-      const SearchParams = new URLSearchParams(location.search);
-      const student_param = SearchParams.get("id"); // ดึงค่าของพารามิเตอร์ id ออกมา
-      const namme_param = SearchParams.get("name");
-      
-      // หาชื่อจากพารามิเตอร์ id
-      useEffect(() => {
-        if (student_param) {
-            console.log("id:", student_param); // พิมพ์ชื่อที่ได้
+    const location = useLocation();
+    //   console.log("Student_ID:", location);
+    const SearchParams = new URLSearchParams(location.search);
+    const studentID_param = SearchParams.get("id");
+    const namme_param = SearchParams.get("name");
+//     const studentID_param = "ID1";
+//     const namme_param = "ID1";
+
+// const { id, name, otherValue } = location.state || {};
+//     console.log("id",id);
+//     console.log("location",location);
+    
+    // หาชื่อจากพารามิเตอร์ id
+    useEffect(() => {
+        if (studentID_param && namme_param) {
+            console.log("id:", studentID_param); // พิมพ์ชื่อที่ได้
             setStudentData(prevState => ({
                 ...prevState,
                 [0]: {
                     ...prevState[0],
-                    StudentID: student_param,
+                    StudentID: studentID_param,
                     Name: namme_param
                 }
             }));
         }
     }, []);
     
-      
-      useEffect(() => {
-          if (namme_param) {
-              console.log("Name:", namme_param); // พิมพ์ชื่อที่ได้
+    // useEffect(() => {
+    //     if (namme_param) {
+    //         console.log("Name:", namme_param); // พิมพ์ชื่อที่ได้
+    //     }
+    // }, [namme_param]); 
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const StudentYears = await getYearByStudentId(studentID_param);
+                console.log('StudentYears:', StudentYears);
+
+                const maxYear = Math.max(...StudentYears);
+                console.log('ค่าที่มากที่สุดใน StudentYears:', maxYear);
+
+                setYearData(prevState => ({
+                ...prevState,
+                Year: StudentYears.map(year => year.toString()).sort()
+                }));
+
+                // if (StudentYears.length > 0) {
+                //     console.log('Years retrieved successfully!');
+                //     console.log('First year:', StudentYears[0]);
+
+                //     const maxYear = Math.max(...StudentYears);
+                //     console.log('ค่าที่มากที่สุดใน StudentYears:', maxYear);
+
+                //     console.log('Max Year:', maxYear);
+                // } else {
+                //     console.log('No years retrieved!');
+                // }
+                const getSemester = await getSemesterByStudentId(studentID_param, maxYear);
+                // console.log('getSemester:', getSemester);
+                const maxSemester = Math.max(...getSemester.map(sem => parseInt(sem)));
+                console.log('getSemester:', getSemester);
+                console.log('maxSemester:', maxSemester);
+                const gradeInfo = await getGradeInfo(studentID_param, maxYear, maxSemester);
+                const mappedGradeInfo = gradeInfo.map(item => ({
+                id: item.Subject_ID,
+                name: item.Subject_Name,
+                score: item.Score_mid,
+                credits: item.Subject_Credit,
+                between_full: item.Full_score_mid,
+                final_full: item.Full_score_final,
+                between_get: item.Score_mid,
+                final_get: item.Score_final,
+                totalScore: item.Total_score,
+                grade: item.Subject_grade,
+                }));
+                setSubjectObject(mappedGradeInfo);
+
+                console.log('Max Semester:', maxSemester);
+                setTableHeader(`ปีการศึกษา ${maxYear} ภาคการศึกษาที่ ${maxSemester}`);
+                setSelectedYear(maxYear);
+                setSelectedSemester(maxSemester);
+            //   const years = await getYearByStudentId("ID1");
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          if (selectedYear) {
+            try {
+              const semesters = await getSemesterByStudentId(studentID_param, selectedYear);
+              setYearData(prevState => ({
+                ...prevState,
+                Semester: semesters.sort()
+              }));
+            } catch (error) {
+              console.error('Error fetching semesters:', error);
+            }
           }
-      }, [namme_param]); // สั่งให้ useEffect ทำงานเมื่อ namme_param เปลี่ยนแปลง
+          else{
+            setYearData(prevState => ({
+              ...prevState,
+              Semester: []
+            }));
+          }
+        };
       
+        fetchData();
+      }, [selectedYear]);
+      
+    useEffect(() => {
+    if (selectedYear && selectedSemester) {
+        const fetchData = async () => {
+        try {
+            const gradeInfo = await getGradeInfo(studentID_param, selectedYear, selectedSemester);
+            console.log('Grade info:', gradeInfo);
+            const mappedGradeInfo = gradeInfo.map(item => ({
+            id: item.Subject_ID,
+            name: item.Subject_Name,
+            score: item.Score_mid,
+            credits: item.Subject_Credit,
+            between_full: item.Full_score_mid,
+            final_full: item.Full_score_final,
+            between_get: item.Score_mid,
+            final_get: item.Score_final,
+            totalScore: item.Total_score,
+            grade: item.Subject_grade,
+            }));
+            setSubjectObject(mappedGradeInfo);
+        } catch (error) {
+            console.error('Error fetching grade information:', error);
+        }
+        };
+    
+        fetchData(); 
+    }
+    }, [selectedSemester]);
 
     return (
         <>
@@ -240,88 +405,100 @@ const Education_information = () => {
                                 </div>
                                 
                                 <br />
-                                <div className="align-items-center">
-                                                <div className="container d-flex justify-content-end">
-                                                    <span
-                                                    className="btn btn-link"
-                                                    style={{ color: 'black', textDecoration: 'none', fontFamily: 'Kanit, sans-serif', marginRight: '4px', cursor: 'pointer', marginTop: '-2px' }}
-                                                    onClick={() => {
-                                                        const fileUrl = "src/assets/พิมพ์ใบสมัครป.1.pdf";
-                                                        const printWindow = window.open(fileUrl, "_blank", 'width=1000,height=800');
-                                                        printWindow.print();
-                                                    }}
-                                                    >
-                                                    พิมพ์ข้อมูล
-                                                    </span>
+                                
 
-                                                    <img
-                                                        src={printer_icon}  // Replace with the path to your printer icon image
-                                                        alt="Printer Icon"
-                                                        style={{ width: '25px', height: '25px', cursor: 'pointer', marginTop: '5px' }}
-                                                        onClick={() => {
-                                                            const fileUrl = "src/assets/พิมพ์ใบสมัครป.1.pdf";
-                                                            const printWindow = window.open(fileUrl, "_blank", 'width=1000,height=800');
-                                                            printWindow.print();
-                                                        }}
-                                                    />
-                                                
-                                            </div>
-                                            </div>
-                                <div className="container flex-column align-items-center">
-                                    {/* <table className="table-bordered" style={{ textAlign: 'center',fontFamily: 'Kanit, sans-serif'}}> */}
-                                    <div className="d-flex justify-content-center" style={{ height: 'auto', overflowY: 'auto' }}>
-                                    <div className="table-responsive">
-                                    <table className="table table-bordered table-striped table-hover" style={{ borderCollapse: 'collapse', textAlign: 'center',fontFamily: 'Kanit, sans-serif' }}>
-
-
-                                    <thead>          
-                                    <tr>
-                                        <th colSpan="9" style={{ textAlign: 'center' }}>{tableHeader}</th>
-                                    </tr>
-
-                                    <tr>
-                                        <th rowSpan="3">รหัสวิชา</th>
-                                        <th rowSpan="3">ชื่อวิชา</th>
-                                        <th rowSpan="3">หน่วยกิต</th>
-                                        <th colSpan="4" style={{ textAlign: 'center' }}>ผลการเรียน</th>
-                                        <th rowSpan="3">คะแนนรวม</th>
-                                        <th rowSpan="3">เกรด</th>
-                                    </tr>
-                                    <tr>
-                                        <th colSpan="2">ระหว่างภาค</th>
-                                        <th colSpan="2">ปลายภาค</th>
-                                    </tr>
-                                    <tr>
-                                        <th>เต็ม</th>
-                                        <th>ได้</th>
-                                        <th>เต็ม</th>
-                                        <th>ได้</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                {subjectObject.map((subject) => (
-                                    <tr key={subject.id} style={{ height: '50px' }}>
-                                    <td >{subject.id}</td>
-                                    <td >{subject.name}</td>
-                                    <td >{subject.credits}</td>
-                                    <td >{subject.between_full}</td>
-                                    <td >{subject.between_get}</td>
-                                    <td >{subject.final_full}</td>
-                                    <td >{subject.final_get}</td>
-                                    <td >{subject.totalScore}</td>
-                                    <td >{subject.grade}</td>
-                                  </tr>
-                                ))}
-                                </tbody>
-
-
-                                    </table>
-                                    <br />
-                                    </div>
+                                {subjectObject.length === 0 ? (
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontSize: '18px' }}>
+                                        <div className="container mt-5 d-flex flex-column align-items-center">
+                                            <span className="ms-3 mb-0" style={{ color: 'gray' }}>ไม่พบข้อมูลเกรดของท่าน</span>
+                                        </div>
                                     </div>
                                     
+                                ) : (
+                                <>
+                                    <div className="align-items-center">
+                                        <div className="container d-flex justify-content-end">
+                                            <span
+                                                className="btn btn-link"
+                                                style={{ color: 'black', textDecoration: 'none', fontFamily: 'Kanit, sans-serif', marginRight: '4px', cursor: 'pointer', marginTop: '-2px' }}
+                                                onClick={() => {
+                                                    const fileUrl = "src/assets/พิมพ์ใบสมัครป.1.pdf";
+                                                    const printWindow = window.open(fileUrl, "_blank", 'width=1000,height=800');
+                                                    printWindow.print();
+                                                }}
+                                                >
+                                                พิมพ์ข้อมูล
+                                            </span>
+
+                                            <img
+                                                src={printer_icon}  // Replace with the path to your printer icon image
+                                                alt="Printer Icon"
+                                                style={{ width: '25px', height: '25px', cursor: 'pointer', marginTop: '5px' }}
+                                                onClick={() => {
+                                                    const fileUrl = "src/assets/พิมพ์ใบสมัครป.1.pdf";
+                                                    const printWindow = window.open(fileUrl, "_blank", 'width=1000,height=800');
+                                                    printWindow.print();
+                                                }}
+                                            />
+                                        
+                                        </div>
                                     </div>
+
+                                    <div className="container flex-column align-items-center">
+                                        {/* <table className="table-bordered" style={{ textAlign: 'center',fontFamily: 'Kanit, sans-serif'}}> */}
+                                        <div className="d-flex justify-content-center" style={{ height: 'auto', overflowY: 'auto' }}>
+                                            <div className="table-responsive">
+                                                <table className="table table-bordered table-striped table-hover" style={{ borderCollapse: 'collapse', textAlign: 'center',fontFamily: 'Kanit, sans-serif' }}>
+                                                <thead>          
+                                                    <tr>
+                                                        <th colSpan="9" style={{ textAlign: 'center' }}>{tableHeader}</th>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th rowSpan="3">รหัสวิชา</th>
+                                                        <th rowSpan="3">ชื่อวิชา</th>
+                                                        <th rowSpan="3">หน่วยกิต</th>
+                                                        <th colSpan="4" style={{ textAlign: 'center' }}>ผลการเรียน</th>
+                                                        <th rowSpan="3">คะแนนรวม</th>
+                                                        <th rowSpan="3">เกรด</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colSpan="2">ระหว่างภาค</th>
+                                                        <th colSpan="2">ปลายภาค</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>เต็ม</th>
+                                                        <th>ได้</th>
+                                                        <th>เต็ม</th>
+                                                        <th>ได้</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                            {subjectObject.map((subject) => (
+                                                <tr key={subject.id} style={{ height: '50px' }}>
+                                                <td >{subject.id}</td>
+                                                <td >{subject.name}</td>
+                                                <td >{subject.credits}</td>
+                                                <td >{subject.between_full}</td>
+                                                <td >{subject.between_get}</td>
+                                                <td >{subject.final_full}</td>
+                                                <td >{subject.final_get}</td>
+                                                <td >{subject.totalScore}</td>
+                                                <td >{subject.grade}</td>
+                                            </tr>
+                                            ))}
+                                            </tbody>
+
+
+                                                </table>
+                                                <br />
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </>
+                                )}
                                 
                                 <br />
                                 <Link to="/Student_List_Information">
