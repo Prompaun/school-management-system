@@ -7,10 +7,13 @@ const fs = require('fs');
 // get the client
 const mysql = require('mysql2');
 
+const app = express();
+const distPath = path.join(__dirname, '../client/dist');
+
 // ต่อ database หรือทำสิ่งอื่น ๆ ที่ต้องการกับค่า config
 
-const app = express();
 app.use(cors())
+app.use(express.static(distPath));
 app.use(express.json());
 // app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
