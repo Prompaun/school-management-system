@@ -20,7 +20,7 @@ const Student_List_Information = () => {
             const result = location.state.result;
             setData([{ subjects: result }]);
         }
-    }, [location.state]);
+    }, []);
 
     // ตรวจสอบ Data ก่อนที่จะทำการแสดงผลหรือทำอย่างอื่น
     console.log(Data);
@@ -165,11 +165,12 @@ const Student_List_Information = () => {
                                                     <td style={{ backgroundColor: "#FFFFFF" }}>
                                                         {subject.NameTitle}{subject.FirstName} {subject.LastName}
                                                     </td>
-                                                    <td>
-                                                        <Link to={{
-                                                            pathname: "/Student_info",
-                                                            state: { selectedYear: "selectedYear", result: "PersonnelStudentInfo" }
-                                                        }} className="d-flex justify-content-center" style={{ textDecoration: 'none', ...fontStyle }}>
+                                                    <td>                                             
+                                                        <Link 
+                                                            to={ `/Student_info?id=${subject.Student_ID}&name=${subject.NameTitle}${subject.FirstName} ${subject.LastName}`}
+                                                            className="d-flex justify-content-center" 
+                                                            style={{ textDecoration: 'none', ...fontStyle }}
+                                                        >
                                                             <i 
                                                                 className="fs-5 bi-search" 
                                                                 style={{ 
@@ -204,8 +205,7 @@ const Student_List_Information = () => {
 
                                                 <td>
                                                     <Link 
-                                                        to={ `/Education_information?id=${subject.Student_ID}&name=${subject.NameTitle}${subject.FirstName} ${subject.LastName}` } // This part seems incorrect, will be fixed below
-                                                        // Name: `${subject.NameTitle} ${subject.FirstName} ${subject.LastName}`
+                                                        to={ `/Education_information?id=${subject.Student_ID}&name=${subject.NameTitle}${subject.FirstName} ${subject.LastName}`}
                                                         className="d-flex justify-content-center" 
                                                         style={{ textDecoration: 'none' }}
                                                     >

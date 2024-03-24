@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation  } from 'react-router-dom';
 import school_logo from "../images/IMG_5416.png";
 import printer_icon from "../images/printer_icon.png";
@@ -410,7 +410,7 @@ const Education_information = () => {
                                 {subjectObject.length === 0 ? (
                                     <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontSize: '18px' }}>
                                         <div className="container mt-5 d-flex flex-column align-items-center">
-                                            <span className="ms-3 mb-0" style={{ color: 'gray' }}>ไม่พบข้อมูลเกรดของท่าน</span>
+                                            <span className="ms-3 mb-0" style={{ color: 'gray' }}>ไม่พบข้อมูลเกรดของนักเรียนท่านนี้</span>
                                         </div>
                                     </div>
                                     
@@ -501,16 +501,16 @@ const Education_information = () => {
                                 )}
                                 
                                 <br />
-                                <button
-                                            type="button"
-                                            className="btn btn-primary float-end"
-                                            style={{ ...fontStyle, fontSize: '16px', textAlign: 'right' }}
-                                            onClick={() => {
-                                                window.history.back();
-                                            }}
-                                            >
-                                            <span>ย้อนกลับ</span>
-                                            </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary float-end"
+                                        style={{ ...fontStyle, fontSize: '16px', textAlign: 'right' }}
+                                        onClick={() => {
+                                            window.history.back();
+                                        }}
+                                        >
+                                        <span>ย้อนกลับ</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>

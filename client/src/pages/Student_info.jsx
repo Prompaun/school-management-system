@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation  } from 'react-router-dom';
 import school_logo from "../images/IMG_5416.png";
 import printer_icon from "../images/printer_icon.png";
 import Sidebar from '../components/Sidebar';
@@ -50,6 +50,17 @@ const Student_info = () => {
         ],
     },
     ]);
+
+    const location = useLocation();
+    const SearchParams = new URLSearchParams(location.search);
+    const studentID_param = SearchParams.get("id");
+    const namme_param = SearchParams.get("name");
+
+    useEffect(() => {
+        if (studentID_param && namme_param) {
+            console.log("id:", studentID_param);
+        }
+    }, []);
 
     return (
         <>
@@ -133,17 +144,27 @@ const Student_info = () => {
             </div>
             <div class="card-body" > 
                 <div class="tab-content">
-                    <div class="tab-pane container active" id="menu1" ><Student_Information/></div>
-                    <div class="tab-pane container fade" id="menu2"><Student_Address/></div>
-                    <div class="tab-pane container fade" id="menu3"><Parent_Information /></div>
+                    <div class="tab-pane container active" id="menu1" ><Student_Information studentID_prop={studentID_param} /></div>
+                    <div class="tab-pane container fade" id="menu2"><Student_Address studentID_prop={studentID_param} /></div>
+                    <div class="tab-pane container fade" id="menu3"><Parent_Information studentID_prop={studentID_param} /></div>
                 </div>
             </div>
             </div>
                                     
                                     <br />
-                                <Link to="/Student_List_Information">
-                                    <button type="submit" class="btn btn-primary float-end" style={{ ...fontStyle, fontSize: '16px', textAlign: 'right'}}><span>ย้อนกลับ</span></button>
-                                </Link>
+                                {/* <Link to="/Student_List_Information"> */}
+                                    {/* <button type="submit" class="btn btn-primary float-end" style={{ ...fontStyle, fontSize: '16px', textAlign: 'right'}}><span>ย้อนกลับ</span></button> */}
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary float-end"
+                                        style={{ ...fontStyle, fontSize: '16px', textAlign: 'right' }}
+                                        onClick={() => {
+                                            window.history.back();
+                                        }}
+                                        >
+                                        <span>ย้อนกลับ</span>
+                                    </button>
+                                {/* </Link> */}
                                     
                                     </div>
                                 </div>              

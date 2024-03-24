@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-function Parent_Information() {
+function Parent_Information(props) {
   
 
   const fontStyle = {
@@ -9,25 +10,86 @@ function Parent_Information() {
     textDecoration: 'none'
   };
 
-  //ข้อมูลที่ใช้โชว์บิดา มารดา
-  const [ParentData,setStudentData] = useState(
+  async function getStudentInfoByID(Student_ID) {
+    try {
+            const response = await axios.get('http://localhost:8080/personnel-get-student-info-by-student-id', {
+                params: {
+                    Student_ID: Student_ID
+                }
+            });
+            return response.data;
+        }   catch (error) {
+            console.error('Error fetching year by student ID:', error);
+            throw error;
+        }
+    };
+
+  async function getParentInfoByStudentID(Student_ID) {
+    try {
+            const response = await axios.get('http://localhost:8080/personnel-get-parent-info-from-student-id', {
+                params: {
+                    Student_ID: Student_ID
+                }
+            });
+            return response.data;
+        }   catch (error) {
+            console.error('Error fetching year by student ID:', error);
+            throw error;
+        }
+    };
+
+    function formatDateThaiYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear() + 543; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+        const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+        return formattedDOB;
+    }
+
+    const [parentData,setparentData] = useState([]);
+
+    //ข้อมูลที่ใช้โชว์บิดา มารดา
+    const [FatherData,setFatherData] = useState(
     [
         {
-          name_father : "สมใจ",
-          lastname_father : "ปรารถนา",
-          DOB_father : "12/05/1999",
-          Nationality_father : "ไทย",
-          Occupation_father : "ธุกิจส่วนตัว",
-          Workplace_father : "บริษัทสมใจปรารถนา",
-          Phone_father : "0600000000", 
-          name_mother : "สมพร",
-          lastname_mother : "ปรารถนา",
-          DOB_mother : "21/07/1999",
-          Nationality_mother : "ไทย",
-          Occupation_mother : "ธุกิจส่วนตัว",
-          Workplace_mother : "บริษัทสมใจปรารถนา",
-          Phone_mother : "0600000002", 
+            name_father : "-",
+            lastname_father : "-",
+            DOB_father : "-",
+            Nationality_father : "-",
+            Occupation_father : "-",
+            Workplace_father : "-",
+            Phone_father : "-", 
+            }
+        // {
+        //   name_father : "สมใจ",
+        //   lastname_father : "ปรารถนา",
+        //   DOB_father : "12/05/1999",
+        //   Nationality_father : "ไทย",
+        //   Occupation_father : "ธุกิจส่วนตัว",
+        //   Workplace_father : "บริษัทสมใจปรารถนา",
+        //   Phone_father : "0600000000", 
+        //   name_mother : "สมพร",
+        //   lastname_mother : "ปรารถนา",
+        //   DOB_mother : "21/07/1999",
+        //   Nationality_mother : "ไทย",
+        //   Occupation_mother : "ธุกิจส่วนตัว",
+        //   Workplace_mother : "บริษัทสมใจปรารถนา",
+        //   Phone_mother : "0600000002", 
 
+        // }
+    ]
+    );
+  const [MotherData,setMotherData] = useState(
+    [
+        {
+            name_mother : "-",
+            lastname_mother : "-",
+            DOB_mother : "-",
+            Nationality_mother : "-",
+            Occupation_mother : "-",
+            Workplace_mother : "-",
+            Phone_mother : "-"
         }
     ]
   );
@@ -39,7 +101,7 @@ function Parent_Information() {
   
   useEffect(() => {
    
-    if (WhoAreParent==="อื่นๆ") {
+    if (WhoAreParent !== 'บิดา' && WhoAreParent !== 'มารดา') {
         setShowWhoAreParent(false);
         setShowParentData(true);
     }
@@ -69,12 +131,94 @@ const [ShowParentData,setShowParentData]=useState(false);
     ]
   );
 
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const parentsData = await getParentInfoByStudentID(props.studentID_prop);
+            setparentData(parentsData);
+            console.log('parentsData:', parentsData);
+            const StudenParentData = await getStudentInfoByID(props.studentID_prop);
+
+            const fatherData = parentsData.filter(item => item && item.Role === 'บิดา');
+            const motherData = parentsData.filter(item => item && item.Role === 'มารดา');
+            const parentData = parentsData.filter(item => item && (item.Role !== 'บิดา' && item.Role !== 'มารดา'));
+
+            if (StudenParentData.length > 0) {
+                const whoAreStudenParent = StudenParentData[0].parent;
+                console.log('whoAreStudenParent:', whoAreStudenParent);
+                setWhoAreParent(whoAreStudenParent);
+            }
+
+            if (fatherData.length > 0) {
+                const fatherInfo = fatherData.map(father => ({
+                    name_father: father.FirstName,
+                    lastname_father: father.LastName,
+                    DOB_father: father.DateOfBirth,
+                    Nationality_father: father.Nationality,
+                    Occupation_father: father.Occupation,
+                    Workplace_father: father.Office,
+                    Phone_father: father.Tel,
+                    father_relation: father.Role
+                }));
+                
+                setFatherData(fatherInfo);
+            } 
+
+            if (motherData.length > 0) {
+                const motherInfo = motherData.map(mother => ({
+                    name_mother: mother.FirstName,
+                    lastname_mother: mother.LastName,
+                    DOB_mother: mother.DateOfBirth,
+                    Nationality_mother: mother.Nationality,
+                    Occupation_mother: mother.Occupation,
+                    Workplace_mother: mother.Office,
+                    Phone_mother: mother.Tel,
+                    mother_relation: mother.Role
+                }));
+                
+                setMotherData(motherInfo);
+            } 
+
+            if (parentData.length > 0) {
+            const parentInfo = parentData.map(parent => ({
+                name_parent: parent.FirstName,
+                lastname_parent: parent.LastName,
+                DOB_parent: parent.DateOfBirth,
+                Nationality_parent: parent.Nationality,
+                Occupation_parent: parent.Occupation,
+                Workplace_parent: parent.Office,
+                Phone_parent: parent.Tel,
+                Parent_relation: parent.Role
+            }));
+            
+            setOtherParentData(parentInfo);
+            // setWhoAreParent("อื่นๆ");
+            } 
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+  fetchData();
+  }, []);
+
   return (
     <div style={{
         display: 'flex',
         flexDirection: 'column',
         fontFamily: 'Kanit, sans-serif',
       }}>
+
+    {parentData[0] === null && parentData[1] === null && parentData[2] === null ? (
+        <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontSize: '18px' }}>
+            <div className="container mt-5 d-flex flex-column align-items-center">
+                <span className="ms-3 mb-0" style={{ color: 'gray' }}>ไม่พบข้อมูลผู้ปกครองนักเรียนท่านนี้</span>
+            </div>
+        </div>
+        
+    ) : (
+    <>
        
        <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif'}}>
             <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
@@ -93,7 +237,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="name_father" 
                     name="name_father" 
-                    value={ParentData[0].name_father}
+                    value={FatherData[0].name_father}
                     readOnly 
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     // style={{ backgroundColor: '#DCDCDC', color: 'black', borderColor: '#808080' }}
@@ -110,7 +254,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="lastname_father"
                     name="lastname_father"
-                    value={ParentData[0].lastname_father}
+                    value={FatherData[0].lastname_father}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                 />
@@ -129,7 +273,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="DOB_father"
                     name="DOB_father"
-                    value={ParentData[0].DOB_father}
+                    value={FatherData[0].DOB_father === "-" ? "-" : formatDateThaiYear(FatherData[0].DOB_father)}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     />
@@ -147,7 +291,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Nationality_father" 
                     name="Nationality_father" 
-                    value={ParentData[0].Nationality_father}
+                    value={FatherData[0].Nationality_father}
                     readOnly 
                     style={{ backgroundColor: '#DCDCDC', color: 'black' }} 
                 />
@@ -166,7 +310,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Occupation_father"
                     name="Occupation_father"
-                    value={ParentData[0].Occupation_father}
+                    value={FatherData[0].Occupation_father}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                 />
@@ -183,7 +327,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Workplace_father"
                     name="Workplace_father"
-                    value={ParentData[0].Workplace_father}
+                    value={FatherData[0].Workplace_father}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     />
@@ -201,7 +345,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                         className="form-control"
                         id="Phone_father" 
                         name="Phone_father" 
-                        value={ParentData[0].Phone_father}
+                        value={FatherData[0].Phone_father}
                         readOnly 
                         style={{ backgroundColor: '#DCDCDC', color: 'black'}} 
                     />
@@ -231,7 +375,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="name_mother" 
                     name="name_mother" 
-                    value={ParentData[0].name_mother} 
+                    value={MotherData[0].name_mother} 
                     readOnly 
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     // style={{ backgroundColor: '#DCDCDC', color: 'black', borderColor: '#808080' }}
@@ -248,7 +392,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="lastname_mother"
                     name="lastname_mother"
-                    value={ParentData[0].lastname_mother}
+                    value={MotherData[0].lastname_mother}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                 />
@@ -266,7 +410,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="DOB_mother"
                     name="DOB_mother"
-                    value={ParentData[0].DOB_mother}
+                    value={MotherData[0].DOB_mother === "-" ? "-" : formatDateThaiYear(MotherData[0].DOB_mother)}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     />
@@ -283,7 +427,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Nationality_mother" 
                     name="Nationality_mother" 
-                    value={ParentData[0].Nationality_mother} 
+                    value={MotherData[0].Nationality_mother} 
                     readOnly 
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}} 
                 />
@@ -301,7 +445,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Occupation_mother"
                     name="Occupation_mother"
-                    value={ParentData[0].Occupation_mother}
+                    value={MotherData[0].Occupation_mother}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                 />
@@ -317,7 +461,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Workplace_mother"
                     name="Workplace_mother"
-                    value={ParentData[0].Workplace_mother}
+                    value={MotherData[0].Workplace_mother}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     />
@@ -335,7 +479,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="Phone_mother" 
                     name="Phone_mother" 
-                    value={ParentData[0].Phone_mother}
+                    value={MotherData[0].Phone_mother}
                     readOnly 
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}} 
                 />
@@ -429,7 +573,7 @@ const [ShowParentData,setShowParentData]=useState(false);
                     className="form-control"
                     id="DOB_parent"
                     name="DOB_parent"
-                    value={OtherParentData[0].DOB_parent}
+                    value={OtherParentData[0].DOB_parent === "-" ? "-" : formatDateThaiYear(OtherParentData[0].DOB_parent)}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                     />
@@ -528,6 +672,10 @@ const [ShowParentData,setShowParentData]=useState(false);
     
         </div>
     </div>
+
+    </>
+    )}
+
     </div>
   );
 }
