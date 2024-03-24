@@ -1,45 +1,26 @@
-# Node.js with React
-# Build a Node.js project that uses React.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-trigger:
-- main
+name: Deploy to Azure App Service
 
-pool:
-  vmImage: ubuntu-latest
+on:
+  push: 
+    branches: 
+      - main
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSource: 'spec'
-    versionSpec: '18.15.0.x'
-  displayName: 'Install Node.js'
-
-- task: Npm@1
-  displayName: 'Installing Modules in /client'
-  inputs:
-    command: 'install'
-    workingDir: 'client'
-- task: Npm@1
-  displayName: 'Installing Modules in /server'
-  inputs:
-    command: 'install'
-    workingDir: 'server'
-- task: Npm@1
-  displayName: 'Building Modules in /client'
-  inputs:
-    command: 'custom'
-    workingDir: 'client'
-    customCommand: 'run build'
-- task: CopyFiles@2
-  inputs:
-    Contents: |
-      client/dist/**
-      server/**
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'release'
-    publishLocation: 'Container'
+jobs: 
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+      - name: Setup Node.js version
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '18.15.0x'
+      - name: Install Dependencies
+        run: npm install
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: SchoolManagementSystem
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
