@@ -1,18 +1,41 @@
-const Parent_api = require('./Parent-api');
-const Personnel_api = require('./Pesonnel-api');
-const Student_api = require('./Student-api');
-
-var express = require('express')
-var cors = require('cors')
 require('dotenv').config();
+const express = require('express')
+const cors = require('cors')
+
+const path = require("path");
+const fs = require('fs');
+// get the client
+const mysql = require('mysql2');
 
 // ต่อ database หรือทำสิ่งอื่น ๆ ที่ต้องการกับค่า config
-var app = express();
+
+const app = express();
+app.use(cors())
 app.use(express.json());
 // app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors())
+
+const connection = mysql.createConnection({
+    host: process.env.HOST,
+    user: process.env.USER,
+    database: process.env.DATABASE,
+    password: process.env.PASSWORD,
+    port: process.env.PORT_DB,
+    ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
+  });
+
+connection.connect((err) => {
+if((err)) {
+    console.log('Error connecting to MySQL database =', err)
+    return;
+}
+console.log('MySQL successfully connected!');
+})
+
+const Parent_api = require('./Parent-api')(connection);
+const Personnel_api = require('./Pesonnel-api')(connection);
+// const Student_api = require('./Student-api')(connection);
 
 //use routes
 app.use(Parent_api);
