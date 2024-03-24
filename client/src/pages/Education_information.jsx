@@ -501,9 +501,16 @@ const Education_information = () => {
                                 )}
                                 
                                 <br />
-                                <Link to="/Student_List_Information">
-                                    <button type="submit" className="btn btn-primary float-end" style={{ ...fontStyle, fontSize: '16px', textAlign: 'right'}}><span>ย้อนกลับ</span></button>
-                                </Link>
+                                <button
+                                            type="button"
+                                            className="btn btn-primary float-end"
+                                            style={{ ...fontStyle, fontSize: '16px', textAlign: 'right' }}
+                                            onClick={() => {
+                                                window.history.back();
+                                            }}
+                                            >
+                                            <span>ย้อนกลับ</span>
+                                            </button>
                                 </div>
                             </div>
                         </div>
