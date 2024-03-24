@@ -1,44 +1,27 @@
-name: Node.js with React CI
+
+name: Deploy to Azure App Service
 
 on:
-  push:
-    branches:
+  push: 
+    branches: 
       - main
 
-jobs:
-  build:
+jobs: 
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '18.15.0'
-      
-    - name: Install dependencies in client
-      run: npm install
-      working-directory: client
-      
-    - name: Install dependencies in server
-      run: npm install
-      working-directory: server
-      
-    - name: Build client
-      run: npm run build
-      working-directory: client
-      
-    - name: Copy build artifacts
-      run: |
-        mkdir -p ${{ github.workspace }}/release
-        cp -r client/dist/* ${{ github.workspace }}/release
-        cp -r server/* ${{ github.workspace }}/release
-      working-directory: ${{ github.workspace }}
-      
-    - name: Publish build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: release
-        path: release
+      - name: Checkout Source
+        uses: actions/checkout@v3
+      - name: Setup Node.js version
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '18.15.0'
+      - name: Install Dependencies
+        run: npm install
+        working-directory: server
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: SchoolManagementSystem
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
