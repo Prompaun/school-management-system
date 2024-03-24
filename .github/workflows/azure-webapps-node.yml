@@ -1,4 +1,4 @@
-name: Node.js with React
+name: Node.js with React CI
 
 on:
   push:
@@ -8,36 +8,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Install Node.js
-      uses: actions/setup-node@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
         node-version: '18.15.0'
-
-    - name: Installing Modules in /client
+      
+    - name: Install dependencies in client
       run: npm install
       working-directory: client
-
-    - name: Installing Modules in /server
+      
+    - name: Install dependencies in server
       run: npm install
       working-directory: server
-
-    - name: Building Modules in /client
+      
+    - name: Build client
       run: npm run build
       working-directory: client
-
-    - name: Copy Files
+      
+    - name: Copy build artifacts
+      run: |
+        mkdir -p ${{ github.workspace }}/release
+        cp -r client/dist/* ${{ github.workspace }}/release
+        cp -r server/* ${{ github.workspace }}/release
+      working-directory: ${{ github.workspace }}
+      
+    - name: Publish build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: release
-        path: |
-          client/dist/**
-          server/**
-
-    - name: Publish Build Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: release
-        path: ${{ github.workspace }}/$(Build.ArtifactStagingDirectory)
-
+        path: release
