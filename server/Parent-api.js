@@ -14,41 +14,28 @@ const upload = multer({ storage: storage });
 const { Mutex } = require('async-mutex');
 const mutex = new Mutex();
 
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
-// get the client
-const mysql = require('mysql2');
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD,
-    port: process.env.PORT_DB,
-    ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
-  });
-
-  
-
+// const { v4: uuidv4 } = require('uuid');
+// const fs = require('fs');
+// // get the client
+// const mysql = require('mysql2');
 // const connection = mysql.createConnection({
 //     host: process.env.HOST,
 //     user: process.env.USER,
 //     database: process.env.DATABASE,
-//     password: process.env.PASSWORD
+//     password: process.env.PASSWORD,
+//     port: process.env.PORT_DB,
+//     ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
 //   });
 
-// ต่อ database หรือทำสิ่งอื่น ๆ ที่ต้องการกับค่า config
-// var app = express()
-// app.use(express.json());
+// connection.connect((err) => {
+//   if((err)) {
+//     console.log('Error connecting to MySQL database =', err)
+//     return;
+//   }
+//   console.log('MySQL successfully connected!');
+// })
 
-// app.use(cors())
-
-connection.connect((err) => {
-  if((err)) {
-    console.log('Error connecting to MySQL database =', err)
-    return;
-  }
-  console.log('MySQL successfully connected!');
-})
+module.exports = function(connection) {
 
 // CREATE Routes
 router.post("/register", async (req, res) => {
@@ -1683,10 +1670,10 @@ router.get("/defaultData_EnrollStatus/:parentEmail", async (req, res) => {
 });
 
 
+return router;
 
-
-
-module.exports = router;
+}
+// module.exports = router;
 // app.listen(5000, function () {
 //     console.log('CORS-enabled web server listening on port 5000')
 //   })
