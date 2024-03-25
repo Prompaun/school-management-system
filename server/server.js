@@ -8,12 +8,14 @@ const fs = require('fs');
 const mysql = require('mysql2');
 
 const app = express();
-const distPath = path.join(__dirname, '../client/dist');
 
-// ต่อ database หรือทำสิ่งอื่น ๆ ที่ต้องการกับค่า config
+//ser port
+const PORT = process.env.PORT || 8080;
+// const distPath = path.join(__dirname, '../client/dist');
+
 
 app.use(cors())
-app.use(express.static(distPath));
+// app.use(express.static(distPath));
 app.use(express.json());
 // app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
@@ -52,8 +54,12 @@ app.use(Personnel_api);
 //   });
 
 
-//ser port
-const PORT = process.env.PORT || 8080;
+
+app.use(express.static("./client/dist"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
