@@ -100,16 +100,31 @@ const Check_Applicant_Information = () => {
 
     const [editingId, setEditingId] = useState(null);
     const handleEditRow = (Enroll_ID) => {
+        
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
-
+       if (editingId===Enroll_ID){
+            console.log("item.Enroll_ID",Enroll_ID)
+            console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
+       
+       }
     };
-    
+    // const handleEditRow = (Enroll_ID) => {
+    //     setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
+    //     if (Enroll_ID === editingId) {
+    //       setCurrentItem(data.find((item) => item.Enroll_ID === Enroll_ID));
+    //     } else {
+    //       setCurrentItem(null);
+    //     }
+    //   };
+   
     const handleChange = (Enroll_ID, field, value) => {
+ 
         setData(
           data.map((item) =>
             item.Enroll_ID === Enroll_ID ? { ...item, [field]: value } : item
           )
         );
+        
       } 
 
 
