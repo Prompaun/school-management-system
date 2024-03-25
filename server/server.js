@@ -27,7 +27,8 @@ const connection = mysql.createConnection({
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
     port: process.env.PORT_DB,
-    ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
+    // ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
+    ssl: process.env.SSL
   });
 
 connection.connect((err) => {
@@ -38,12 +39,12 @@ if((err)) {
 console.log('MySQL successfully connected!');
 })
 
-const Parent_api = require('./Parent-api')(connection);
+// const Parent_api = require('./Parent-api')(connection);
 const Personnel_api = require('./Pesonnel-api')(connection);
 // const Student_api = require('./Student-api')(connection);
 
 //use routes
-app.use(Parent_api);
+// app.use(Parent_api);
 app.use(Personnel_api);
 // app.use(Personnel_api);
 // app.use(Student_api);
