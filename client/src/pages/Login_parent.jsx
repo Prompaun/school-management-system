@@ -76,7 +76,7 @@ const Login_parent = () => {
 //     );
 // };
 const google = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open("http://localhost:8080/auth/google", "_self");
 };
 
     return (

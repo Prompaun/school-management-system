@@ -32,7 +32,7 @@ const Register = () => {
   };
   const history = createBrowserHistory();
   const google = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
+    window.open("http://localhost:8080/auth/google", "_self");
     // Add a delay of 2 seconds (you can adjust this as needed)
     if (response.ok) {
       // Redirect to /Register_info page after a successful login

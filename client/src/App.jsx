@@ -75,7 +75,7 @@ function App() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/auth/login/success", {
+        const response = await axios.get("http://localhost:8080/auth/login/success", {
           withCredentials: true,
         });
         if (response.status === 200) {
