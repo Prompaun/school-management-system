@@ -149,7 +149,7 @@ const handleEditRow = (id) => {
                             onChange={handleNewstitleChange}
                             required
                             ref={titleRef}
-                            style={{border: "1px solid #a7a7a7"}}
+                            style={{border: '1px solid #ccc'}}
                             />
                       </div>
 
@@ -165,7 +165,7 @@ const handleEditRow = (id) => {
                           onChange={handleNewsContentChange}
                           required
                           ref={contentRef}
-                          style={{border: "1px solid #a7a7a7"}}
+                          style={{border: '1px solid #ccc'}}
 
                         />
                       </div>
@@ -182,7 +182,7 @@ const handleEditRow = (id) => {
                           value={NewsURL}
                           onChange={handleNewsURLChange}
                           // required
-                          style={{border: "1px solid #a7a7a7" }}
+                          style={{border: '1px solid #ccc'}}
 
                         />
                       </div>

@@ -41,7 +41,7 @@ function Card_menu_personnel() {
           // path: "/Enrollment_Student",
           dropdown: [
             { text: "ตรวจสอบข้อมูลผู้สมัคร", path: "/Check_Applicant_Information" },
-            { text: "จัดการช่วงเวลาเปิดรับสมัคร", path: "/OpenCourse_period" },
+            { text: "จัดการช่วงวันที่เปิดรับสมัคร", path: "/OpenCourse_period" },
 
             // { text: "อัปโหลดผลคะแนนการสอบ", path: "/Upload_applicant_scores" },
             // { text: "ผลคะแนนการสอบรายบุคคล", path: "/Admission_Results" },

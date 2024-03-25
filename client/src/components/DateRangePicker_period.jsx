@@ -15,7 +15,10 @@ function DateRangePicker_period() {
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-
+  const customInputCSS = {
+    width:"auto",
+    border: '1px solid #ccc',
+  };
   return (
     <DatePicker
       className='form-control form-control-bold w-full '
@@ -82,6 +85,7 @@ function DateRangePicker_period() {
           </div>
         </div>
       )}
+      customInput={<input style={customInputCSS} />}
     />
   );
 }
