@@ -31,6 +31,8 @@ const connection = mysql.createConnection({
     // ssl: process.env.SSL
   });
 
+//   console.log('SSL',fs.readFileSync(path.join(__dirname, process.env.SSL)));
+
 connection.connect((err) => {
 if((err)) {
     console.log('Error connecting to MySQL database =', err)
