@@ -32,7 +32,7 @@ const Navbar = ({user}) => {
     filter: 'brightness(25%)',
   };
   const logout = () => {
-    window.open("http://localhost:5000/auth/logout", "_self");
+    window.open("http://localhost:8080/auth/logout", "_self");
   };
   return (
     <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>
