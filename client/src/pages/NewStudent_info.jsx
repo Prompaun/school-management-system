@@ -232,7 +232,7 @@ function NewStudent_info({
         try {
             const formData = new FormData(formElem);
             console.log("yoky", formData);
-            await axios.post('http://localhost:5000/upload', formData, {
+            await axios.post('http://localhost:8080/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

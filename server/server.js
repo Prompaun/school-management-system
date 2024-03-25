@@ -8,12 +8,14 @@ const fs = require('fs');
 const mysql = require('mysql2');
 
 const app = express();
-const distPath = path.join(__dirname, '../client/dist');
 
-// ต่อ database หรือทำสิ่งอื่น ๆ ที่ต้องการกับค่า config
+//ser port
+const PORT = process.env.PORT || 8080;
+// const distPath = path.join(__dirname, '../client/dist');
+
 
 app.use(cors())
-app.use(express.static(distPath));
+// app.use(express.static(distPath));
 app.use(express.json());
 // app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
@@ -26,6 +28,7 @@ const connection = mysql.createConnection({
     password: process.env.PASSWORD,
     port: process.env.PORT_DB,
     ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
+    // ssl: process.env.SSL
   });
 
 connection.connect((err) => {
@@ -39,10 +42,12 @@ console.log('MySQL successfully connected!');
 const Parent_api = require('./Parent-api')(connection);
 const Personnel_api = require('./Pesonnel-api')(connection);
 // const Student_api = require('./Student-api')(connection);
+const google_api = require('./google-api')();
 
 //use routes
 app.use(Parent_api);
 app.use(Personnel_api);
+app.use(google_api);
 // app.use(Personnel_api);
 // app.use(Student_api);
 
@@ -51,9 +56,6 @@ app.use(Personnel_api);
 //     res.sendFile("C:/Users/promp/Downloads/School-project/client/src/pages/NewStudent_info.jsx");
 //   });
 
-
-//ser port
-const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
