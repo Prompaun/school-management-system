@@ -248,10 +248,21 @@ const Subject_Score_Record = () => {
     }, [selectedSubject])
 
     useEffect(() => {
+    
         console.log('assessment', Assessment)
     }, [Assessment])
+    
+    
 
     const [editingId, setEditingId] = useState(null);
+    // useEffect(() => {
+    
+    //     if(editingId!==null) {
+    //         alert('กรุณากดบันทึกข้อมูลก่อน')
+    //         return false;
+    //     }
+    // }, [editingId])
+
     const handleEditRow = (id) => {
         setEditingId(id === editingId ? null : id);
         if (id === editingId){

@@ -14,14 +14,11 @@ function OpenCourse_period() {
     const handleSelectCourseChange = (event) => {
         setSelectedCourse(event.target.value);
         };
-        const [Post, setPost] = useState("");
         
-        const PostRef = useRef();
-        const handlePostChange = (e) => {
-          setPost(e.target.value);
-        };
         const handleSubmitPeriod = (event) => {
           if (CheckInputDataPeriod()) {
+              console.log("DateRange",DateRange);
+
           //   navigate("/");
               // setShowLoadingModal(true);
               // setShowSuccessModal(true);
@@ -29,41 +26,25 @@ function OpenCourse_period() {
       
           return true;
         };
+        const [DateRange,setDateRange] =useState(['', '']);
+        const handleDateRangeChange = ([start, end]) => {
+          
+          setDateRange([start, end]);
+
+        };
         const CheckInputDataPeriod = () => {
-          if (PostRef.current.value === "") {
-            alert("กรุณากรอกเนื้อหาประกาศ");
-            PostRef.current.focus();
-            PostRef.current.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => PostRef.current.focus(), 100);
-            return  false;
+          if (DateRange.some((date) => date === '' || date === null)) {
+            alert("กรุณาเลือกช่วงการเปิดรับสมัครให้ครบถ้วน");
+            return false;
           }
           return true;
         }
 
-        const handleSubmitPost = (event) => {
-          if (CheckInputDataPost()) {
-          //   navigate("/");
-              // setShowLoadingModal(true);
-              // setShowSuccessModal(true);
-          }
-      
-          return true;
-        };
-        const CheckInputDataPost = () => {
-          if (PostRef.current.value === "") {
-            alert("กรุณากรอกเนื้อหาประกาศ");
-            PostRef.current.focus();
-            PostRef.current.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => PostRef.current.focus(), 100);
-            return  false;
-          }
-          return true;
-        }
 
 
         const [CourseData, setCourseData] = useState([
-          {id:1, course: "หลักสูตรทั่วไป Regular Program", DateStart: "12/03/2567",DateEnd:"17/04/2567"},
-          {id:2, course: "หลักสูตร English Program (EP)", DateStart: "12/03/2567",DateEnd:"17/04/2567"},
+          {id:1, course: "หลักสูตรทั่วไป", DateStart: "30/03/2024",DateEnd:"02/05/2024"},
+          {id:2, course: "English Program (EP)", DateStart: "12/03/2567",DateEnd:"17/04/2567"},
       
       ]);
       // const [obj,setObj] = useState([
@@ -126,7 +107,7 @@ function OpenCourse_period() {
                         {/* <DateRangePicker_period/> */}
                         
                             <div className="align-items-center">
-                            <DateRangePicker_period/>
+                            <DateRangePicker_period  id="DateRange "value={DateRange} onChange={handleDateRangeChange}/>
                             </div>
                        
                         <button 

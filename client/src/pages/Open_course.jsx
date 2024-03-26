@@ -45,11 +45,10 @@ function Open_course() {
         </div> 
     </div>
     <br></br>
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center"style={{height: '100vh' }}>
         <Card_menu_course/>
         </div>
-    <br></br>
-    <br></br>
+    
 
   </>
   )
