@@ -89,8 +89,8 @@ const Navbar = ({user}) => {
         </span> ) 
             : ( //ถ้าไม่มีคน Log in
           <span className='nav-link'> 
-            <Link to='/Register' style={{...linkStyle, marginRight: '10px'}}>Register</Link> 
-             |  
+            {/* <Link to='/Register' style={{...linkStyle, marginRight: '10px'}}>Register</Link> 
+             |   */}
             <Link to='/Login' style={{...linkStyle, marginLeft: '10px'}}>Log in</Link>
           </span>
 
