@@ -242,6 +242,8 @@ const Subject_Score_Record = () => {
         // {id:4, Assessment_name: "สอบย่อย", Assessmant_propotion: 10},
         // {id:5, Assessment_name: "โครงงาน", Assessmant_propotion: 20},
     ]);
+
+    const [Assessment_proportion, setAssessment_proportion] = useState('')
     
     useEffect(() => {
         getAssessmentInfo();
@@ -264,12 +266,18 @@ const Subject_Score_Record = () => {
     // }, [editingId])
 
     const handleEditRow = (id) => {
+        setAssessment_proportion(Assessment[id].Assessment_proportion);
         setEditingId(id === editingId ? null : id);
         if (id === editingId){
             if (Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== ''){
                 updateAssessmentInfo(id);
             } else if (Assessment[id].saved && (Assessment[id].Assessment_name !== '' || Assessment[id].Assessment_proportion !== '')) {
-                setEditingId(id)
+                // setEditingId(id)
+                setAssessment(
+                    Assessment.map((row) =>
+                    row.id === id ? { ...row, ['Assessment_proportion']: Assessment_proportion } : row
+                    )
+                );
                 alert('กรุณากรอกข้อมูลให้ครบ')
             } else if (!Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== '') {
                 insertAssessmentInfo(id);
@@ -281,11 +289,24 @@ const Subject_Score_Record = () => {
     };
       
     const handleChange = (id, field, value) => {
-    setAssessment(
-        Assessment.map((row) =>
-        row.id === id ? { ...row, [field]: value } : row
-        )
-    );
+    
+    // if (value !== ''){
+        setAssessment(
+            Assessment.map((row) =>
+            row.id === id ? { ...row, [field]: value } : row
+            )
+        );
+    // }
+    // else{
+    //     if (value !== ''){
+    //         setAssessment(
+    //             Assessment.map((row) =>
+    //             row.id === id ? { ...row, [field]: Assessment_proportion } : row
+    //             )
+    //         );
+    //     }
+    // }
+    
     };
 
     const handleDeleteRow = (id) => {
