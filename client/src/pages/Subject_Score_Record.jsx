@@ -2,7 +2,8 @@ import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
-import { Modal } from 'react-bootstrap';
+import { Dropdown, Modal } from 'react-bootstrap';
+import axios from 'axios';
 
 // import Modal_subject from "../components/Modal_subject";
 const Subject_Score_Record = () => {
@@ -16,27 +17,168 @@ const Subject_Score_Record = () => {
         fontFamily: 'Kanit, sans-serif',
         textDecoration: 'none'
       };
-
-    //   const handleSelectYearChange = (event) => {
-    //     setSelectedYear(event.target.value);
-    //   };
       
     const [YearData, setYearData] = useState(
     {
-      Year : ["2565","2564","2563"],
-      Semester : ["1","2"]
+      Year : [],
+      Semester : []
     }
     );
     //   const [selectedYear, setSelectedYear] = useState();
 
     const { Year,Semester } = YearData;
+
+    async function getyeardropdown() {
+        try {
+            const response = await axios.get('http://localhost:8080/teaching-assignment-get-year', {});
+            const newYears = response.data.map(item => item.year.toString());
+            setYearData(prevYearData => ({
+                ...prevYearData,
+                Year: newYears
+            }));
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching year dropdown:', error);
+            throw error;
+        }
+    };
+
+    async function getsemesterdropdown() {
+        if (selectedYear !== "เลือกปีการศึกษา") {
+            try {
+                const response = await axios.post('http://localhost:8080/teaching-assignment-get-semester', {
+                    year : selectedYear
+                });
+                const newSemester = response.data.map(item => item.Semester.toString());
+                setYearData(prevYearData => ({
+                    ...prevYearData,
+                    Semester: newSemester
+                }));
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching semester dropdown:', error);
+                throw error;
+            }
+        }
+        else {
+            setYearData(prevSemesterData => ({
+                ...prevSemesterData,
+                Semester: []
+            }));
+        }
+    };
+
+    async function getsubjectdropdown() {
+        if (selectedSemester !== "เลือกภาคการศึกษา") {
+            try {
+                const response = await axios.post('http://localhost:8080/teaching-assignment-get-subject', {
+                    year : selectedYear,
+                    semester : selectedSemester
+                });
+                const newSubject = response.data.map(item => item.subject_name.toString());
+                setSubjectData(prevSubjectData => ({
+                    ...prevSubjectData,
+                    Subject : newSubject
+                }));
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching subjet dropdown:', error);
+                throw error;
+            }
+        } else {
+            setSubjectData(prevSubjectData => ({
+                ...prevSubjectData,
+                Subject : []
+            }));
+        }
+    };
+
+    async function getAssessmentInfo() {
+        if (selectedSubject !== "เลือกวิชา") {
+            try {
+                const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
+                    year : selectedYear,
+                    semester : selectedSemester,
+                    subject : selectedSubject
+                });
+                const newInfo = response.data.map((item, index) => ({
+                    ...item,
+                    id: index,
+                    saved: true
+                }));
+                setAssessment(newInfo);
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching year dropdown:', error);
+                throw error;
+            }
+        }
+    };
+
+    async function updateAssessmentInfo(id) {
+        if (selectedSubject !== "เลือกวิชา") {
+            try {
+                const response = await axios.post('http://localhost:8080/update-assessment', {
+                    assessment_name: Assessment[id].Assessment_name, 
+                    assessment_proportion: Assessment[id].Assessment_proportion, 
+                    id: Assessment[id].Assessment_id
+                });
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching year dropdown:', error);
+                throw error;
+            }
+        }
+    };
+
+    async function insertAssessmentInfo(id) {
+        console.log(Assessment)
+        if (selectedSubject !== "เลือกวิชา") {
+            try {
+                const response = await axios.post('http://localhost:8080/insert-new-assessment', {
+                    subject: selectedSubject, 
+                    assessment_name: Assessment[id].Assessment_name, 
+                    assessment_proportion: Assessment[id].Assessment_proportion, 
+                    year: selectedYear, 
+                    semester: selectedSemester
+                });
+                setSubjectData(prevSubjectData => ({
+                    ...prevSubjectData,
+                    saved:true
+                }));
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching year dropdown:', error);
+                throw error;
+            }
+        }
+    };
+    
+
+    useState(() => {
+        getyeardropdown();
+    }, []);
+
+    //   const handleSelectYearChange = (event) => {
+    //     setSelectedYear(event.target.value);
+    //   };
+
+    // const [Year, setYear] = useState([]);
+    // const [Semester, setSemester] = useState([]);
     const [selectedYear, setSelectedYear] = useState("เลือกปีการศึกษา");
     const [selectedSemester, setSelectedSemester] = useState("เลือกภาคการศึกษา");
     const [selectedSubject, setSelectedSubject] = useState("เลือกวิชา");
     const [selectedClassYear, setSelectedClassYear] = useState("เลือกชั้นปี");
-
     const [selectedRoom, setSelectedRoom] = useState("เลือกห้อง");
-    
+
+    useEffect(() => {
+        getsemesterdropdown();
+    }, [selectedYear])
+
+    useEffect(() => {
+        getsubjectdropdown();
+    }, [selectedSemester])
+
     const handleSelectYearChange = (event) => {
       setSelectedYear(event.target.value);
       // ตั้งค่าให้ดรอปดาวน์ "ภาคการศึกษา" เป็นค่าเริ่มต้น
@@ -69,12 +211,10 @@ const Subject_Score_Record = () => {
 
     const [SubjectData,setSubjectData] = useState(
     {
-        Subject: ["คณิตศาสตร์","ภาษาไทย","ภาษาอังกฤษ"]
+        Subject: []
     }
     );
     const { Subject } = SubjectData;
-
-    
     
     const [classNameroomData,setclassNameroomData] = useState(
         {
@@ -96,35 +236,53 @@ const Subject_Score_Record = () => {
     }, [selectedSubject]);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const [Assessment, setAssessment] = useState([
-        {id:1, Assessment_name: "สอบกลางภาค", Assessmant_propotion: 30},
-        {id:2, Assessment_name: "สอบปลายภาค", Assessmant_propotion: 30},
-        {id:3, Assessment_name: "การบ้าน", Assessmant_propotion: 10},
-        {id:4, Assessment_name: "สอบย่อย", Assessmant_propotion: 10},
-        {id:5, Assessment_name: "โครงงาน", Assessmant_propotion: 20},
-
+        // {id:1, Assessment_name: "สอบกลางภาค", Assessmant_propotion: 30},
+        // {id:2, Assessment_name: "สอบปลายภาค", Assessmant_propotion: 30},
+        // {id:3, Assessment_name: "การบ้าน", Assessmant_propotion: 10},
+        // {id:4, Assessment_name: "สอบย่อย", Assessmant_propotion: 10},
+        // {id:5, Assessment_name: "โครงงาน", Assessmant_propotion: 20},
     ]);
     
-   
+    useEffect(() => {
+        getAssessmentInfo();
+    }, [selectedSubject])
+
+    useEffect(() => {
+        console.log('assessment', Assessment)
+    }, [Assessment])
+
     const [editingId, setEditingId] = useState(null);
     const handleEditRow = (id) => {
         setEditingId(id === editingId ? null : id);
-       
-      };
+        if (id === editingId){
+            if (Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== ''){
+                updateAssessmentInfo(id);
+            } else if (Assessment[id].saved && (Assessment[id].Assessment_name !== '' || Assessment[id].Assessment_proportion !== '')) {
+                setEditingId(id)
+                alert('กรุณากรอกข้อมูลให้ครบ')
+            } else if (!Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== '') {
+                insertAssessmentInfo(id);
+            } else {
+                Assessment.splice(id, 1);
+                alert('กรุณากรอกข้อมูลให้ครบ')
+            }
+        }
+    };
       
-      const handleChange = (id, field, value) => {
-        setAssessment(
-          Assessment.map((row) =>
-            row.id === id ? { ...row, [field]: value } : row
-          )
-        );
-      };
+    const handleChange = (id, field, value) => {
+    setAssessment(
+        Assessment.map((row) =>
+        row.id === id ? { ...row, [field]: value } : row
+        )
+    );
+    };
 
-      const handleDeleteRow = (id) => {
-        setAssessment(Assessment.filter((row) => row.id !== id));
-      };
-      const handleAddRow = () => {
-        setAssessment([...Assessment, { id: Assessment.length + 1, Assessment_name: '', Assessmant_propotion: '' }]);
-      };
+    const handleDeleteRow = (id) => {
+    setAssessment(Assessment.filter((row) => row.id !== id));
+    };
+    const handleAddRow = () => {
+    setAssessment([...Assessment, { id: Assessment.length, Assessment_name: '', Assessment_proportion: '', saved: false }]);
+    };
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,11 +486,11 @@ const Subject_Score_Record = () => {
                                                 {editingId === row.id ? (
                                                 <input
                                                     type="text"
-                                                    value={row.Assessmant_propotion}
-                                                    onChange={(e) => handleChange(row.id, 'Assessmant_propotion', e.target.value)}
+                                                    value={row.Assessment_proportion}
+                                                    onChange={(e) => handleChange(row.id, 'Assessment_proportion', e.target.value)}
                                                 />
                                                 ) : (
-                                                row.Assessmant_propotion
+                                                row.Assessment_proportion
                                                 )}
                                             </td>
                                             <td >

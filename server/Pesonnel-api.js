@@ -417,6 +417,180 @@ module.exports = function(connection) {
         });
     });
 
+    router.get('/teaching-assignment-get-year', (req, res) => {
+        const sql = `
+            SELECT distinct 
+                year
+            FROM 
+                teaching_assignment
+            ORDER BY year ASC
+        `;
+        connection.query(sql, (err, results) => {
+            if (err) {
+                console.error('Error querying assignment information:', err);
+                return res.status(500).json({ error: 'Failed to retrieve year of assignment information' });
+            }
+
+            // Check if student information is found
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'year of assignment information not found' });
+            }
+
+            // Return the student information
+            res.status(200).json(results);
+        });
+    });
+
+    router.post('/teaching-assignment-get-semester', (req, res) => {
+        const { year } = req.body;
+        const sql = `
+            SELECT distinct 
+                Semester
+            FROM 
+                teaching_assignment
+            WHERE
+                year = ?
+            ORDER BY semester ASC
+        `;
+        connection.query(sql, [year], (err, results) => {
+            if (err) {
+                console.error('Error querying assignment information:', err);
+                return res.status(500).json({ error: 'Failed to retrieve semester of assignment information' });
+            }
+
+            // Check if student information is found
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'semester of assignment information not found' });
+            }
+
+            // Return the student information
+            res.status(200).json(results);
+        });
+    });
+
+    router.post('/teaching-assignment-get-subject', (req, res) => {
+        const { year, semester } = req.body;
+        const sql = `
+            SELECT distinct 
+                subject.subject_name,
+                teaching_assignment.subject_id
+            FROM 
+                teaching_assignment
+            join 
+                subject
+            on 
+                teaching_assignment.subject_id = subject.Subject_ID
+            where
+                teaching_assignment.year = ?
+            AND 
+                teaching_assignment.semester = ?
+        `;
+        connection.query(sql,[year,semester], (err, results) => {
+            if (err) {
+                console.error('Error querying assignment information:', err);
+                return res.status(500).json({ error: 'Failed to retrieve subject of assignment information' });
+            }
+
+            // Check if student information is found
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'subject of assignment information not found' });
+            }
+
+            // Return the student information
+            res.status(200).json(results);
+        });
+    });
+
+    router.post('/assessment-get-name-proportion', (req, res) => {
+        const { year, semester, subject } = req.body;
+        const sql = `
+            SELECT 
+                assessment.Assessment_name, 
+                assessment.Assessment_proportion,
+                assessment.id as Assessment_id
+            FROM 
+                assessment
+            join 
+                subject
+            on 
+                assessment.subject_id = subject.Subject_ID
+            where
+                assessment.year = ? AND
+                assessment.semester = ? AND
+                subject.subject_name = ?
+        `;
+        connection.query(sql,[year,semester,subject], (err, results) => {
+            if (err) {
+                console.error('Error querying assignment information:', err);
+                return res.status(500).json({ error: 'Failed to retrieve assessment information' });
+            }
+
+            // Check if student information is found
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'Assessment information not found' });
+            }
+
+            // Return the student information
+            res.status(200).json(results);
+        });
+    });
+
+    router.post('/update-assessment', (req, res) => {
+        const { assessment_name, assessment_proportion, id } = req.body;
+        const sql = `
+            UPDATE 
+                assessment
+            SET 
+                Assessment_proportion = ?,
+                Assessment_name = ?
+            WHERE
+                id = ?;
+        `;
+        connection.query(sql,[assessment_proportion, assessment_name, id], (err, results) => {
+            if (err) {
+                console.error('Error querying assignment information:', err);
+                return res.status(500).json({ error: 'Failed to update assessment information' });
+            }
+            res.status(200).json({results, message: "Update assessment successfully"});
+        });
+    });
+
+    router.post('/insert-new-assessment', (req, res) => {
+        const { subject, assessment_name, assessment_proportion, year, semester } = req.body;
+        const sqlget = `
+            select 
+                Subject_id
+            from 
+                subject
+            where 
+                subject_name = 'science';
+        `;
+        connection.query(sqlget,[subject], (err, results) => {
+            if (err) {
+                console.error('Error querying assignment information:', err);
+                return res.status(500).json({ error: 'Failed to insert assessment information' });
+            }
+
+            if (results.length === 0) {
+                return res.status(404).json({ error: 'subject information not found' });
+            }
+
+            const sql = `
+            insert into Assessment 
+                (Subject_ID, Assessment_Name, Assessment_Proportion,Year,Semester)
+            VALUES
+                (?,?,?,?,?)
+            `;
+            connection.query(sql,[results[0].Subject_id, assessment_name, assessment_proportion, year, semester], (err, outcome) => {
+                if (err) {
+                    console.error('Error querying assignment information:', err);
+                    return res.status(500).json({ error: 'Failed to insert assessment information' });
+                }
+                res.status(200).json({outcome, message: "Insert assessment successfully"});
+            });
+        });
+    });
+
     return router;
 }
 
