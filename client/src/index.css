@@ -45,13 +45,18 @@ body{
   height: 300px; 
 }
 .card {
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center;
-   */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  
   width: 700px; 
   height: 300px;
 }
+
+/* .card-overview {
+  width: 250px; 
+  height: 300px; 
+} */
 .card-info {
   width: 1000px; /* กำหนดความกว้างของการ์ด (ความกว้างแนวนอน) */
   height: auto; /* ปรับความสูงอัตโนมัติเพื่อให้เนื้อหาภายในมีขนาดเหมาะสม */

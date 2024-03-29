@@ -530,14 +530,6 @@ const Subject_Score_Record = () => {
     }, [selectedSubject])
 
     const [editingId, setEditingId] = useState(null);
-    // useEffect(() => {
-    
-    //     if(editingId!==null) {
-    //         alert('กรุณากดบันทึกข้อมูลก่อน')
-    //         return false;
-    //     }
-    // }, [editingId])
-
     const handleEditRow = (id) => {
         if (editingId !== null) {
             setAssessment_proportion(Assessment[id].Assessment_proportion);
