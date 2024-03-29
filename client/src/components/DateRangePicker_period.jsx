@@ -4,7 +4,7 @@ import th from "date-fns/locale/th"; // the locale you want
 registerLocale("th", th); // register it with the name you want
 import 'react-datepicker/dist/react-datepicker.css';
 
-function DateRangePicker_period() {
+function DateRangePicker_period({ value, onChange }) {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -19,6 +19,28 @@ function DateRangePicker_period() {
     width:"auto",
     border: '1px solid #ccc',
   };
+
+
+    let initialValue;
+    if (value instanceof Date && !isNaN(value.getTime())) {
+        initialValue = value; // ถ้ารูปแบบวันที่ถูกต้องแล้วให้ใช้ค่าวันที่ของ value
+        // console.log("initialValue:", value);
+    } else {
+        initialValue = new Date(); // ถ้ารูปแบบวันที่ไม่ถูกต้อง ให้ใช้ new Date()
+    }
+  // const [startDate, setStartDate] = useState(new Date());
+
+    // useEffect(() => {
+    //     if (value !== ''){
+    //        setStartDate(value); 
+    //     }
+    //     else{
+    //         setStartDate(new Date());
+    //     }
+        
+    // }, [value]);
+
+
   return (
     <DatePicker
       className='form-control form-control-bold w-full '
@@ -28,10 +50,7 @@ function DateRangePicker_period() {
       selectsRange
       startDate={startDate}
       endDate={endDate}
-      onChange={([start, end]) => {
-        setStartDate(start);
-        setEndDate(end);
-      }}
+      
       renderCustomHeader={({
         date,
         changeYear,
@@ -86,6 +105,11 @@ function DateRangePicker_period() {
         </div>
       )}
       customInput={<input style={customInputCSS} />}
+      onChange={([start, end]) => {
+        setStartDate(start);
+        setEndDate(end);
+        onChange([start, end]);
+      }}
     />
   );
 }

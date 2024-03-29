@@ -481,6 +481,14 @@ const Subject_Score_Record = () => {
     }, [selectedSubject])
 
     const [editingId, setEditingId] = useState(null);
+    // useEffect(() => {
+    
+    //     if(editingId!==null) {
+    //         alert('กรุณากดบันทึกข้อมูลก่อน')
+    //         return false;
+    //     }
+    // }, [editingId])
+
     const handleEditRow = (id) => {
         
         console.log('in here',editingId,Assessment,id)
