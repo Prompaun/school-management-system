@@ -1,20 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Card = () => {
-  const [obj,setObj] = useState([
-    {
-        title: "ประกาศรับสมัครนักเรียนใหม่",
-        content: "รับสมัครนักเรียนใหม่ แผนการเรียน English Program (EP)",
-        link:"",
-        DateTime : "12-10-2565"
-    },
-    {
-        title: "ระเบียบการลงทะเบียนสำหรับผู้ใช้ใหม่",
-        content: "ขั้นตอนการลงทะเบียนเข้าสู่ระบบ",
-        link:"https://shorturl.at/xDVZ6",
-        DateTime : "12-10-2565"
+  async function News() {
+    try {
+        const response = await axios.get('http://localhost:8080/get-news');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        throw error;
     }
-  ]);
+  };
+
+  const [obj,setObj] = useState([]);
+
+  // const [obj,setObj] = useState([
+  //   {
+  //       title: "ประกาศรับสมัครนักเรียนใหม่",
+  //       content: "รับสมัครนักเรียนใหม่ แผนการเรียน English Program (EP)",
+  //       link:"",
+  //       DateTime : "12-10-2565"
+  //   },
+  //   {
+  //       title: "ระเบียบการลงทะเบียนสำหรับผู้ใช้ใหม่",
+  //       content: "ขั้นตอนการลงทะเบียนเข้าสู่ระบบ",
+  //       link:"https://shorturl.at/xDVZ6",
+  //       DateTime : "12-10-2565"
+  //   }
+  // ]);
+
+  function formatDateThaiYear(dateString) {
+    const dob = new Date(dateString);
+    const day = dob.getDate();
+    const month = dob.getMonth() + 1;
+    const year = dob.getFullYear() + 543; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+    const formattedDOB = `${day < 10 ? '0' : ''}${day}-${month < 10 ? '0' : ''}${month}-${year}`;
+    return formattedDOB;
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+          const PostNews = await News();
+          const mappedPostNews = PostNews.map(item => ({
+            title: item.topic,
+            content: item.content,
+            link: item.link,
+            DateTime: formatDateThaiYear(item.date)
+            }));
+            setObj(mappedPostNews);
+        } catch (error) {
+          console.error('Error fetching semesters:', error);
+        }
+    };
+    fetchData();
+  }, []);
 
   // Add this CSS className to your CSS file
 const linkText = {

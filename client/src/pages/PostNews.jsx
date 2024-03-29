@@ -4,6 +4,7 @@ import { Link ,useNavigate} from 'react-router-dom';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import Modal_loading from '../components/Modal_loading';
 import Modal_success from '../components/Modal_success';
+import axios from 'axios';
 function PostNews() {
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
@@ -28,15 +29,33 @@ function PostNews() {
     setNewsURL(e.target.value);
   };
 
-  const handleSubmitform = (event) => {
+  const handleSubmitform = async (event) => {
     if (CheckInputData()) {
-    //   navigate("/");
         // setShowLoadingModal(true);
-        setShowSuccessModal(true);
+        if (Newstitle !== '' && NewsContent !== ''){
+          const currentDate = new Date(); // สร้างวันที่และเวลาปัจจุบัน
+          const formattedDate = currentDate.toISOString().split('T')[0]; // แปลงเป็น ISO 8601 และดึงวันที่ออกมา
+          
+          console.log(formattedDate); // ผลลัพธ์: '2024-03-29'
+          await addPostNews(Newstitle, NewsContent, NewsURL, formattedDate);
+        }
+        try {
+            const PostNews = await getPostNews();
+            const mappedPostNews = PostNews.map(item => ({
+                id: item.id,
+                title: item.topic,
+                content: item.content,
+                link: item.link
+            }));
+            setNewsData(mappedPostNews);
+            setShowSuccessModal(true);
+        } catch (error) {
+            console.error('Error fetching news:', error);
+        }
     }
-
     return true;
-  };
+};
+
 
   const CheckInputData = () => {
     if (titleRef.current.value === "") {
@@ -57,11 +76,88 @@ function PostNews() {
     return true;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const [NewsData, setNewsData] = useState([
-    {id:1, title: "ประกาศรับสมัครนักเรียนใหม่", content: "รับสมัครนักเรียนใหม่ แผนการเรียน English Program (EP)",link:""},
-    {id:2, title: "ระเบียบการลงทะเบียนสำหรับผู้ใช้ใหม่", content: "ขั้นตอนการลงทะเบียนเข้าสู่ระบบ",link:"https://shorturl.at/xDVZ6"},
+  const [NewsData, setNewsData] = useState([]);
 
-]);
+  async function getPostNews() {
+    try {
+        const response = await axios.get('http://localhost:8080/get-post-news');
+        return response.data;
+      } catch (error) {
+          console.error('Error fetching news:', error);
+          throw error;
+      }
+    };
+
+  async function addPostNews(topic, content, link, date) {
+    try {
+        const response = await axios.post('http://localhost:8080/add-post-news', {
+            topic: topic,
+            content: content,
+            link: link,
+            date: date
+        });
+        console.log('Post news added successfully');
+        return response.data;
+      } catch (error) {
+          console.error('Error adding post news:', error);
+          throw error;
+      }
+    }
+
+  async function deletePost(postId) {
+    try {
+        const response = await fetch(`http://localhost:8080/delete-post/${postId}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete post');
+        }
+
+          const data = await response.json();
+          console.log(data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
+      }
+
+    async function updatePost(postId, updatedData) {
+      try {
+          const response = await axios.put(`http://localhost:8080/update-post/${postId}`, updatedData);
+  
+          if (!response.data || response.data.error) {
+              throw new Error('Failed to update post');
+          }
+  
+          console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+      } catch (error) {
+          console.error('Error updating post:', error);
+      }
+    }
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+          const PostNews = await getPostNews();
+          const mappedPostNews = PostNews.map(item => ({
+            id: item.id,
+            title: item.topic,
+            content: item.content,
+            link: item.link
+            }));
+          setNewsData(mappedPostNews);
+        } catch (error) {
+          console.error('Error fetching semesters:', error);
+        }
+    };
+    fetchData();
+  }, []);
+
+//   const [NewsData, setNewsData] = useState([
+//     {id:1, title: "ประกาศรับสมัครนักเรียนใหม่", content: "รับสมัครนักเรียนใหม่ แผนการเรียน English Program (EP)",link:""},
+//     {id:2, title: "ระเบียบการลงทะเบียนสำหรับผู้ใช้ใหม่", content: "ขั้นตอนการลงทะเบียนเข้าสู่ระบบ",link:"https://shorturl.at/xDVZ6"},
+
+// ]);
 // const [obj,setObj] = useState([
 //     {
 //         title: "ประกาศรับสมัครนักเรียนใหม่",
@@ -78,10 +174,48 @@ function PostNews() {
 //   ]);
 
 const [editingId, setEditingId] = useState(null);
-const handleEditRow = (id) => {
-    setEditingId(id === editingId ? null : id);
-   
-  };
+const [topic, setTopic] = useState();
+const handleEditRow = async (id) => {
+  setEditingId(id === editingId ? null : id);
+
+  if (editingId === id) {
+      const selectedItem = NewsData.find((item) => item.id === id);
+      
+      if (selectedItem.title !== '' && selectedItem.content !== '') {
+          const currentDate = new Date();
+          const formattedDate = currentDate.toISOString().split('T')[0];
+          
+          const updatedData = {
+              topic: selectedItem.title,
+              content: selectedItem.content,
+              link: selectedItem.link,
+              date: formattedDate
+          };
+
+          console.log("Updated Data", id, updatedData);
+          
+          try {
+              await updatePost(id, updatedData);
+          } catch (error) {
+              console.error('Error updating post:', error);
+          }
+      } else {
+          try {
+              const PostNews = await getPostNews();
+              const mappedPostNews = PostNews.map(item => ({
+                  id: item.id,
+                  title: item.topic,
+                  content: item.content,
+                  link: item.link
+              }));
+              setNewsData(mappedPostNews);
+          } catch (error) {
+              console.error('Error fetching news:', error);
+          }
+      }
+  }
+};
+
   
   const handleChange = (id, field, value) => {
     setNewsData(
@@ -93,7 +227,7 @@ const handleEditRow = (id) => {
 
   const handleDeleteRow = (id) => {
 
-
+    deletePost(id);
     setNewsData(NewsData.filter((row) => row.id !== id));
   };
   const [showLoadingModal, setShowLoadingModal] = useState(false);
