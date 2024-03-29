@@ -109,34 +109,71 @@ const Subject_Score_Record = () => {
                 {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: "",id: 0},
                 {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: "",id: 1}
             ]
+            let midFinal
             try {
-                const midFinal = await axios.post('http://localhost:8080/assessment-get-full-score-midterm-final', {
+                midFinal = await axios.post('http://localhost:8080/assessment-get-full-score-midterm-final', {
                     year : selectedYear,
                     semester : selectedSemester,
                     subject : selectedSubject
                 });
 
-                const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
-                    year : selectedYear,
-                    semester : selectedSemester,
-                    subject : selectedSubject
-                });
-
+                newAssessmentInfo.splice(0);
                 newAssessmentInfo[0] = {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: midFinal.data[0].Full_score_mid}
                 newAssessmentInfo[1] = {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: midFinal.data[0].Full_score_final}
-                newAssessmentInfo = [...newAssessmentInfo, ...response.data]
+                try {
+                    const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
+                        year : selectedYear,
+                        semester : selectedSemester,
+                        subject : selectedSubject
+                    });
 
-                const newInfo = newAssessmentInfo.map((item, index) => ({
-                    ...item,
-                    id: index,
-                    saved: true
-                }));
-                setAssessment(newInfo);
-                return response.data;
+                    newAssessmentInfo = [...newAssessmentInfo, ...response.data]
+                    const newInfo = newAssessmentInfo.map((item, index) => ({
+                        ...item,
+                        id: index,
+                        saved: true
+                    }));
+                    setAssessment(newInfo);
+                    return response.data;
+
+                } catch (errr) {
+                    if (errr.response.request.status !== 404) {
+                        console.error('Error fetching assessment info:', errr);
+                        throw errr;
+                    } else {
+                        setAssessment(newAssessmentInfo);
+                    }
+                }
             } catch (error) {
-                setAssessment(newAssessmentInfo);
-                if (error.response.request.status !== 404 && error.midFinal.request.status !== 404) {
-                    console.error('Error fetching year dropdown:', error);
+                if (error.response.request.status === 404) {
+                    try {
+                        const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
+                            year : selectedYear,
+                            semester : selectedSemester,
+                            subject : selectedSubject
+                        });
+
+                        newAssessmentInfo = [...newAssessmentInfo, ...response.data]
+                        const newInfo = newAssessmentInfo.map((item, index) => ({
+                            ...item,
+                            id: index,
+                            saved: true
+                        }));
+                        setAssessment(newInfo);
+                        return response.data;
+
+                    } catch (err) {
+                        if (err.response.request.status === 404) {
+                            setAssessment(newAssessmentInfo);
+                        } else {
+                            setAssessment(newAssessmentInfo);
+                            console.error('Error fetching assessment info:', error);
+                            throw error;
+                        }
+                    }
+                } else {
+                    setAssessment(newAssessmentInfo);
+                    console.error('Error fetching assessment info:', error);
                     throw error;
                 }
             }
@@ -158,7 +195,6 @@ const Subject_Score_Record = () => {
                     throw error;
                 }
             } else {
-                console.log(Assessment)
                 try {
                     const response = await axios.post('http://localhost:8080/update-full-grade', {
                         score: Assessment[id].Assessment_proportion,
@@ -199,7 +235,6 @@ const Subject_Score_Record = () => {
 
     async function insertAssessmentInfo(id) {
         if (selectedSubject !== "เลือกวิชา") {
-            console.log('okok')
             if (id !== 0 && id !== 1) {
                 try {
                     const response = await axios.post('http://localhost:8080/insert-new-assessment', {
@@ -217,7 +252,21 @@ const Subject_Score_Record = () => {
                     throw error;
                 }
             } else {
-                
+                try {
+                    const response = await axios.post('http://localhost:8080/insert-full-grade', {
+                        subject: selectedSubject,
+                        year: selectedYear,
+                        semester: selectedSemester,
+                        score: Assessment[id].Assessment_proportion,
+                        term: Assessment[id].Assessment_name
+                    });
+                    getAssessmentInfo();
+                    getStudentInfo();
+                    return response.data;
+                } catch (error) {
+                    console.error('Error fetching year dropdown:', error);
+                    throw error;
+                }
             }
         }
     };
@@ -490,18 +539,14 @@ const Subject_Score_Record = () => {
     // }, [editingId])
 
     const handleEditRow = (id) => {
-        
-        console.log('in here',editingId,Assessment,id)
         if (editingId !== null) {
             setAssessment_proportion(Assessment[id].Assessment_proportion);
             setAssessment_name(Assessment[id].Assessment_name);}
             setEditingId(id === editingId ? null : id);
             if (id === editingId){
                 if (Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== ''){
-                    console.log("update")
                     updateAssessmentInfo(id);
                 } else if (Assessment[id].saved && (Assessment[id].Assessment_name !== '' || Assessment[id].Assessment_proportion !== '')) {
-                    console.log('nono')
                     setAssessment(
                         Assessment.map((row) =>
                         row.id === id ? { ...row, ['Assessment_proportion']: Assessment_proportion, ['Assessment_name']: Assessment_name } : row
@@ -509,8 +554,7 @@ const Subject_Score_Record = () => {
                     );
                     alert('กรุณากรอกข้อมูลให้ครบ')
                 } else if (!Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== '') {
-                    console.log('inssert')
-                    insertAssessmentInfo(id);
+                   insertAssessmentInfo(id);
                 } else {
                     if (id !== 0 && id !== 1){
                         Assessment.splice(id, 1);

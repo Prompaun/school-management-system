@@ -570,11 +570,11 @@ module.exports = function(connection) {
             on
                 subject.Subject_ID = grade.Subject_ID
             where
-                year = ?
+                year = ${year}
             and
-                Semester = ?
+                Semester = ${semester}
             and
-                Subject_Name = ?
+                Subject_Name = '${subject}'
             limit 1
         `;
         connection.query(sql,[year,semester,subject], (err, results) => {
@@ -821,7 +821,6 @@ module.exports = function(connection) {
             VALUES
                 ((SELECT Subject_ID FROM subject WHERE Subject_Name = ?), ?, ?, ?)
         `;
-        console.log(sql,term)
         connection.query(sql,[subject,year,semester,score], (err, results) => {
             if (err) {
                 console.error('Error querying full grade information:', err);
@@ -1052,7 +1051,7 @@ module.exports = function(connection) {
 
             res.status(200).json(results);
         });
-    });
+    }); 
 
     router.post('/get-assessment-name-by-teacher', (req, res) => {
         const { year,semester,subject } = req.body;
