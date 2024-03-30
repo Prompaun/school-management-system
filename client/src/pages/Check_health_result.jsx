@@ -280,6 +280,7 @@ function Check_health_result() {
                           </div>
                 
                 </div>
+                
             {/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
            
 
@@ -403,9 +404,10 @@ function Check_health_result() {
                       
                        
                       <div className="row">
+                           
                       
                             <div className="col">   
-                                
+                           
                                     <div className="card" style={{width:"auto",height:"auto",margin:"5px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'}}>
                                     {/* <div className="card-header"
                                           style={{
@@ -574,10 +576,9 @@ function Check_health_result() {
                                       </div>
                                       
                         </div>
-                       
-                    </div>
+                  
 
-                            
+                    </div>    
                    
                         
                 

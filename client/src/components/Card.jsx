@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Pagination from './Pagination';
 
 const Card = () => {
   async function News() {
@@ -56,6 +57,14 @@ const Card = () => {
     fetchData();
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 3;
+  const totalPageCount = Math.ceil(obj.length / postsPerPage);
+  const paginatedData = obj.slice(
+      (currentPage - 1) * postsPerPage,
+      currentPage * postsPerPage
+  );
+
   // Add this CSS className to your CSS file
 const linkText = {
   color: 'blue',
@@ -64,7 +73,7 @@ const linkText = {
 };
   return (
     <>
-      {obj.map((item, index) => (
+      {paginatedData.map((item, index) => (
         <div key={index} >
           <div className="row">
             <ul className="list-group shadow">
@@ -98,7 +107,17 @@ const linkText = {
             </ul>
           </div>
         </div>
+        
       ))}
+      <br />
+      <div className="d-flex justify-content-center">
+      <Pagination
+        totalPageCount={totalPageCount}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </div>
+      
     </>
   );
 }
