@@ -6,6 +6,7 @@ const path = require("path");
 const fs = require('fs');
 // get the client
 const mysql = require('mysql2');
+const RequestApi = require('./Request-api');
 
 const app = express();
 
@@ -47,6 +48,7 @@ const Personnel_api = require('./Pesonnel-api')(connection);
 // const Student_api = require('./Student-api')(connection);
 const PostNews_api = require('./Post-news-api')(connection);
 const RecruitmentPeriod_api = require('./Recruitment-period-api')(connection);
+const Request_api = require('./Request-api')(connection);
 const google_api = require('./google-api')();
 
 //use routes
@@ -54,6 +56,7 @@ app.use(Parent_api);
 app.use(Personnel_api);
 app.use(PostNews_api);
 app.use(RecruitmentPeriod_api);
+app.use(Request_api);
 app.use(google_api);
 // app.use(Personnel_api);
 // app.use(Student_api);

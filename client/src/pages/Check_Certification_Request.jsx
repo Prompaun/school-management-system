@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 // import Navbar from '../components/Navbar'
 import Header from '../components/Header';
+import axios from 'axios';
 const Check_Certification_Request = () => {
 
     const linkStyle = {
@@ -14,31 +15,121 @@ const Check_Certification_Request = () => {
         textDecoration: 'none'
       };
 
-    const [selectedOption, setSelectedOption] = useState('เลือกสถานะคำร้องขอใบรับรอง');
+    // const [selectedOption, setSelectedOption] = useState('เลือกสถานะคำร้องขอใบรับรอง');
+    const [selectedOption, setSelectedOption] = useState('รอดำเนินการ');
 
     const [data, setData] = useState([
-        
-            
-            { id :1,request_date: '27/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.1', note: 'ระบุคะแนนรายวิชา', status: 'กำลังดำเนินการ'},
-            { id :2,request_date: '28/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.7', note: '-', status: 'กำลังดำเนินการ'},
-            { id :3,request_date: '29/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.7', note: '-', status: 'ดำเนินการเสร็จสิ้น'},
+            // { id :1,request_date: '27/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.1', note: 'ระบุคะแนนรายวิชา', status: 'รอดำเนินการ'},
+            // { id :2,request_date: '28/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.7', note: '-', status: 'รอดำเนินการ'},
+            // { id :3,request_date: '29/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.7', note: '-', status: 'ดำเนินการเสร็จสิ้น'},
             // เพิ่มข้อมูลผลการเรียนตามต้องการ
            
        
         ]);
 
-        const filteredData = data.filter((item) => {
-            if (selectedOption !== 'ทั้งหมด'){
-                return item.status === selectedOption;
-             }
-            return true;
-              
-            });
+    const filteredData = data.filter((item) => {
+        if (selectedOption !== 'ทั้งหมด'){
+            return item.status === selectedOption;
+            }
+        return true;
+            
+        });
 
+    function formatDateThaiYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear() + 543; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+        const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+        return formattedDOB;
+        }
+
+    async function getAllRequests() {
+        try {
+            const response = await axios.get('http://localhost:8080/get-all-requests');
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching all requests:', error);
+            throw error;
+        }
+    }
+
+    async function getRequestsByStatus(status) {
+        try {
+            const response = await axios.get(`http://localhost:8080/get-requests/${status}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching requests:', error);
+            throw error;
+        }
+    }
+
+    async function updateRequest(requestId, requestData) {
+        try {
+            const response = await axios.put(`http://localhost:8080/update-request/${requestId}`, requestData);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating request:', error);
+            throw error;
+        }
+    }
+
+    function convertDate(dateString) {
+        // แยกส่วนของวันที่โดยใช้ '/' เป็นตัวแยก
+        const parts = dateString.split('/');
+        
+        // กำหนดค่าวันที่ใหม่โดยใช้ส่วนของวันที่ที่แยกไว้แล้ว
+        const newDate = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+    
+        // ใช้ฟังก์ชัน toLocaleDateString() เพื่อแปลงวันที่ใหม่เป็นรูปแบบวันที่ท้องถิ่น
+        const formattedDate = newDate.toLocaleDateString('en-US');
+        
+        return formattedDate;
+    }
+    
     useEffect(() => {
         // ตั้งค่าค่าเริ่มต้นของ dropdown เมื่อหน้าจอถูก refresh
-        setSelectedOption('ทั้งหมด');
-    }, []); // ใช้ [] เพื่อให้ useEffect ทำงานเพียงครั้งเดียวหลังจากการ render แรก
+        // setSelectedOption('รอดำเนินการ');
+        if (selectedOption === 'ทั้งหมด'){
+            async function fetchRequests() {
+                try {
+                    const Requestsdata = await getAllRequests(selectedOption);
+                    const mappedRequestsdata = Requestsdata.map(item => ({
+                        id: item.Request_No,
+                        request_date: formatDateThaiYear(item.Request_Date),
+                        request_number: item.Request_No,
+                        certificate_type: item.Request_type,
+                        note: item.Request_detail,
+                        status: item.Request_status
+                    }));
+                    setData(mappedRequestsdata);
+                } catch (error) {
+                    console.error('Error fetching requests:', error);
+                }
+            }
+            fetchRequests(); 
+        }
+        else{
+            async function fetchRequests() {
+                try {
+                    const Requestsdata = await getRequestsByStatus(selectedOption);
+                    const mappedRequestsdata = Requestsdata.map(item => ({
+                        id: item.Request_No,
+                        request_date: formatDateThaiYear(item.Request_Date),
+                        request_number: item.Request_No,
+                        certificate_type: item.Request_type,
+                        note: item.Request_detail,
+                        status: item.Request_status
+                    }));
+                    setData(mappedRequestsdata);
+                } catch (error) {
+                    console.error('Error fetching requests:', error);
+                }
+            }
+            fetchRequests(); 
+        }
+    }, [selectedOption]); // ใช้ [] เพื่อให้ useEffect ทำงานเพียงครั้งเดียวหลังจากการ render แรก
+    
 
 
     const handleSelectChange = (event) => {
@@ -47,9 +138,17 @@ const Check_Certification_Request = () => {
 
       const [editingId, setEditingId] = useState(null);
       
-      const handleEditRow = (id) => {
+      const handleEditRow = async (id) => {
           setEditingId(id === editingId ? null : id);
-  
+          if (editingId === id) {
+            const selectedItem = data.find((item) => item.id === id);
+            console.log(selectedItem);
+            const requestData = {
+                Request_status: selectedItem.status
+            };
+            
+            updateRequest(id, requestData);
+        }
       };
       
       const handleChange = (id, field, value) => {
@@ -80,7 +179,7 @@ const Check_Certification_Request = () => {
                                 <option value="ทั้งหมด">ทั้งหมด</option>
                                 {/* <option value="รอดำเนินการ">รอดำเนินการ</option> */}
                                 <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
-                                <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                                <option value="รอดำเนินการ">รอดำเนินการ</option>
                             </select>
                         </div>
                         </div>
@@ -127,7 +226,7 @@ const Check_Certification_Request = () => {
                                                     onChange={(e) => handleChange(request.id, 'status', e.target.value)}
                                                     className="custom-select">
                                                     <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
-                                                    <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                                                    <option value="รอดำเนินการ">รอดำเนินการ</option>
                                                 </select>
                                             </div>
                                              ) : (
