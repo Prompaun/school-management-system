@@ -84,8 +84,7 @@ const google = () => {
             {/* <Navbar/> */}
             <Header header="ระบบบริการข้อมูล" subhead="สำหรับผู้ปกครอง"/>
 
-            {/* เพิ่มฟอร์มการลงทะเบียน */}
-            {/* <div class="list-group"> */}
+           
         <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif',height: '100vh'}}>
             <div className="container">
             <div className="card mx-auto mt-3" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)' ,maxWidth: '90%'}} >
@@ -93,14 +92,14 @@ const google = () => {
                 <div style={{ display: 'flex', flexWrap: 'wrap',gap:"10px"}}>
                     
                     <img src={school_logo} alt="Register Image" width="100" height="100" />
-                    {/* <h2 className="ms-3 mb-0">โรงเรียนฤทธิยะวรรณาลัย (ประถม)</h2> */}
+                   
                 
                 <div className="d-flex align-items-center" >
                     <h2 className="col-sm d-flex align-items-center">โรงเรียนฤทธิยะวรรณาลัย (ประถม)</h2>
                 </div>
             </div>
             <br></br>
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}>
             
                         <div className="mb-3 d-flex" >
                             <div className="d-flex align-items-center">
@@ -163,30 +162,30 @@ const google = () => {
                                     />
                                 </button>
                             </div>
-                            
-                           <br />
+                             */}
+                           {/* <br /> */}
                            
-                                    <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link>
+                                    {/* <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link> */}
                                
-                                    <Link to="/Parent_menu">
+                                    {/* <Link to="/Parent_menu">
                                         <button type="submit" className="btn btn-primary float-end" style={{fontFamily: 'Kanit, sans-serif', fontSize: '16px'}}>Log in</button>
-                                    </Link>
-                               <br />
+                                    </Link> */}
+                               {/* <br />
                                <br />
                                <div className="d-flex justify-content-center" style={{flexWrap:"wrap",fontSize:"16px"}}>
                                         <span className="d-flex align-items-center">หรือ </span>
                                     
-                               </div>
-                               <div className="d-flex justify-content-center" style={{flexWrap:"wrap",fontSize:"16px",marginTop:"10px"}}>
+                               </div> */}
+                               <div className="d-flex justify-content-center" style={{flexWrap:"wrap"}}>
                                <button className="google_btn" onClick={google} >
                                         <img src={GoogleIMG} alt="google icon" />
-                                        <span>เข้าสู่ระบบด้วย Google</span>
+                                        <span style={{fontSize:"20px"}}>เข้าสู่ระบบด้วย Google</span>
                                     </button>
                                     
                                </div>
                                
                           
-                        </form>
+                        {/* </form> */}
                     </div>
                 </div>
             </div>

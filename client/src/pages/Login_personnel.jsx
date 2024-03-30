@@ -71,9 +71,9 @@ const Login_personnel = () => {
                 </div>
             </div>
             <br></br>
-            <form onSubmit={handleSubmit}>
+            {/* <form onSubmit={handleSubmit}> */}
             
-                        <div className="mb-3 d-flex" >
+                        {/* <div className="mb-3 d-flex" >
                             <div className="d-flex align-items-center">
                                     <label>
                                         <span htmlFor="email" className="col-form-label me-3"style={{ marginRight: '10px',marginLeft: '0px', fontSize: '16px' }}>อีเมล :  </span>
@@ -137,26 +137,25 @@ const Login_personnel = () => {
                             
                            <br />
                            
-                                    <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link>
+                                    <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link> */}
                                
                                     <Link to="/Personnel_menu">
                                         <button type="submit" className="btn btn-primary float-end" style={{fontFamily: 'Kanit, sans-serif', fontSize: '16px'}}>Log in</button>
                                     </Link>
-                                    <br />
-                               <br />
+                                    {/* <br />
+                               <br /> */}
                                {/* <div className="d-flex justify-content-center" style={{flexWrap:"wrap",fontSize:"16px"}}>
                                         <span className="d-flex align-items-center">หรือเข้าสู่ระบบด้วย </span>
                                     
                                </div> */}
-                               {/* <div className="d-flex justify-content-center" style={{flexWrap:"wrap",fontSize:"16px",marginTop:"10px"}}>
-                               <button className="google_btn" onClick={googleAuth} > 
-                                    
+                               <div className="d-flex justify-content-center" style={{flexWrap:"wrap"}}>
+                               <button className="google_btn" onClick={google} >
                                         <img src={GoogleIMG} alt="google icon" />
-                                        <span>Sign in with Google</span>
+                                        <span style={{fontSize:"20px"}}>เข้าสู่ระบบด้วย Google</span>
                                     </button>
                                     
-                               </div> */}
-                        </form>
+                               </div>
+                        {/* </form> */}
                     </div>
                 </div>
             </div>

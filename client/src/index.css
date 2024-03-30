@@ -632,15 +632,17 @@ body{
 
 
 .google_btn {
-  width: 230px;
-  height: 40px;
-  border-radius: 5px;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+
+  border-radius: 10px;
   border: none;
   outline: none;
   background-color: white;
-  box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
-  font-size: 16px;
-  font-weight: 500;
+  box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 20%) 0px 2px 2px 0px, rgb(0 0 0 / 30%) 0px 1px 5px 0px;
+  /* font-size: 16px; */
+  /* font-weight: 500; */
   margin: 0 0 20px 0;
   color: #2c444e;
   cursor: pointer;
@@ -651,14 +653,15 @@ body{
 }
 
 .google_btn > img{
-  width: 30px;
-  height: 30px;
+  width:50px;
+  height: 50px;
   object-fit: cover;
+  margin: 10px;
 }
 
-.google_btn > span{
+/* .google_btn > span{
   margin-left: 10px;
-}
+} */
 
 .avatar {
   width: 32px;
