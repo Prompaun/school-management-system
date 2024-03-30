@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link} from 'react-router-dom'
+import { Link, useLocation} from 'react-router-dom'
 import Header from '../components/Header';
 import axios from 'axios';
 
@@ -14,6 +14,10 @@ const Checkgrade = () => {
     textDecoration: 'none'
   };
 
+  const location = useLocation();
+  const SearchParams = new URLSearchParams(location.search);
+  const studentID_param = SearchParams.get("id");
+  
   async function getYearSemestersByStudentId(studentId) {
     try {
         const response = await axios.get('http://localhost:8080/get-year-semesters-by-student-id', {
@@ -75,6 +79,7 @@ const Checkgrade = () => {
 
   // const [StudentData, setStudentData] = useState([]);
   // const [selectedStudent, setSelectedStudent] = useState("");
+  const [StudentID_login, setStudentID_login] = useState("");
   const [selectedStudent_ID, setSelectedStudent_ID] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   // const [Semesters, setSemesters] = useState([]);
@@ -88,9 +93,16 @@ const Checkgrade = () => {
   const [YearData, setYearData] = useState(initialState);
 
   useEffect(() => {
+    if (location.state && location.state.studentId) {
+        const studentId = location.state.studentId;
+        // setstudentID_param(new URLSearchParams(location.search).get('studentID'));
+        setStudentID_login(studentId);
+        console.log('studentId',location);
+    }
+
     const fetchData = async () => {
         try {
-              const yearSemesters = await getYearSemestersByStudentId("ID1");
+              const yearSemesters = await getYearSemestersByStudentId(studentID_param);
               console.log('yearSemesters:', yearSemesters);
 
               // หา Year และ Semester ที่มีค่ามากที่สุด
@@ -100,12 +112,12 @@ const Checkgrade = () => {
                   maxYear = Math.max(maxYear, parseInt(Year));
               });
 
-              const getSemester = await getSemesterByStudentId("ID1", maxYear);
+              const getSemester = await getSemesterByStudentId(studentID_param, maxYear);
               // console.log('getSemester:', getSemester);
               const maxSemester = Math.max(...getSemester.map(sem => parseInt(sem)));
               console.log('getSemester:', getSemester);
               console.log('maxSemester:', maxSemester);
-              const gradeInfo = await getGradeInfo("ID1", maxYear, maxSemester);
+              const gradeInfo = await getGradeInfo(studentID_param, maxYear, maxSemester);
               const mappedGradeInfo = gradeInfo.map(item => ({
                 id: item.Subject_ID,
                 name: item.Subject_Name,
@@ -124,8 +136,8 @@ const Checkgrade = () => {
               setTableHeader(`ปีการศึกษา ${maxYear} ภาคการศึกษาที่ ${maxSemester}`);
               setSelectedYear(maxYear);
               setSelectedSemester(maxSemester);
-              const years = await getYearByStudentId("ID1");
-              // const semesters = await getSemesterByStudentId("ID1", maxYear);
+              const years = await getYearByStudentId(studentID_param);
+              // const semesters = await getSemesterByStudentId(studentID_param, maxYear);
 
               // setYearData({
               //     Year: years.map(year => year.toString()).sort(),
@@ -149,7 +161,7 @@ useEffect(() => {
     if (selectedYear) {
       console.log('useEffect No.3');
       try {
-        const semesters = await getSemesterByStudentId("ID1", selectedYear);
+        const semesters = await getSemesterByStudentId(studentID_param, selectedYear);
         // setSemesters(semesters);
         setYearData(prevState => ({
           ...prevState,
@@ -176,7 +188,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         
-        const gradeInfo = await getGradeInfo("ID1", selectedYear, selectedSemester);
+        const gradeInfo = await getGradeInfo(studentID_param, selectedYear, selectedSemester);
         console.log('Grade info:', gradeInfo);
         const mappedGradeInfo = gradeInfo.map(item => ({
           id: item.Subject_ID,

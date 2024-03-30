@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import Card_menu_student from '../components/Card_menu_student';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logoImage from '../images/IMG_5416.png';
 import Header from '../components/Header';
 
@@ -10,6 +10,17 @@ function Student_menu() {
     color: 'gray',
     textDecoration: 'none'
   };
+
+  const location = useLocation();
+  const [StudentID_login, setStudentID_login] = useState("");
+
+  useEffect(() => {
+    if (location.state && location.state.studentId) {
+      const studentId = location.state.studentId;
+      setStudentID_login(studentId);
+      // console.log('studentId',studentId);
+  }
+}, []);
   
       return (
         <>
@@ -39,7 +50,7 @@ function Student_menu() {
       </div>
       <br></br>
       <br></br>
-      <Card_menu_student /> 
+      <Card_menu_student studentID_prop={StudentID_login}/> 
       <br></br>
       <br></br>
 
