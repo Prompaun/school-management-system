@@ -239,7 +239,12 @@ const Student_List_Information = () => {
                                                     </td> */}
 
                                                     <td >
-                                                        <Link to="/Health_info" className="d-flex justify-content-center" style={{ textDecoration: 'none' }}>
+                                                        {/* <Link to="/Health_info" className="d-flex justify-content-center" style={{ textDecoration: 'none' }}> */}
+                                                        <Link 
+                                                            to={ `/Health_info?id=${subject.Student_ID}&name=${subject.NameTitle}${subject.FirstName} ${subject.LastName}`}
+                                                            className="d-flex justify-content-center" 
+                                                            style={{ textDecoration: 'none' }}
+                                                        >
                                                         <i
                                                             className="fs-5 bi-search"
                                                             style={{
