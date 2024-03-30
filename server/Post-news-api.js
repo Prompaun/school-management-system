@@ -4,19 +4,20 @@ const router = express.Router();
 module.exports = function(connection) {
     router.get('/get-news', (req, res) => {
         const sql = `
-            SELECT topic, content, link, date
+            SELECT id, topic, content, link, date
             FROM Information_data
+            ORDER BY date DESC
         `;
-
+    
         connection.query(sql, (err, results) => {
             if (err) {
                 console.error('Error querying get news:', err);
                 return res.status(500).json({ error: 'Failed to retrieve news' });
             }
-            // res.status(200).json(results);
             return res.status(200).json(results);
         });
     });
+    
 
     router.get('/get-post-news', (req, res) => {
         const sql = `

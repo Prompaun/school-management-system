@@ -80,7 +80,7 @@ function PostNews() {
 
   async function getPostNews() {
     try {
-        const response = await axios.get('http://localhost:8080/get-post-news');
+        const response = await axios.get('http://localhost:8080/get-news');
         return response.data;
       } catch (error) {
           console.error('Error fetching news:', error);
