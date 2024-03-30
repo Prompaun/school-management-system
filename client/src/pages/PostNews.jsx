@@ -104,22 +104,36 @@ function PostNews() {
       }
     }
 
-  async function deletePost(postId) {
-    try {
-        const response = await fetch(`http://localhost:8080/delete-post/${postId}`, {
-            method: 'DELETE'
-        });
+  // async function deletePost(postId) {
+  //   try {
+  //       const response = await fetch(`http://localhost:8080/delete-post/${postId}`, {
+  //           method: 'DELETE'
+  //       });
 
-        if (!response.ok) {
-            throw new Error('Failed to delete post');
-        }
+  //       if (!response.ok) {
+  //           throw new Error('Failed to delete post');
+  //       }
 
-          const data = await response.json();
-          console.log(data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
-        } catch (error) {
-            console.error('Error deleting post:', error);
-        }
+  //         const data = await response.json();
+  //         console.log(data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+  //       } catch (error) {
+  //           console.error('Error deleting post:', error);
+  //       }
+  //     }
+    async function deletePost(postId) {
+      try {
+          const response = await axios.delete(`http://localhost:8080/delete-post/${postId}`);
+  
+          if (!response.status === 200) {
+              throw new Error('Failed to delete post');
+          }
+  
+          console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+      } catch (error) {
+          console.error('Error deleting post:', error);
       }
+    }
+    
 
     async function updatePost(postId, updatedData) {
       try {
