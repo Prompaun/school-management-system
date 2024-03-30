@@ -116,10 +116,9 @@ const Subject_Score_Record = () => {
                     semester : selectedSemester,
                     subject : selectedSubject
                 });
-
                 newAssessmentInfo.splice(0);
-                newAssessmentInfo[0] = {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: midFinal.data[0].Full_score_mid}
-                newAssessmentInfo[1] = {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: midFinal.data[0].Full_score_final}
+                newAssessmentInfo[0] = {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: midFinal.data[0].Full_score_mid,id: 0,saved: true}
+                newAssessmentInfo[1] = {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: midFinal.data[0].Full_score_final,id: 1,saved: true}
                 try {
                     const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
                         year : selectedYear,
@@ -553,29 +552,22 @@ const Subject_Score_Record = () => {
                     }
                     alert('กรุณากรอกข้อมูลให้ครบ')
                 }
+            } else {
+                getAssessmentInfo()
             }
         
     };
       
     const handleChange = (id, field, value) => {
-    
-    // if (value !== ''){
-        setAssessment(
-            Assessment.map((row) =>
-            row.id === id ? { ...row, [field]: value } : row
-            )
-        );
-    // }
-    // else{
-    //     if (value !== ''){
-    //         setAssessment(
-    //             Assessment.map((row) =>
-    //             row.id === id ? { ...row, [field]: Assessment_proportion } : row
-    //             )
-    //         );
-    //     }
-    // }
-    
+        if ((id === 0 || id === 1) && field === 'Assessment_name') {
+            alert('แก้ไขข้อมูลในช่องนี้ไม่ได้')
+        } else {
+            setAssessment(
+                Assessment.map((row) =>
+                row.id === id ? { ...row, [field]: value } : row
+                )
+            );
+        }
     };
 
     const handleDeleteRow = (id) => {
