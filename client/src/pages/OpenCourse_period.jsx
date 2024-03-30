@@ -139,13 +139,13 @@ function OpenCourse_period() {
     };
     
       async function getRecruitmentPeriod() {
-      try {
-          const response = await axios.get('http://localhost:8080/get-recruitment-period');
-          return response.data;
-        } catch (error) {
-            console.error('Error fetching Recruitment Period:', error);
-            throw error;
-        }
+        try {
+            const response = await axios.get('http://localhost:8080/get-recruitment-period');
+            return response.data;
+          } catch (error) {
+              console.error('Error fetching Recruitment Period:', error);
+              throw error;
+          }
       };
 
       async function updateRecruitmentPeriod (id, updatedData) {
