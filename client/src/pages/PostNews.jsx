@@ -4,6 +4,9 @@ import { Link ,useNavigate} from 'react-router-dom';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import Modal_loading from '../components/Modal_loading';
 import Modal_success from '../components/Modal_success';
+import Modal_confirm from '../components/Modal_confirm';
+import { Button, Modal,Spinner } from 'react-bootstrap';
+
 import axios from 'axios';
 function PostNews() {
   const fontStyle = {
@@ -31,7 +34,8 @@ function PostNews() {
 
   const handleSubmitform = async (event) => {
     if (CheckInputData()) {
-        // setShowLoadingModal(true);
+        setshowConfirmModal(false);
+        setShowLoadingModal(true);
         if (Newstitle !== '' && NewsContent !== ''){
           const currentDate = new Date(); // สร้างวันที่และเวลาปัจจุบัน
           const formattedDate = currentDate.toISOString().split('T')[0]; // แปลงเป็น ISO 8601 และดึงวันที่ออกมา
@@ -48,11 +52,19 @@ function PostNews() {
                 link: item.link
             }));
             setNewsData(mappedPostNews);
-            setShowSuccessModal(true);
+            setShowLoadingModal(false);
+            
         } catch (error) {
             console.error('Error fetching news:', error);
         }
+        // setShowLoadingModal(false);
+
+        setShowSuccessModal(true);
+        setNewstitle("");
+        setNewsContent("");
+        setNewsURL("");
     }
+   
     return true;
 };
 
@@ -244,11 +256,57 @@ const handleEditRow = async (id) => {
     deletePost(id);
     setNewsData(NewsData.filter((row) => row.id !== id));
   };
+  const handleCloseModal = () => {
+    setshowConfirmModal(false);
+  }
+  const [showConfirmModal, setshowConfirmModal] = useState(false);
+
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   return (
     <>
+      {showConfirmModal && (
+          
+          <Modal
+              show={showConfirmModal}
+              onHide={handleCloseModal}
+              backdrop="static"
+              keyboard={false}
+              size="sm"
+              centered
+              style={{ fontFamily: 'Kanit, sans-serif' }}
+              >
+              <Modal.Body className="text-center p-lg-4" >
+                  
+                
+                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะโพสต์ข่าวประชาสัมพันธ์ใช่หรือไม่</p>
+             
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px" }}
+                    className="btn-success btn-same-size"
+                    onClick={() => {
+                      handleSubmitform();
+                      handleCloseModal();
+                    }}
+                  >
+                    OK
+                  </Button>
+                  <br />
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px",marginTop:"10px"}}
+                    className="btn-secondary btn-same-size"
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </Button>
 
+                  {/* </Link> */}
+              </Modal.Body>
+              </Modal>
+
+        )}    
     {showLoadingModal && (
           <Modal_loading show={showLoadingModal} setShow={setShowLoadingModal} />
     )}
@@ -256,7 +314,7 @@ const handleEditRow = async (id) => {
           <Modal_success 
           show={showSuccessModal} 
           setShow={setShowSuccessModal} 
-          link="/" 
+          // link="/" 
           text="ระบบได้โพสต์ข่าวประชาสัมพันธ์แล้ว"
           />
         )}
@@ -349,7 +407,7 @@ const handleEditRow = async (id) => {
                               width:"100%"
 
                               }}
-                            onClick={handleSubmitform}
+                            onClick={() => setshowConfirmModal(true)}
                           >
                               <span>โพสต์ข่าวสาร</span>
                           </button>

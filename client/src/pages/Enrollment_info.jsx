@@ -1516,10 +1516,11 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             console.log('User photo URL is not available.');
         }
         console.log("formatDate(Student_DateOfBirth)",formatDate(Student_DateOfBirth))
+        // setShowLoadingModal(true);
         if (checkInputParent()) {
-            const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
+            // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
             setShowLoadingModal(true);
-            if (confirmSubmit) {
+            // if (confirmSubmit) {
                 
                 try {
                     await handleSubmit(
@@ -1614,22 +1615,67 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                   } catch (error) {
                       console.error('Error handling button click:', error);
                   }
-                }
+                
                 setShowLoadingModal(false);
                 setShowSuccessModal(true);
             }
             // setShowLoadingModal(false);
             // setShowSuccessModal(true);      
         };
+        const [showConfirmModal, setshowConfirmModal] = useState(false);
 
         const [showLoadingModal, setShowLoadingModal] = useState(false);
         const [showSuccessModal, setShowSuccessModal] = useState(false);
         
-
+        const handleCloseModal = () => {
+            setshowConfirmModal(false);
+          }
        
 return (
         <>
         {/* {loading && (<div>loading...</div>)} */}
+        {showConfirmModal && (
+          
+          <Modal
+              show={showConfirmModal}
+              onHide={handleCloseModal}
+              backdrop="static"
+              keyboard={false}
+              size="sm"
+              centered
+              style={{ fontFamily: 'Kanit, sans-serif' }}
+              >
+              <Modal.Body className="text-center p-lg-4" >
+                  
+                
+                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะสมัครหลักสูตรทั่วไปใช่หรือไม่</p>
+             
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px" }}
+                    className="btn-success btn-same-size"
+                    onClick={() => {
+                    handleButtonClick();
+                      handleCloseModal();
+                    }}
+                  >
+                    OK
+                  </Button>
+                  <br />
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px",marginTop:"10px"}}
+                    className="btn-secondary btn-same-size"
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </Button>
+
+                  {/* </Link> */}
+              </Modal.Body>
+              </Modal>
+
+        )}    
     {showLoadingModal && (
           <Modal_loading show={showLoadingModal} setShow={setShowLoadingModal} />
     )}
@@ -2552,7 +2598,7 @@ return (
 
               <div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <button type="button" onClick={handleButtonClick} className="btn btn-primary" 
+                      <button type="button" onClick={() => setshowConfirmModal(true)} className="btn btn-primary" 
                       style={{ ...fontStyle, color: 'white', fontSize: '16px' }}>
                         ส่งข้อมูล
                       </button>

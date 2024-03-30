@@ -88,6 +88,7 @@ function Request_cert() {
       const handleSubmitform = async () => {
         // setShowLoadingModal(true);
         if(checkInputForm()) {
+          // setshowConfirmModal(false)
           setShowLoadingModal(true);
           if (selectedStudent !== ''){
             // แยกค่า StudentID โดยใช้ split เพื่อแยกสตริงด้วยช่องว่างและเลือกค่าตัวแรก
@@ -152,7 +153,7 @@ function Request_cert() {
             
           }
           setShowLoadingModal(false);
-            setShowSuccessModal(true);
+          setShowSuccessModal(true);
         }
         
 
@@ -341,11 +342,56 @@ function Request_cert() {
         
       }, [CheckRequestTranscript]);
 
+      const [showConfirmModal, setshowConfirmModal] = useState(false);
       const [showLoadingModal, setShowLoadingModal] = useState(false);
       const [showSuccessModal, setShowSuccessModal] = useState(false);
-
+      const handleCloseModal = () => {
+        setshowConfirmModal(false);
+      }
       return (
         <>
+      {showConfirmModal && (
+          
+          <Modal
+              show={showConfirmModal}
+              onHide={handleCloseModal}
+              backdrop="static"
+              keyboard={false}
+              size="sm"
+              centered
+              style={{ fontFamily: 'Kanit, sans-serif' }}
+              >
+              <Modal.Body className="text-center p-lg-4" >
+                  
+                
+                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะยื่นคำร้องขอใบรับรองใช่หรือไม่</p>
+             
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px" }}
+                    className="btn-success btn-same-size"
+                    onClick={() => {
+                      handleSubmitform();
+                      handleCloseModal();
+                    }}
+                  >
+                    OK
+                  </Button>
+                  <br />
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px",marginTop:"10px"}}
+                    className="btn-secondary btn-same-size"
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </Button>
+
+                  {/* </Link> */}
+              </Modal.Body>
+              </Modal>
+
+        )} 
       {showLoadingModal && (
           <Modal_loading show={showLoadingModal} setShow={setShowLoadingModal} />
         )}
@@ -473,7 +519,7 @@ function Request_cert() {
                 </div>
                     {/* <Link to="/Request_cert">  */}
                     {/* /Parent_menu */}
-                    <button type="submit" onClick={handleSubmitform} class="btn btn-primary float-end" style={{ textAlign: 'right' }}>
+                    <button type="submit" onClick={() => setshowConfirmModal(true)} class="btn btn-primary float-end" style={{ textAlign: 'right' }}>
                       <span>Submit</span>
                     </button>
                     {/* </Link> */}

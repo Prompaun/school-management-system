@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import { Dropdown, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import Modal_confirm from '../components/Modal_confirm';
 
 // import Modal_subject from "../components/Modal_subject";
 const Subject_Score_Record = () => {
@@ -535,6 +536,7 @@ const Subject_Score_Record = () => {
             setAssessment_name(Assessment[id].Assessment_name);}
             setEditingId(id === editingId ? null : id);
             if (id === editingId){
+                setShowModalConfirm(true);
                 if (Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== ''){
                     updateAssessmentInfo(id);
                 } else if (Assessment[id].saved && (Assessment[id].Assessment_name !== '' || Assessment[id].Assessment_proportion !== '')) {
@@ -552,7 +554,12 @@ const Subject_Score_Record = () => {
                     }
                     alert('กรุณากรอกข้อมูลให้ครบ')
                 }
+                // setShowModalConfirm(true);
             } else {
+                // console.log(ShowModalConfirm, "ShowModalConfirm1")
+
+                // setShowModalConfirm(true);
+                // console.log(ShowModalConfirm, "ShowModalConfirm2")
                 getAssessmentInfo()
             }
         
@@ -622,11 +629,14 @@ const Subject_Score_Record = () => {
     const [editingIdScore, setEditingIdScore] = useState(null);
     const handleEditRowScore = (id) => {
         setEditingIdScore(id === editingIdScore ? null : id);
+        // setShowModalConfirm(true);
         if (editingIdScore !== null) {
+           
             Object.keys(StudentScore[id].scores).forEach(element => {
                 updateAssessmentScore(element,StudentScore[id].scores[element],id)
             })
         }
+     
         getStudentInfo()
       };
       
@@ -645,8 +655,17 @@ const Subject_Score_Record = () => {
     //     setAssessment([...StudentScore, { id: StudentScore.length + 1, Assessment_name: '', Assessmant_propotion: '' }]);
     //   };
 
+    const [ShowModalConfirm,setShowModalConfirm] = useState(false);
     return (
         <>
+         {ShowModalConfirm && (
+            <Modal_confirm 
+            show={ShowModalConfirm} 
+            setShow={setShowModalConfirm} 
+            // link="/Parent_menu" 
+            text="ระบบได้ทำการบันทึกเรียบร้อยแล้ว"
+            />
+         )}
            
             <Header header="ระบบจัดการข้อมูลการศึกษา" subhead="บันทึกคะแนนรายวิชา" />  
              <div style={{height:"150vh",fontFamily:"Kanit, sans-serif"}}>
@@ -747,11 +766,11 @@ const Subject_Score_Record = () => {
                                         </div>
                                         
                                     </div>
-                                    {ShowAssessment &&(
+                                    {/* {ShowAssessment &&(
                                     <button type="submit" className="btn btn-primary float-end" style={{ ...fontStyle, color: 'white', fontSize: '16px', textAlign: 'center' }}>
                                         <span>บันทึก</span>
                                     </button>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                        
@@ -891,17 +910,25 @@ const Subject_Score_Record = () => {
                                      </div>
                                     
                                     </div>
-                                    {ShowStudentScore &&(
+                                    {/* {ShowStudentScore &&(
                                     <button type="submit" className="btn btn-primary float-end" style={{ ...fontStyle, color: 'white', fontSize: '16px', textAlign: 'center'}}>
                                         <span>บันทึก</span>
                                     </button>
-                                    )}
+                                    )} */}
                                     </div>
                                 
                             </div>
                             {ShowStudentScore &&(
                             <div className="container align-items-center">
-                           
+                                {StudentScore.length===0 ? (
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontSize: '20px', justifyContent: 'center', alignItems: 'center' }}>
+                        
+                                    <span style={{ color: 'gray', textAlign: 'center' }}>ไม่พบข้อมูล</span>
+                                  <br />
+                                </div>
+
+                                ) : ( 
+                                <>
                             <div className="d-flex justify-content-center" style={{ height: 'auto', overflowY: 'auto' }}>
                             <div className="table-responsive">
                             <table className="table table-bordered table-hover table-striped" style={{ borderCollapse: 'collapse', textAlign: 'center',fontFamily: 'Kanit, sans-serif' }}>
@@ -953,6 +980,10 @@ const Subject_Score_Record = () => {
                                 <br />
                             </div>
                         </div>
+                        </>
+                                )}
+                           
+                            
                         </div>
                        )}
                             </>
