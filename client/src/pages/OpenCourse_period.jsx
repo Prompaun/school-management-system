@@ -86,6 +86,8 @@ function OpenCourse_period() {
                   DateEnd: formatDateThaiYear(item.end_date)
               }));
               setCourseData(mappedCourseData);
+              setSelectedCourse('ทั้งหมด');
+              // setDateRange(['', '']);
           //   navigate("/");
               // setShowLoadingModal(true);
               // setShowSuccessModal(true);
