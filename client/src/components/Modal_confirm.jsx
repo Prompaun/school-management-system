@@ -19,12 +19,12 @@ function Modal_confirm({show,setShow,text}) {
     >
     <Modal.Body className="text-center p-lg-4">
         <h4 className="text-success mt-3" style={{ fontSize: '30px'}}>
-            Complete!
+            COMPLETE
         </h4>
         {/* ระบบได้รับข้อมูลการสมัครของท่านแล้ว */}
         <p className="mt-3"style={{ fontSize: '22px' }}>{text}</p>
         {/* <Link to= {link}> */}
-        <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success" onClick={handleClose}>
+        <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleClose}>
         Ok
         </Button>
 

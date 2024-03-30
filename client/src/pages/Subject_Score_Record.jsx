@@ -536,7 +536,7 @@ const Subject_Score_Record = () => {
             setAssessment_name(Assessment[id].Assessment_name);}
             setEditingId(id === editingId ? null : id);
             if (id === editingId){
-                setShowModalConfirm(true);
+                setShowModalSuccess(true);
                 if (Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== ''){
                     updateAssessmentInfo(id);
                 } else if (Assessment[id].saved && (Assessment[id].Assessment_name !== '' || Assessment[id].Assessment_proportion !== '')) {
@@ -561,6 +561,9 @@ const Subject_Score_Record = () => {
                 // setShowModalConfirm(true);
                 // console.log(ShowModalConfirm, "ShowModalConfirm2")
                 getAssessmentInfo()
+                setSelectedClassYear("เลือกชั้นปี");
+                setSelectedRoom("เลือกห้อง");
+
             }
         
     };
@@ -579,6 +582,10 @@ const Subject_Score_Record = () => {
 
     const handleDeleteRow = (id) => {
         deleteAssessmentInfo(id)
+        setSelectedClassYear("เลือกชั้นปี");
+        setSelectedRoom("เลือกห้อง");
+
+
     };
     const handleAddRow = () => {
         setAssessment([...Assessment, { id: Assessment.length, Assessment_name: '', Assessment_proportion: '', saved: false }]);
@@ -656,12 +663,14 @@ const Subject_Score_Record = () => {
     //   };
 
     const [ShowModalConfirm,setShowModalConfirm] = useState(false);
+    const [ShowModalSuccess,setShowModalSuccess] = useState(false);
+
     return (
         <>
-         {ShowModalConfirm && (
+         {ShowModalSuccess && (
             <Modal_confirm 
-            show={ShowModalConfirm} 
-            setShow={setShowModalConfirm} 
+            show={ShowModalSuccess} 
+            setShow={setShowModalSuccess} 
             // link="/Parent_menu" 
             text="ระบบได้ทำการบันทึกเรียบร้อยแล้ว"
             />

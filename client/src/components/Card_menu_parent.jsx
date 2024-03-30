@@ -9,8 +9,8 @@ import check_status_enroll from "../images/check_status_enroll.png"
 
 function Card_menu_parent() {
   const [ClassifyRole,setClassifyRole] = useState([
-    {Email:"NewParent@gmail.com",Role:"NewParent"},
-    // {Email:"Parent@gmail.com",Role:"Parent"},
+    // {Email:"NewParent@gmail.com",Role:"NewParent"},
+    {Email:"Parent@gmail.com",Role:"Parent"},
 
   ])
     const [obj, setObj] = useState([
