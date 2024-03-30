@@ -58,7 +58,7 @@ const Card = () => {
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 3;
+  const postsPerPage = 5;
   const totalPageCount = Math.ceil(obj.length / postsPerPage);
   const paginatedData = obj.slice(
       (currentPage - 1) * postsPerPage,

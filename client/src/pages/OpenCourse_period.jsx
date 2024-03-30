@@ -4,6 +4,10 @@ import { Link ,useNavigate} from 'react-router-dom';
 import DateRangePicker_period from '../components/DateRangePicker_period';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import axios from 'axios';
+import Modal_loading from '../components/Modal_loading';
+import Modal_success from '../components/Modal_success';
+import Modal_confirm from '../components/Modal_confirm';
+import { Button, Modal,Spinner } from 'react-bootstrap';
 
 function OpenCourse_period() {
   const fontStyle = {
@@ -11,13 +15,24 @@ function OpenCourse_period() {
     textDecoration: 'none'
   };
     const [selectedCourse, setSelectedCourse] = useState('ทั้งหมด');
+    const [DateRange,setDateRange] =useState(["", ""]);
+    
+    const handleDateRangeChange = ([start, end]) => {
+      
+      setDateRange([start, end]);
 
+    };
+    const resetDateRange = () => {
+      setDateRange(["", ""]);
+    };
     const handleSelectCourseChange = (event) => {
         setSelectedCourse(event.target.value);
         };
         
         const handleSubmitPeriod = async (event) => {
           if (CheckInputDataPeriod()) {
+              // setshowConfirmModal(false);
+              // setShowLoadingModal(true);
               console.log("DateRange", selectedCourse, DateRange);
               const courseId = findIdByCourseName(selectedCourse);
               console.log(selectedCourse);
@@ -86,19 +101,18 @@ function OpenCourse_period() {
                   DateEnd: formatDateThaiYear(item.end_date)
               }));
               setCourseData(mappedCourseData);
-          //   navigate("/");
-              // setShowLoadingModal(true);
-              // setShowSuccessModal(true);
+         
+               setShowLoadingModal(false);
+
+              setShowSuccessModal(true);
+              setSelectedCourse("ทั้งหมด");
+              resetDateRange();
+              
           }
-      
+          
           return true;
         };
-        const [DateRange,setDateRange] =useState(['', '']);
-        const handleDateRangeChange = ([start, end]) => {
-          
-          setDateRange([start, end]);
-
-        };
+        
         const CheckInputDataPeriod = () => {
           if (DateRange.some((date) => date === '' || date === null)) {
             alert("กรุณาเลือกช่วงการเปิดรับสมัครให้ครบถ้วน");
@@ -189,10 +203,91 @@ function OpenCourse_period() {
       //     }
       //   ]);
       
+      const handleCloseModal = () => {
+        setshowConfirmModal(false);
+      }
+      const handleClose = () => {
+        setShowSuccessModal(false);
+        window.location.reload();
+      }
+      const [showConfirmModal, setshowConfirmModal] = useState(false);
     
+      const [showLoadingModal, setShowLoadingModal] = useState(false);
+      const [showSuccessModal, setShowSuccessModal] = useState(false);
       
   return (
     <>
+    {showConfirmModal && (
+          
+          <Modal
+              show={showConfirmModal}
+              onHide={handleCloseModal}
+              backdrop="static"
+              keyboard={false}
+              size="sm"
+              centered
+              style={{ fontFamily: 'Kanit, sans-serif' }}
+              >
+              <Modal.Body className="text-center p-lg-4" >
+                  
+                
+                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการบันทึกช่วงการเปิดรับสมัครใช่หรือไม่</p>
+             
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px" }}
+                    className="btn-primary btn-same-size"
+                    onClick={() => {
+                      handleSubmitPeriod();
+                      handleCloseModal();
+                    }}
+                  >
+                    Yes
+                  </Button>
+                  <br />
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px",marginTop:"10px"}}
+                    className="btn-secondary btn-same-size"
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </Button>
+
+                  {/* </Link> */}
+              </Modal.Body>
+              </Modal>
+
+        )}    
+    {showLoadingModal && (
+          <Modal_loading show={showLoadingModal} setShow={setShowLoadingModal} />
+    )}
+    {showSuccessModal && (
+          <Modal
+          show={showSuccessModal}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+          size="sm"
+          centered
+          style={{ fontFamily: 'Kanit, sans-serif' }}
+      >
+      <Modal.Body className="text-center p-lg-4">
+          <h4 className="text-success mt-3" style={{ fontSize: '30px'}}>
+              COMPLETE
+          </h4>
+          {/* ระบบได้รับข้อมูลการสมัครของท่านแล้ว */}
+          <p className="mt-3"style={{ fontSize: '22px' }}>ระบบได้ทำการบันทึกเรียบร้อยแล้ว</p>
+         
+
+          <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleClose}>
+          Ok
+          </Button>
+      </Modal.Body>
+      </Modal>
+        )}
+   
+
     <Header header="ระบบการรับสมัครนักเรียน" subhead="จัดการช่วงการเปิดรับสมัครตามหลักสูตร" /> 
     <div
         style={{
@@ -247,7 +342,7 @@ function OpenCourse_period() {
                                 textAlign: 'center',
                                 marginLeft: 'auto'
                               }}
-                            onClick={handleSubmitPeriod}
+                            onClick={() => setshowConfirmModal(true)}
                       >
                           <span>บันทึก</span>
                       </button>

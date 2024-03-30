@@ -7,6 +7,8 @@ import health_icon from "../images/health_icon.png"
 import Request_cert from "../images/request_cert.png"
 import analyze from "../images/analyze.png"
 import Postnews from "../images/promotion.png"
+// import enrollment_icon from "../images/enrollment_icon.png"
+// import check_status_enroll from "../images/check_status_enroll.png"
 
 function Card_menu_personnel() {
     const [obj, setObj] = useState([
@@ -50,6 +52,7 @@ function Card_menu_personnel() {
 
           ],
         },
+       
       ]);
     function handleClick() {
         console.log('Link clicked!');
