@@ -71,7 +71,7 @@ const Login_student = () => {
                             <div className="mb-3 d-flex" style={{gap: '7px'}}>
                             <div className="d-flex align-items-center">
                                 <label>
-                                    <span htmlFor="email" className="col-form-label me-3"style={{ marginRight: '10px',marginLeft: '0px', fontSize: '16px' }}>รหัสประจำตัวนักเรียน:  </span>
+                                    <span htmlFor="email" className="col-form-label me-3"style={{ marginRight: '10px',marginLeft: '0px', fontSize: '16px' }}>รหัสประจำตัวนักเรียน :  </span>
                                 </label>
                             </div>
                                 
@@ -90,7 +90,7 @@ const Login_student = () => {
                             <div className="mb-3 d-flex align-items-center"style={{ marginTop: '10px'}} >
                             <div className="d-flex align-items-center">
                                 <label>
-                                    <span htmlFor="password" className="col-form-label me-5" style={{ marginRight: '10px', fontFamily: 'Kanit, sans-serif', fontSize: '16px' }}>รหัสผ่านประจำตัว:</span>
+                                    <span htmlFor="password" className="col-form-label me-5" style={{ marginRight: '10px', fontFamily: 'Kanit, sans-serif', fontSize: '16px' }}>เลขประจำตัวประชาชน :</span>
                                 </label>
                                 </div>
                                 
@@ -131,7 +131,7 @@ const Login_student = () => {
                             
                            <br />
                            
-                                    <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link>
+                                    {/* <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link> */}
                                
                                     <Link to="/Student_menu">
                                         <button type="submit" className="btn btn-primary float-end" style={{fontFamily: 'Kanit, sans-serif', fontSize: '16px'}}>Log in</button>
