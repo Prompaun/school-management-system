@@ -52,7 +52,7 @@ function Enrollment_info_EP({user}) {
         
     };
     const [Enroll_Date, setEnroll_Date] = useState(formatDate(new Date()));  // สร้าง state เพื่อเก็บวันที่ปัจจุบัน
-    const [Enroll_Course, setEnroll_Course] = useState("หลักสูตร EP");
+    const [Enroll_Course, setEnroll_Course] = useState("English Program (EP)");
     
     
     // สร้างฟังก์ชันสำหรับการแปลงค่าวันที่เป็นปี
