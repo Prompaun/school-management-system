@@ -1,5 +1,5 @@
 import logoImage from '../images/IMG_5416.png';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button,Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -34,6 +34,34 @@ const Navbar = ({user}) => {
   const logout = () => {
     window.open("http://localhost:8080/auth/logout", "_self");
   };
+
+  const [Pathmenu,setPathmenu] = useState([
+    {Path:"/Student_menu"},
+    {Path:"/Parent_menu"},
+    {Path:"/Personnel_menu"},
+  ])
+  const [ClassifyRole,setClassifyRole] = useState([
+    // {Email:"ClassTeacher@gmail.com",Role:"ClassTeacher"},
+    // {Email:"SubjectTeacher@gmail.com",Role:"SubjectTeacher"},
+    // {Email:"DepartTeacher@gmail.com",Role:"Administrative"},
+    // {Email:"AdminTeacher@gmail.com",Role:"Administrator"},
+    // {Email:"Student@gmail.com",Role:"Student"},
+    // {Email:"Parent@gmail.com",Role:"Parent"},
+    {Email:"NewParent@gmail.com",Role:"NewParent"},
+  ])
+  const Path = () => {
+   if (ClassifyRole[0].Role==="Student") {
+    return Pathmenu[0].Path
+   }
+   if (ClassifyRole[0].Role==="Parent" || ClassifyRole[0].Role==="NewParent") {
+    return Pathmenu[1].Path
+   }
+   if (ClassifyRole[0].Role==="ClassTeacher" || ClassifyRole[0].Role==="SubjectTeacher" || ClassifyRole[0].Role==="Administrative" ||ClassifyRole[0].Role==="Administrator"  ) {
+    return Pathmenu[2].Path
+   }
+  };
+
+
   return (
     <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>
       <div className="container">
@@ -55,7 +83,7 @@ const Navbar = ({user}) => {
         {user ? (
           <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
             
-                <Link to="/Parent_menu" style={{...linkStyle,marginRight:"15px"}} >
+                <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
                   เลือกเมนู
                 </Link>
               

@@ -11,6 +11,14 @@ import Postnews from "../images/promotion.png"
 // import check_status_enroll from "../images/check_status_enroll.png"
 
 function Card_menu_personnel() {
+
+    const [ClassifyRole,setClassifyRole] = useState([
+      // {Email:"ClassTeacher@gmail.com",Role:"ClassTeacher"},
+      // {Email:"SubjectTeacher@gmail.com",Role:"SubjectTeacher"},
+      // {Email:"DepartTeacher@gmail.com",Role:"Administrative"},
+      {Email:"AdminTeacher@gmail.com",Role:"Administrator"},
+
+    ])
     const [obj, setObj] = useState([
         {
           text: "ระบบจัดการสารสนเทศ",
@@ -54,6 +62,25 @@ function Card_menu_personnel() {
         },
        
       ]);
+
+      const filteredRole = obj.filter((item) => {
+       
+          if (ClassifyRole[0].Role === 'ClassTeacher'){
+            return item.text === "ระบบจัดการสารสนเทศ" || item.text === "ระบบจัดการข้อมูลการศึกษา";
+            }
+          if (ClassifyRole[0].Role === 'SubjectTeacher'){
+            return item.text === "ระบบจัดการข้อมูลการศึกษา";
+            }
+          if (ClassifyRole[0].Role === 'Administrative'){
+            return item.text === "ระบบจัดการออกใบรับรอง" || item.text === "ข่าวประชาสัมพันธ์" || item.text === "ระบบการรับสมัครนักเรียนใหม่";
+            }
+          if (ClassifyRole[0].Role === 'Administrator'){
+            return item.text;
+            }
+       
+        return true;
+            
+        });
     function handleClick() {
         console.log('Link clicked!');
       }
@@ -62,7 +89,7 @@ function Card_menu_personnel() {
       
 
         <div className="d-flex align-items-center justify-content-center" style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', fontFamily: 'Kanit, sans-serif'}}>
-          {obj.map((item, index) => (
+          {filteredRole.map((item, index) => (
             <div key={index} className="card-menu" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)' }}>
               <div className="card-body">
                 <p className="card-text mt-3" style={{ textAlign: 'center',margin: "5px" }}>{item.text}</p>

@@ -8,6 +8,11 @@ import enrollment_icon from "../images/enrollment_icon.png"
 import check_status_enroll from "../images/check_status_enroll.png"
 
 function Card_menu_parent() {
+  const [ClassifyRole,setClassifyRole] = useState([
+    {Email:"NewParent@gmail.com",Role:"NewParent"},
+    // {Email:"Parent@gmail.com",Role:"Parent"},
+
+  ])
     const [obj, setObj] = useState([
       {
         text: "สมัครเข้าเรียน",
@@ -41,13 +46,26 @@ function Card_menu_parent() {
           },
           
       ]);
+
+      const filteredRole = obj.filter((item) => {
+       
+        if (ClassifyRole[0].Role === 'NewParent'){
+          return item.text === "สมัครเข้าเรียน" || item.text === "ตรวจสอบสถานะผู้สมัคร";
+          }
+        if (ClassifyRole[0].Role === 'Parent'){
+          return item.text;
+          }
+     
+      return true;
+          
+      });
     function handleClick() {
         console.log('Link clicked!');
       }
     
       return (
         <div className="d-flex align-items-center justify-content-center" style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', fontFamily: 'Kanit, sans-serif'}}>
-          {obj.map((item, index) => (
+          {filteredRole.map((item, index) => (
             
             <div key={index} className="card-menu" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)', alignItems: 'center' }}>
                <div className="card-body">
