@@ -43,6 +43,7 @@ if((err)) {
 console.log('MySQL successfully connected!');
 })
 
+const Student_api = require('./Student-api')(connection);
 const Parent_api = require('./Parent-api')(connection);
 const Personnel_api = require('./Pesonnel-api')(connection);
 // const Student_api = require('./Student-api')(connection);
@@ -54,6 +55,7 @@ const Health_api = require('./Health-api')(connection);
 const google_api = require('./google-api')();
 
 //use routes
+app.use(Student_api);
 app.use(Parent_api);
 app.use(Personnel_api);
 app.use(PostNews_api);

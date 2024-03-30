@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import school_logo from "../images/IMG_5416.png";
 import Navbar from "../components/Navbar";
 import eye_open from "../images/eye-open.png";
 import eye_closed from "../images/eye-closed.png";
 import Header from '../components/Header';
+import axios from 'axios';
 const Login_student = () => {
 
       const linkStyle = {
@@ -14,7 +15,8 @@ const Login_student = () => {
         fontFamily: 'Kanit, sans-serif',
         fontSize: '16px'
       };
-    
+
+    const navigate = useNavigate();
 
     // เพิ่ม state สำหรับเก็บข้อมูลจากฟอร์ม
     const [formData, setFormData] = useState({
@@ -29,6 +31,27 @@ const Login_student = () => {
             ...formData,
             [name]: value,
         });
+    };
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/check-login', {
+                studentId: formData.username,
+                password: formData.password
+            });
+            
+            const { exist } = response.data;
+            
+            if (exist) {
+                // ถ้ามีการตรวจสอบสำเร็จและข้อมูลถูกต้อง
+                navigate("/Student_menu", { state: { studentId: formData.username } });
+            } else {
+                // ถ้าข้อมูลไม่ถูกต้อง
+                alert('รหัสนักเรียน หรือ รหัสประจำตัวประชาชนไม่ถูกต้อง');
+            }
+        } catch (error) {
+            console.error('Error checking login:', error);
+        }
     };
 
     // สร้างฟังก์ชันสำหรับการ submit ฟอร์ม
@@ -133,9 +156,17 @@ const Login_student = () => {
                            
                                     {/* <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link> */}
                                
-                                    <Link to="/Student_menu">
-                                        <button type="submit" className="btn btn-primary float-end" style={{fontFamily: 'Kanit, sans-serif', fontSize: '16px'}}>Log in</button>
-                                    </Link>
+                                    {/* <Link to="/Student_menu"> */}
+                                        {/* <button type="submit" className="btn btn-primary float-end" style={{fontFamily: 'Kanit, sans-serif', fontSize: '16px'}}>Log in</button> */}
+                                        <button 
+                                            type="button" 
+                                            className="btn btn-primary float-end" 
+                                            style={{ fontFamily: 'Kanit, sans-serif', fontSize: '16px' }}
+                                            onClick={handleLogin}
+                                        >
+                                            Log in
+                                        </button>
+                                    {/* </Link> */}
                           
                         </form>
                     </div>
