@@ -46,8 +46,8 @@ const Navbar = ({user}) => {
     // {Email:"DepartTeacher@gmail.com",Role:"Administrative"},
     // {Email:"AdminTeacher@gmail.com",Role:"Administrator"},
     // {Email:"Student@gmail.com",Role:"Student"},
-    // {Email:"Parent@gmail.com",Role:"Parent"},
-    {Email:"NewParent@gmail.com",Role:"NewParent"},
+    {Email:"Parent@gmail.com",Role:"Parent"},
+    // {Email:"NewParent@gmail.com",Role:"NewParent"},
   ])
   const Path = () => {
    if (ClassifyRole[0].Role==="Student") {
