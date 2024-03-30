@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import Modal_ApplicantDetails from '../components/Modal_ApplicantDetails';
 import Header from '../components/Header';
+import axios from 'axios';
+
 const Check_Applicant_Information = () => {
     
     const fontStyle = {
@@ -18,45 +20,45 @@ const Check_Applicant_Information = () => {
     const [data, setData] = useState([
         
             
-            { Enroll_ID:1, 
-            Registration_Number: 'XXX1',
-             Registration_Date: '12/05/2566',
-             Applicant_name_title:"เด็กหญิง" ,
-             Applicants_first_name: 'ฐิตานันนท์', 
-             Applicants_last_name: 'สดใส', 
-             TranscriptFile: 'https://drive.google.com/file/d/1MQIGTa_OUEHnSHb3x7_C_jMP4dKLzMST', 
-             HouseRegFile:"https://drive.google.com/file/d/1YNDRGmcQIqiTKhzGqbj9lz357c5bhAEU", 
-             Educational_Program: 'English Program (EP)',
-            Exam_results:"70",
-            ExamStatus: "ผ่าน",
-            EnrollStatus:"มอบตัวสำเร็จ"
-            },
-            {  Enroll_ID:2,
-                Registration_Number: 'XXX2',
-             Registration_Date: '12/05/2566',
-             Applicant_name_title:"เด็กหญิง" ,
-             Applicants_first_name: 'ทักษพร', 
-             Applicants_last_name: 'ใจบุญ', 
-             TranscriptFile: 'https://drive.google.com/file/d/1MQIGTa_OUEHnSHb3x7_C_jMP4dKLzMST', 
-             HouseRegFile:"https://drive.google.com/file/d/1YNDRGmcQIqiTKhzGqbj9lz357c5bhAEU", 
-             Educational_Program: 'English Program (EP)',
-            Exam_results:"",
-            ExamStatus: "",
-            EnrollStatus:""
-            },
-            {  Enroll_ID:3,
-                Registration_Number: 'XXX3',
-             Registration_Date: '12/05/2566',
-             Applicant_name_title:"เด็กหญิง" ,
-             Applicants_first_name: 'กรกช', 
-             Applicants_last_name: 'รักดี', 
-             TranscriptFile: 'https://drive.google.com/file/d/1MQIGTa_OUEHnSHb3x7_C_jMP4dKLzMST', 
-             HouseRegFile:"https://drive.google.com/file/d/1YNDRGmcQIqiTKhzGqbj9lz357c5bhAEU", 
-             Educational_Program: 'Regular Program',
-            Exam_results:"",
-            ExamStatus: "",
-            EnrollStatus:""
-            },
+            // { Enroll_ID:1, 
+            // Registration_Number: 'XXX1',
+            //  Registration_Date: '12/05/2566',
+            //  Applicant_name_title:"เด็กหญิง" ,
+            //  Applicants_first_name: 'ฐิตานันนท์', 
+            //  Applicants_last_name: 'สดใส', 
+            //  TranscriptFile: 'https://drive.google.com/file/d/1MQIGTa_OUEHnSHb3x7_C_jMP4dKLzMST', 
+            //  HouseRegFile:"https://drive.google.com/file/d/1YNDRGmcQIqiTKhzGqbj9lz357c5bhAEU", 
+            //  Educational_Program: 'English Program (EP)',
+            // Exam_results:"70",
+            // ExamStatus: "ผ่าน",
+            // EnrollStatus:"มอบตัวสำเร็จ"
+            // },
+            // {  Enroll_ID:2,
+            //     Registration_Number: 'XXX2',
+            //  Registration_Date: '12/05/2566',
+            //  Applicant_name_title:"เด็กหญิง" ,
+            //  Applicants_first_name: 'ทักษพร', 
+            //  Applicants_last_name: 'ใจบุญ', 
+            //  TranscriptFile: 'https://drive.google.com/file/d/1MQIGTa_OUEHnSHb3x7_C_jMP4dKLzMST', 
+            //  HouseRegFile:"https://drive.google.com/file/d/1YNDRGmcQIqiTKhzGqbj9lz357c5bhAEU", 
+            //  Educational_Program: 'English Program (EP)',
+            // Exam_results:"",
+            // ExamStatus: "",
+            // EnrollStatus:""
+            // },
+            // {  Enroll_ID:3,
+            //     Registration_Number: 'XXX3',
+            //  Registration_Date: '12/05/2566',
+            //  Applicant_name_title:"เด็กหญิง" ,
+            //  Applicants_first_name: 'กรกช', 
+            //  Applicants_last_name: 'รักดี', 
+            //  TranscriptFile: 'https://drive.google.com/file/d/1MQIGTa_OUEHnSHb3x7_C_jMP4dKLzMST', 
+            //  HouseRegFile:"https://drive.google.com/file/d/1YNDRGmcQIqiTKhzGqbj9lz357c5bhAEU", 
+            //  Educational_Program: 'Regular Program',
+            // Exam_results:"",
+            // ExamStatus: "",
+            // EnrollStatus:""
+            // },
             
         
         ]);
@@ -65,7 +67,13 @@ const Check_Applicant_Information = () => {
         setSelectedCourse(event.target.value);
         };
     const handleSelectExamStatusChange = (event) => {
-        setSelectedExamStatus(event.target.value);
+        let value
+        if (event.target.value === "") {
+            value = null
+        } else {
+            value = event.target.value
+        }
+        setSelectedExamStatus(value);
         };
     const handleSelectEnrollStatusChange = (event) => {
         setSelectedEnrollStatus(event.target.value);
@@ -100,13 +108,17 @@ const Check_Applicant_Information = () => {
 
     const [editingId, setEditingId] = useState(null);
     const handleEditRow = (Enroll_ID) => {
-        
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
-       if (editingId===Enroll_ID){
-            console.log("item.Enroll_ID",Enroll_ID)
-            console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
-       
-       }
+        if (editingId===Enroll_ID){
+                console.log("item.Enroll_ID",Enroll_ID)
+                console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
+                const changeData = data.find(element => element.Enroll_ID === Enroll_ID)
+                updateApplicantInfo(changeData)
+                if (changeData.ExamStatus === "ผ่าน") {
+                    insertApplicanttoStudentInfo(changeData)
+                }
+        }
+       getApplicantInfo()
     };
     // const handleEditRow = (Enroll_ID) => {
     //     setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
@@ -116,8 +128,12 @@ const Check_Applicant_Information = () => {
     //       setCurrentItem(null);
     //     }
     //   };
-   
+
     const handleChange = (Enroll_ID, field, value) => {
+        if (value === "") {
+            value = null
+        }
+        // && data.find(element => element.Enroll_ID === Enroll_ID).EnrollStatus === "มอบตัวสำเร็จ"
  
         setData(
           data.map((item) =>
@@ -150,13 +166,75 @@ const Check_Applicant_Information = () => {
         }, [SearchData]);
         
         const [showModalDetail, setShowModalDetail] = useState(false);
-        const handleShowDetail = () => {
+        const handleShowDetail = (id) => {
             setShowModalDetail(true);
+            setsendApplicantID(id)
           };
+
+        const [sendApplicantID, setsendApplicantID] = useState("");
+
+    //=============================api=============================
+    function formatDateThaiYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear() + 543; // Add 543 to convert to พ.ศ.
+        const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+        return formattedDOB;
+    }    
+    
+    async function getApplicantInfo() {
+        try {
+            const response = await axios.post('http://localhost:8080/get-applicant-info', {});
+            response.data.results.forEach((element,index) => {
+                element.Registration_Date = formatDateThaiYear(element.Registration_Date)
+            })
+            setData(response.data.results)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching classRoom dropdown:', error);
+            throw error;
+        }
+    };
+
+    async function updateApplicantInfo(changeData) {
+        try {
+            const response = await axios.post('http://localhost:8080/update-applicant-info', {
+                score: changeData.Exam_results || null,
+                exam_status: changeData.ExamStatus || null,
+                enroll_status: changeData.EnrollStatus || "รอการสอบคัดเลือก",
+                enroll_no: changeData.Registration_Number
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching classRoom dropdown:', error);
+            throw error;
+        }
+    };
+
+    async function insertApplicanttoStudentInfo(changeData) {
+        try {
+            const response = await axios.post('http://localhost:8080/insert-applicant-to-student-info', {
+                Enroll_ID: changeData.Registration_Number
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching classRoom dropdown:', error);
+            throw error;
+        }
+    };
+
+    useEffect(() => {
+        getApplicantInfo()
+    }, [])
+
+    useEffect(() => {
+        console.log('dataka',data)
+    }, [data])
        
     return (
         <>
-        {showModalDetail && (<Modal_ApplicantDetails show={showModalDetail} setShow={setShowModalDetail} />)} 
+        {showModalDetail && (<Modal_ApplicantDetails show={showModalDetail} setShow={setShowModalDetail} applicant_id={sendApplicantID}/>)} 
         
             <Header header="ระบบการรับสมัครนักเรียน" subhead="ตรวจสอบข้อมูลผู้สมัคร" />  
              
@@ -176,7 +254,7 @@ const Check_Applicant_Information = () => {
                             <select value={selectedCourse} onChange={handleSelectCourseChange}className="custom-select">
                                 <option value="ทั้งหมด">ทั้งหมด</option>
                                 <option value="English Program (EP)">English Program (EP)</option>
-                                <option value="Regular Program">Regular Program</option>
+                                <option value="หลักสูตรทั่วไป">Regular Program</option>
                             </select>
                         </div>
                         </div>
@@ -216,7 +294,7 @@ const Check_Applicant_Information = () => {
                             <div className="dropdown" style={{ maxWidth: '100%'}}>
                             <select value={SelectedEnrollStatus} onChange={handleSelectEnrollStatusChange}className="custom-select">
                                 <option value="ทั้งหมด">ทั้งหมด</option>
-                                <option value="">-</option>
+                                <option value="รอการสอบคัดเลือก">รอการสอบคัดเลือก</option>
                                 <option value="มอบตัวสำเร็จ">มอบตัวสำเร็จ</option>
                                 <option value="มอบตัวไม่สำเร็จ">มอบตัวไม่สำเร็จ</option>
                             </select>
@@ -331,7 +409,7 @@ const Check_Applicant_Information = () => {
                                                         border:"none",
                                                         background:"none"
                                                     }}
-                                                onClick={handleShowDetail}>
+                                                onClick={(e) => handleShowDetail(item.Registration_Number)}>
                                                     ดูรายละเอียด
                                                 </button>
                                         
@@ -375,7 +453,7 @@ const Check_Applicant_Information = () => {
                                                     // onChange={(e) => handleChange(item.Enroll_ID, 'EnrollStatus', e.target.value)}
                                                     onChange={(e) => handleChange(item.Enroll_ID, 'EnrollStatus', e.target.value)}
                                                     className="custom-select">
-                                                    <option value="">-</option>
+                                                    <option value="รอการสอบคัดเลือก">รอการสอบคัดเลือก</option>
                                                     <option value="มอบตัวสำเร็จ">มอบตัวสำเร็จ</option>
                                                     <option value="มอบตัวไม่สำเร็จ">มอบตัวไม่สำเร็จ</option>
                                                 </select>

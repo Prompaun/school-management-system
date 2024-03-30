@@ -1,7 +1,8 @@
 import React, { useState,useEffect } from 'react'
 import { Button, Modal,Spinner } from 'react-bootstrap';
+import axios from 'axios';
 
-function Modal_ApplicantDetails({show,setShow}) {
+function Modal_ApplicantDetails({show,setShow,applicant_id}) {
 
     const handleClose = () => {
         setShow(false);
@@ -16,7 +17,7 @@ function Modal_ApplicantDetails({show,setShow}) {
                 National_ID_Number : "1-0000-00000-11-1",
                 // Student_ID : "13333",
                 NameTitle : "เด็กหญิง",
-                Surname : "ดวง",
+                FirstName : "ดวง",
                 LastName : "จันทร์",
                 DateOfBirth : "01/05/2559",
                 CopyofStudentIDCardFile : "", //link drive gg
@@ -45,20 +46,20 @@ function Modal_ApplicantDetails({show,setShow}) {
       const [ParentData,setParentData] = useState(
         [
             {
-              name_father : "สมใจ",
-              lastname_father : "ปรารถนา",
-              DOB_father : "12/05/1999",
-              Nationality_father : "ไทย",
-              Occupation_father : "ธุกิจส่วนตัว",
-              Workplace_father : "บริษัทสมใจปรารถนา",
-              Phone_father : "0600000000", 
-              name_mother : "สมพร",
-              lastname_mother : "ปรารถนา",
-              DOB_mother : "21/07/1999",
-              Nationality_mother : "ไทย",
-              Occupation_mother : "ธุกิจส่วนตัว",
-              Workplace_mother : "บริษัทสมใจปรารถนา",
-              Phone_mother : "0600000002", 
+              name_father : "-",
+              lastname_father : "-",
+              DOB_father : "-",
+              Nationality_father : "-",
+              Occupation_father : "-",
+              Workplace_father : "-",
+              Phone_father : "-", 
+              name_mother : "-",
+              lastname_mother : "-",
+              DOB_mother : "-",
+              Nationality_mother : "-",
+              Occupation_mother : "-",
+              Workplace_mother : "-",
+              Phone_mother : "-", 
     
             }
         ]
@@ -99,6 +100,114 @@ function Modal_ApplicantDetails({show,setShow}) {
             }
         ]
       );
+
+
+    //=============================api=============================
+    function formatDateThaiYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear() + 543; // Add 543 to convert to พ.ศ.
+        const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+        return formattedDOB;
+    }  
+
+    async function getApplicantDetailInfo() {
+        try {
+            const response = await axios.post('http://localhost:8080/get-applicant-detail-info', {
+                applicant: applicant_id
+            });
+
+            const formatStudentDOB = formatDateThaiYear(response.data.results[0].Student_DOB)
+            setStudentData([
+                {
+                    National_ID_Number : response.data.results[0].Student_NID,
+                    // Student_ID : "13333",
+                    NameTitle : response.data.results[0].NameTitle,
+                    FirstName : response.data.results[0].FirstName,
+                    LastName : response.data.results[0].LastName,
+                    DateOfBirth : formatStudentDOB,
+                    CopyofStudentIDCardFile : response.data.results[0].BirthCert_file, //link drive gg
+                    TranscriptType : response.data.results[0].Transcript_type,
+                    PreviousSchoolEducationalRecordsFile : response.data.results[0].Transcript_file //link drive gg
+                }
+            ])
+            setHouseholdData([
+                {
+                    Address_Number : response.data.results[0].House_No,
+                    Village : response.data.results[0].Moo,
+                    Alley : response.data.results[0].Soi,
+                    Road : response.data.results[0].Road,
+                    Province : response.data.results[0].Province,
+                    District : response.data.results[0].District,
+                    Subdistrict : response.data.results[0].Sub_District, 
+                    HouseReg_file : response.data.results[0].HouseReg_file //link drive gg
+                  }
+            ])
+
+            const getOtherParent = response.data.results.find(element => element.Role !== "บิดา" && element.Role !== "มารดา")
+            if (getOtherParent !== undefined) {
+                setWhoAreParent("อื่นๆ")
+                const formatOtherParentDOB = formatDateThaiYear(getOtherParent.DateOfBirth)
+                setOtherParentData([
+                    {
+                        name_parent : getOtherParent.pFirstName,
+                        lastname_parent : getOtherParent.pLastName,
+                        DOB_parent : formatOtherParentDOB,
+                        Nationality_parent : getOtherParent.Nationality,
+                        Occupation_parent : getOtherParent.Occupation,
+                        Workplace_parent : getOtherParent.Office,
+                        Phone_parent : getOtherParent.Tel, 
+                        Parent_relation : getOtherParent.Role
+                    }
+                ])
+            }
+
+            response.data.results.forEach(element => {
+                if (element.Role === "บิดา") {
+                    const formatFatherentDOB = formatDateThaiYear(element.DateOfBirth)
+                    setParentData(prevData => {
+                        const oldData = [...prevData]
+                        oldData[0].name_father = element.pFirstName
+                        oldData[0].lastname_father = element.pLastName
+                        oldData[0].DOB_father = formatFatherentDOB
+                        oldData[0].Nationality_father = element.Nationality
+                        oldData[0].Occupation_father = element.Occupation
+                        oldData[0].Workplace_father = element.Office
+                        oldData[0].Phone_father = element.Tel
+                        return oldData;
+                    })
+                }
+
+                if (element.Role === "มารดา") {
+                    const formatMatherParentDOB = formatDateThaiYear(element.DateOfBirth)
+                    setParentData(prevData => {
+                            const oldData = [...prevData]
+                            oldData[0].name_mother = element.pFirstName
+                            oldData[0].lastname_mother = element.pLastName
+                            oldData[0].DOB_mother = formatMatherParentDOB
+                            oldData[0].Nationality_mother = element.Nationality
+                            oldData[0].Occupation_mother = element.Occupation
+                            oldData[0].Workplace_mother = element.Office
+                            oldData[0].Phone_mother = element.Tel
+                            return oldData;
+                    })
+                }
+            });
+
+            
+            
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching classRoom dropdown:', error);
+            throw error;
+        }
+    };
+
+    useEffect(() => {
+        getApplicantDetailInfo()
+    }, [])
+
   return (
     <Modal
       show={show}
@@ -134,7 +243,7 @@ function Modal_ApplicantDetails({show,setShow}) {
         <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif'}}>
         
             <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
-                <label htmlFor="surname" className="col-form-label">ข้อมูลส่วนตัวของนักเรียน</label>
+                <label htmlFor="FirstName" className="col-form-label">ข้อมูลส่วนตัวของนักเรียน</label>
             </div>
         
         <div style={{ display: 'flex',flexWrap: 'wrap', gap: '10px', fontFamily: 'Kanit, sans-serif' }}>   
@@ -193,15 +302,15 @@ function Modal_ApplicantDetails({show,setShow}) {
             </div>
         <div style={{ fontSize: '18px'}}>    
             <div className=" align-items-center">
-                <label htmlFor="surname" className="col-form-label">ชื่อ</label>
+                <label htmlFor="FirstName" className="col-form-label">ชื่อ</label>
                 </div> 
             <div className=" align-items-center"style={{maxWidth:"100%"}}> 
                 <input
                     type="text"
                     className="form-control"
-                    id="surname"
-                    name="surname"
-                    value={StudentData[0].Surname}
+                    id="FirstName"
+                    name="FirstName"
+                    value={StudentData[0].FirstName}
                     readOnly
                     style={{ backgroundColor: '#DCDCDC', color: 'black'}}
                 />
@@ -274,7 +383,7 @@ function Modal_ApplicantDetails({show,setShow}) {
             </div> */}
 
             <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
-                <label htmlFor="surname" className="col-form-label">ข้อมูลการศึกษา</label>
+                <label htmlFor="FirstName" className="col-form-label">ข้อมูลการศึกษา</label>
             </div>
         
 
@@ -340,7 +449,7 @@ function Modal_ApplicantDetails({show,setShow}) {
       }}>
          <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif'}}>
          <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
-                <label htmlFor="surname" className="col-form-label">ข้อมูลที่อยู่ตามทะเบียนบ้าน</label>
+                <label htmlFor="FirstName" className="col-form-label">ข้อมูลที่อยู่ตามทะเบียนบ้าน</label>
             </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', fontFamily: 'Kanit, sans-serif'}}>            
         <div style={{ fontSize: '18px'}}> 
