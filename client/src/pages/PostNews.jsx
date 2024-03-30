@@ -205,6 +205,7 @@ const handleEditRow = async (id) => {
   setEditingId(id === editingId ? null : id);
 
   if (editingId === id) {
+
       const selectedItem = NewsData.find((item) => item.id === id);
       
       if (selectedItem.title !== '' && selectedItem.content !== '') {
@@ -239,6 +240,7 @@ const handleEditRow = async (id) => {
               console.error('Error fetching news:', error);
           }
       }
+      setShowSuccessEditModal(true)
   }
 };
 
@@ -254,7 +256,9 @@ const handleEditRow = async (id) => {
   const handleDeleteRow = (id) => {
 
     deletePost(id);
+
     setNewsData(NewsData.filter((row) => row.id !== id));
+    setShowSuccessDeleteModal(true)
   };
   const handleCloseModal = () => {
     setshowConfirmModal(false);
@@ -263,6 +267,10 @@ const handleEditRow = async (id) => {
 
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showSuccessEditModal, setShowSuccessEditModal] = useState(false);
+  const [showSuccessDeleteModal, setShowSuccessDeleteModal] = useState(false);
+
+
   return (
     <>
       {showConfirmModal && (
@@ -316,6 +324,22 @@ const handleEditRow = async (id) => {
           setShow={setShowSuccessModal} 
           // link="/" 
           text="ระบบได้โพสต์ข่าวประชาสัมพันธ์แล้ว"
+          />
+        )}
+        {showSuccessEditModal && (
+          <Modal_success 
+          show={showSuccessEditModal} 
+          setShow={setShowSuccessEditModal} 
+          // link="/" 
+          text="ระบบได้ทำการบันทึกเรียบร้อยแล้ว"
+          />
+        )}
+         {showSuccessDeleteModal && (
+          <Modal_success 
+          show={showSuccessDeleteModal} 
+          setShow={setShowSuccessDeleteModal} 
+          // link="/" 
+          text="ระบบได้ทำการลบข้อมูลเรียบร้อยแล้ว"
           />
         )}
       <Header

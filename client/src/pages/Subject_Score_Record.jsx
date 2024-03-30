@@ -5,6 +5,7 @@ import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons
 import { Dropdown, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import Modal_confirm from '../components/Modal_confirm';
+import Modal_success from '../components/Modal_success';
 
 // import Modal_subject from "../components/Modal_subject";
 const Subject_Score_Record = () => {
@@ -278,7 +279,9 @@ const Subject_Score_Record = () => {
                     id: Assessment[id].Assessment_id
                 });  
                 setAssessment(Assessment.filter((row) => row.id !== id));
-                alert('ลบข้อมูลเสร็จสิ้น')
+                // alert('ลบข้อมูลเสร็จสิ้น')
+                setShowModalDelete(true);
+
                 getStudentInfo();
                 return response.data;
             } catch (error) {
@@ -582,6 +585,7 @@ const Subject_Score_Record = () => {
 
     const handleDeleteRow = (id) => {
         deleteAssessmentInfo(id)
+        // setShowModalDelete(true);
         setSelectedClassYear("เลือกชั้นปี");
         setSelectedRoom("เลือกห้อง");
 
@@ -637,7 +641,9 @@ const Subject_Score_Record = () => {
     const handleEditRowScore = (id) => {
         setEditingIdScore(id === editingIdScore ? null : id);
         // setShowModalConfirm(true);
+       
         if (editingIdScore !== null) {
+            setShowModalSuccess(true);
            
             Object.keys(StudentScore[id].scores).forEach(element => {
                 updateAssessmentScore(element,StudentScore[id].scores[element],id)
@@ -664,11 +670,20 @@ const Subject_Score_Record = () => {
 
     const [ShowModalConfirm,setShowModalConfirm] = useState(false);
     const [ShowModalSuccess,setShowModalSuccess] = useState(false);
+    const [ShowModalDelete,setShowModalDelete] = useState(false);
 
     return (
         <>
+         {ShowModalDelete && (
+            <Modal_success
+            show={ShowModalDelete} 
+            setShow={setShowModalDelete} 
+            // link="/Parent_menu" 
+            text="ระบบได้ทำการลบข้อมูลเรียบร้อยแล้ว"
+            />
+         )}
          {ShowModalSuccess && (
-            <Modal_confirm 
+            <Modal_success
             show={ShowModalSuccess} 
             setShow={setShowModalSuccess} 
             // link="/Parent_menu" 

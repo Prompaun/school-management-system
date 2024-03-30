@@ -3,6 +3,7 @@ import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons
 import Modal_ApplicantDetails from '../components/Modal_ApplicantDetails';
 import Header from '../components/Header';
 import axios from 'axios';
+import Modal_success from '../components/Modal_success';
 
 const Check_Applicant_Information = () => {
     
@@ -110,6 +111,7 @@ const Check_Applicant_Information = () => {
     const handleEditRow = (Enroll_ID) => {
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
         if (editingId===Enroll_ID){
+            setShowModalSuccess(true)
                 console.log("item.Enroll_ID",Enroll_ID)
                 console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
                 const changeData = data.find(element => element.Enroll_ID === Enroll_ID)
@@ -232,8 +234,18 @@ const Check_Applicant_Information = () => {
         console.log('dataka',data)
     }, [data])
        
+    const [ShowModalSuccess,setShowModalSuccess] = useState(false);
+
     return (
         <>
+        {ShowModalSuccess && (
+            <Modal_success
+            show={ShowModalSuccess} 
+            setShow={setShowModalSuccess} 
+            // link="/Parent_menu" 
+            text="ระบบได้ทำการบันทึกเรียบร้อยแล้ว"
+            />
+         )}
         {showModalDetail && (<Modal_ApplicantDetails show={showModalDetail} setShow={setShowModalDetail} applicant_id={sendApplicantID}/>)} 
         
             <Header header="ระบบการรับสมัครนักเรียน" subhead="ตรวจสอบข้อมูลผู้สมัคร" />  

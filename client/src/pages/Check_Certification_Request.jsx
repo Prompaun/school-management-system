@@ -3,6 +3,7 @@ import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons
 // import Navbar from '../components/Navbar'
 import Header from '../components/Header';
 import axios from 'axios';
+import Modal_success from '../components/Modal_success';
 const Check_Certification_Request = () => {
 
     const linkStyle = {
@@ -141,6 +142,7 @@ const Check_Certification_Request = () => {
       const handleEditRow = async (id) => {
           setEditingId(id === editingId ? null : id);
           if (editingId === id) {
+            setShowModalSuccess(true)
             const selectedItem = data.find((item) => item.id === id);
             console.log(selectedItem);
             const requestData = {
@@ -157,11 +159,21 @@ const Check_Certification_Request = () => {
             request.id === id ? { ...request, [field]: value } : request
             )
           );
-        } 
+        }
+        const [ShowModalSuccess,setShowModalSuccess] = useState(false);
+      
     return (
         <>
             
-
+          
+         {ShowModalSuccess && (
+            <Modal_success
+            show={ShowModalSuccess} 
+            setShow={setShowModalSuccess} 
+            // link="/Parent_menu" 
+            text="ระบบได้ทำการบันทึกเรียบร้อยแล้ว"
+            />
+         )}
             <Header header="ระบบการออกใบรับรอง" subhead="ตรวจสอบคำขอใบรับรอง" />  
             <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif',height:"100vh"}}>
                 <div className="container flex-column align-items-center">
