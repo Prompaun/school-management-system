@@ -2,6 +2,7 @@ import React, { useState,useEffect} from 'react';
 import { NavLink } from 'react-router-dom';
 import general_course_icon from '../images/general_course_icon.png';
 import EP_icon from '../images/EP_icon.png';
+import axios from 'axios';
 
 function Card_menu_course() {
   const [obj, setObj] = useState([
@@ -17,15 +18,65 @@ function Card_menu_course() {
     },
   ]);
   const [CourseData, setCourseData] = useState([
-    { id: 1, course: 'หลักสูตรทั่วไป', DateStart: '12/03/2024', DateEnd: '02/05/2024' },
-    { id: 2, course: 'English Program (EP)', DateStart: '30/03/2024', DateEnd: '17/04/2024' },
+    // { id: 1, course: 'หลักสูตรทั่วไป', DateStart: '12/03/2024', DateEnd: '02/05/2024' },
+    // { id: 2, course: 'English Program (EP)', DateStart: '30/03/2024', DateEnd: '17/04/2024' },
   ]);
+
+  function formatDateThaiYear(dateString) {
+    const parts = dateString.split('/');
+    const day = parts[0];
+    const month = parts[1];
+    const year = parseInt(parts[2]) + 543; // เพิ่มค่า 543 เพื่อแปลงเป็น พ.ศ.
+    return `${day}/${month}/${year}`;
+}
+
+  function formatDateEngYear(dateString) {
+    const dob = new Date(dateString);
+    const day = dob.getDate();
+    const month = dob.getMonth() + 1;
+    const year = dob.getFullYear() ; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+    const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+    return formattedDOB;
+  }
+
+  async function getRecruitmentPeriod() {
+    try {
+        const response = await axios.get('http://localhost:8080/get-recruitment-period');
+        return response.data;
+      } catch (error) {
+          console.error('Error fetching Recruitment Period:', error);
+          throw error;
+      }
+    };
+  
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+            const RecruitmentPeriod = await getRecruitmentPeriod();
+            const mappedCourseData = RecruitmentPeriod.map(item => ({
+              id: item.id,
+              course: item.course,
+              DateStart: formatDateEngYear(item.start_date),
+              DateEnd: formatDateEngYear(item.end_date)
+              }));
+              setCourseData(mappedCourseData);
+              // console.log(mappedCourseData);
+          } catch (error) {
+            console.error('Error fetching Recruitment Period:', error);
+          }
+      };
+      fetchData();
+    }, []);
  
   const findCourse = (text) => {
+    // console.log('text',CourseData.find((course) => course.course.toLowerCase() === text.toLowerCase()));
     return CourseData.find((course) => course.course.toLowerCase() === text.toLowerCase());
   };
   // const [courseDates, setCourseDates] = useState({});
   const isDateInRange = (currentDate, startDate, endDate) => {
+    // console.log(currentDate);
+    // console.log(startDate);
+    // console.log(endDate);
     const [startDay, startMonth, startYear] = startDate.split('/').map(Number);
     const [endDay, endMonth, endYear] = endDate.split('/').map(Number);
     const [day, month, year] = currentDate.split('/').map(Number);
@@ -78,7 +129,9 @@ function Card_menu_course() {
       
       // Remove the isDateInRange condition from the filter condition
       const filteredObj = obj.filter((item) => {
+        // console.log('item',item);
         const courseObj = findCourse(item.text);
+        // console.log('courseObj',courseObj);
         if (courseObj && isDateInRange(currentDate, courseObj.DateStart, courseObj.DateEnd)) {
           return true;
         }
@@ -133,10 +186,10 @@ function Card_menu_course() {
                                                 
                                                 <span style={{marginLeft:"5px"}}>จะเปิดรับสมัครตั้งแต่วันที่</span> 
                                                 <span style={{ color: textColor,fontWeight: "bold",marginLeft:"5px" }}>
-                                                {currentCourse.DateStart} </span>
+                                                {formatDateThaiYear(currentCourse.DateStart)} </span>
                                                 <span style={{marginLeft:"5px"}}>จนถึงวันที่</span>
                                                 <span style={{ color: textColor,fontWeight: "bold",marginLeft:"5px"}}>
-                                                {currentCourse.DateEnd}
+                                                {formatDateThaiYear(currentCourse.DateEnd)}
                                                 </span>
                                             </React.Fragment>
                                           );
