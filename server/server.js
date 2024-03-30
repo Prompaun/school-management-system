@@ -50,7 +50,7 @@ const PostNews_api = require('./Post-news-api')(connection);
 const checkApplicant_api = require('./check-applicant-api')(connection);
 const RecruitmentPeriod_api = require('./Recruitment-period-api')(connection);
 const Request_api = require('./Request-api')(connection);
-// const Health_api = require('./Health-api')(connection);
+const Health_api = require('./Health-api')(connection);
 const google_api = require('./google-api')();
 
 //use routes
@@ -60,7 +60,7 @@ app.use(PostNews_api);
 app.use(checkApplicant_api);
 app.use(RecruitmentPeriod_api);
 app.use(Request_api);
-// app.use(Health_api);
+app.use(Health_api);
 app.use(google_api);
 // app.use(Personnel_api);
 // app.use(Student_api);

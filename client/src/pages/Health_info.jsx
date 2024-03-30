@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation  } from 'react-router-dom';
 import school_logo from "../images/IMG_5416.png";
 import printer_icon from "../images/printer_icon.png";
 import Sidebar from '../components/Sidebar';
 // import Navbar from '../components/Navbar'
 import Header from '../components/Header';
 import Tab_health from '../components/Tab_health';
+import axios from 'axios';
 const Health_info = () => {
 
     const linkStyle = {
@@ -19,47 +20,63 @@ const Health_info = () => {
         textDecoration: 'none'
       };
 
-      const [congenital_disease,setcongenital_disease] = useState ([
-        {
-          id:1,
-          DateCheck:"12/05/2024",
-          congenital_disease:"ภูมิแพ้อากาศ"
-      },
-      {
-        id:2,
-        DateCheck:"12/05/2024",
-        congenital_disease:"โลหิตจาง"
+    const location = useLocation();
+    //   console.log("Student_ID:", location);
+    const SearchParams = new URLSearchParams(location.search);
+    const studentID_param = SearchParams.get("id");
+    // console.log(studentID_param);
+
+    function formatDateThaiYear(dateString) {
+      const dob = new Date(dateString);
+      const day = dob.getDate();
+      const month = dob.getMonth() + 1;
+      const year = dob.getFullYear() + 543; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+      const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+      return formattedDOB;
     }
-  
-      ]);
-      const [Diseases,setDiseases] = useState ([
-        {
-          id:1,
-          DateCheck:"12/05/2024",
-          Diseases:"โรคอีสุกอีใส"
-      }
-      ]);
-      const [allergic,setallergic] = useState ([
-        {
-          id:1,
-          DateCheck:"12/05/2024",
-          allergic:"แพ้อาหารทะเล"
-      }
-      ]);
-      const [accident,setaccident] = useState ([
-      //   {
-      //     id:1,
-      //     DateCheck:"12/05/2024",
-      //     accident:"ผ่าตัด"
+
+    const [congenital_disease,setcongenital_disease] = useState ([
+      // {
+      //   id:1,
+      //   DateCheck:"12/05/2024",
+      //   congenital_disease:"ภูมิแพ้อากาศ"
+      // },
+      // {
+      //   id:2,
+      //   DateCheck:"12/05/2024",
+      //   congenital_disease:"โลหิตจาง"
       // }
-      ]);
-      
-      
-     const [HealthSummary,setHealthSummary] = useState([
-        {id:1,summary:"สุขภาพแข็งแรง"}
-     ])
-     const [BodyData,setBodyData] = useState([
-      {id:1,DateRecord:"12/05/2024",weight_kg:"50",height_cm:"160"}
+    ]);
+    const [Diseases,setDiseases] = useState ([
+      {
+        // id:1,
+        // DateCheck:"12/05/2024",
+        // Diseases:"โรคอีสุกอีใส"
+    }
+    ]);
+    const [allergic,setallergic] = useState ([
+    //   {
+    //     id:1,
+    //     DateCheck:"12/05/2024",
+    //     allergic:"แพ้อาหารทะเล"
+    // }
+    ]);
+    const [accident,setaccident] = useState ([
+    //   {
+    //     id:1,
+    //     DateCheck:"12/05/2024",
+    //     accident:"ผ่าตัด"
+    // }
+    ]);
+    
+    
+    const [HealthSummary,setHealthSummary] = useState([
+      {id:1,summary:"สุขภาพแข็งแรง"}
+    ])
+    //ยังไม่มีเงื่อนไขเช็คถ้าไม่เจอค่า
+    const [BodyData,setBodyData] = useState([
+      // {id:1,DateRecord:"12/05/2024",weight_kg:"50",height_cm:"160"}
+      {id:1,DateRecord:"",weight_kg:"",height_cm:""}
     ])
     const [BMI,setBMI] = useState(null);
   
@@ -84,28 +101,28 @@ const Health_info = () => {
     calculateBMI();
     }, [BodyData])
   
-    
+    //ยังไม่มีเงื่อนไขเช็คถ้าไม่เจอค่า
     const [HealthCheckUp,setHealthCheckUp] = useState([
       {id:1,DateCheck:"12/05/2024",Eyesight:"ปกติ",Hearing:"ปกติ",Mouth:"ปกติ"}
     ])
   
     //วัคซีนพื้นฐาน จำเป็น 8 ชนิด
     const [EPI_program,setEPI_program] = useState([
-      {id:1,Vaccine:"วัคซีนป้องกันวัณโรค (BCG Vaccine)",value:true},
-      {id:2,Vaccine:"วัคซีนตับอักเสบบี (Hepatitis B Vaccine : HBV)",value:true},
-      {id:3,Vaccine:"วัคซีนคอตีบ-บาดทะยัก-ไอกรน (Diphtheria, Tetanus, Pertussis : DPT)",value:true},
-      {id:4,Vaccine:"วัคซีนโปลิโอ (Polio)",value:true},
-      {id:5,Vaccine:"วัคซีนหัด-หัดเยอรมัน-คางทูม (Measles mumps rubella vaccine : MMR)",value:true},
-      {id:6,Vaccine:"วัคซีนไข้สมองอักเสบเจอี (Japanese encephalitis virus : JE)",value:true},
-      {id:7,Vaccine:"วัคซีนป้องกันไข้หวัดใหญ่ (Influenza Vaccine)",value:false},
-      {id:8,Vaccine:"วัคซีนเอชพีวี (HPV)",value:false},
+      // {id:1,Vaccine:"วัคซีนป้องกันวัณโรค (BCG Vaccine)",value:true},
+      // {id:2,Vaccine:"วัคซีนตับอักเสบบี (Hepatitis B Vaccine : HBV)",value:true},
+      // {id:3,Vaccine:"วัคซีนคอตีบ-บาดทะยัก-ไอกรน (Diphtheria, Tetanus, Pertussis : DPT)",value:true},
+      // {id:4,Vaccine:"วัคซีนโปลิโอ (Polio)",value:true},
+      // {id:5,Vaccine:"วัคซีนหัด-หัดเยอรมัน-คางทูม (Measles mumps rubella vaccine : MMR)",value:true},
+      // {id:6,Vaccine:"วัคซีนไข้สมองอักเสบเจอี (Japanese encephalitis virus : JE)",value:true},
+      // {id:7,Vaccine:"วัคซีนป้องกันไข้หวัดใหญ่ (Influenza Vaccine)",value:false},
+      // {id:8,Vaccine:"วัคซีนเอชพีวี (HPV)",value:false},
   
     ])
     //วัคซีนทางเลือก ข้อมูลเพิ่มจะถือว่าฉีดแล้ว
     const [OptionalVaccine,setOptionalVaccine] = useState([
-      {id:1,Vaccine:"วัคซีนโรต้าไวรัส (Rotavirus)"},
-      {id:2,Vaccine:"วัคซีนไข้เลือดออก (Dengue Vaccine)"},
-      {id:3,Vaccine:"วัคซีนป้องกันโรคอีสุกอีใส  (Varicella vaccine)"},
+      // {id:1,Vaccine:"วัคซีนโรต้าไวรัส (Rotavirus)"},
+      // {id:2,Vaccine:"วัคซีนไข้เลือดออก (Dengue Vaccine)"},
+      // {id:3,Vaccine:"วัคซีนป้องกันโรคอีสุกอีใส  (Varicella vaccine)"},
     
     ])
   // แสดง ui วัคซีนทางเลือก
@@ -116,7 +133,182 @@ const Health_info = () => {
         setshowOptionalVaccine(true)
       }
     }, [OptionalVaccine])
-  
+
+    async function getCongenitalDiseaseInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-congenital-disease-info/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching congenital disease information:', error);
+          throw error;
+      }
+    }
+
+    async function getHistoryDiseaseInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-history-disease-info/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching congenital disease information:', error);
+          throw error;
+      }
+    }
+
+    async function getAllergiesInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-allergies-info/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching allergies information:', error);
+          throw error;
+      }
+    }
+
+    async function getSurgeryAccidentInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-surgery-accident-info/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching surgery_accident information:', error);
+          throw error;
+      }
+    }
+
+    async function getInjectionAlternativeVaccineInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-injection-alternative-vaccine-info/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching injection_alternative_vaccine information:', error);
+          throw error;
+      }
+    }
+
+    async function getGrowthNutritionInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-growth-nutrition-info/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching growth_nutrition information:', error);
+          throw error;
+      }
+    }
+
+    async function getHealthCheckInfo(studentId) {
+      try {
+          const response = await axios.get(`http://localhost:8080/get-health_check/${studentId}`);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching health_check information:', error);
+          throw error;
+      }
+    }
+
+    async function checkVaccine(studentId) {
+      try {
+          // เรียกใช้ API ด้วย Axios
+          const response = await axios.get(`http://localhost:8080/check-vaccine/${studentId}`);
+          // return ข้อมูลที่ได้รับกลับมา
+          return response.data;
+      } catch (error) {
+          // กรณีเกิด error ในการเรียก API
+          console.error('Error checking vaccines:', error);
+          throw error;
+      }
+  }
+
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+            const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
+            const mappedCongenitalDisease = CongenitalDisease.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                congenital_disease: item.Congenital_Disease
+              }));
+              
+          // } catch (error) {
+          //   console.log('Error fetching Congenital Disease:', error);
+          // }
+
+          // try {
+            const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
+            const mappedHistoryDisease = HistoryDisease.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                Diseases: item.History_Disease
+              }));
+              
+          // } catch (error) {
+          //   console.log('Error fetching History Disease:', error);
+          // }
+
+          // try {
+            const allergic = await getAllergiesInfo(studentID_param);
+            const mappedAllergic = allergic.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                allergic: item.Allergies
+              }));
+              
+          // } catch (error) {
+          //   console.log('Error fetching allergic:', error);
+          // }
+
+          // try {
+            const accident = await getSurgeryAccidentInfo(studentID_param);
+            const mappedaccident = accident.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                accident: item.Surgery_Accident
+              }));
+            
+            const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
+            const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
+                id: item.Alternative_Vaccine_ID,
+                Vaccine: item.Vaccine_name
+              }));
+            
+            const GrowthNutrition = await getGrowthNutritionInfo(studentID_param);
+            const mappedGrowthNutrition = GrowthNutrition.map(item => ({
+                id: item.id,
+                DateRecord: formatDateThaiYear(item.Health_Check_Date),
+                weight_kg: item.Weight,
+                height_cm: item.Height
+              }));
+
+            const HealthCheck = await getHealthCheckInfo(studentID_param);
+            const mappedHealthCheck = HealthCheck.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                Eyesight: item.Eye_examination,
+                Hearing: item.Hearing,
+                Mouth: item.Oral_health
+              }));
+
+            const Basic_Vaccine  = await checkVaccine(studentID_param);
+            const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
+                id: item.Basic_Vaccine_ID,
+                Vaccine: item.BasicVaccine_name,
+                value: item.value
+              }));
+            
+
+            setcongenital_disease(mappedCongenitalDisease);
+            setDiseases(mappedHistoryDisease);
+            setallergic(mappedAllergic);
+            setaccident(mappedaccident);
+            setOptionalVaccine(mappedInjectionAlternativeVaccine);
+            setBodyData(mappedGrowthNutrition);
+            setHealthCheckUp(mappedHealthCheck);
+            setEPI_program(mappedBasic_Vaccine);
+          } catch (error) {
+            console.log('Error fetching data:', error);
+          }
+
+      };
+      fetchData();
+    }, []);
 
     return (
         <>
@@ -757,9 +949,19 @@ const Health_info = () => {
                               
                               
                                 <br />
-                                <Link to="/Student_List_Information">
-                                    <button type="submit" class="btn btn-primary float-end" style={{ ...fontStyle, fontSize: '16px', textAlign: 'right'}}><span>ย้อนกลับ</span></button>
-                                </Link>
+                                {/* <Link to="/Student_List_Information"> */}
+                                    {/* <button type="submit" class="btn btn-primary float-end" style={{ ...fontStyle, fontSize: '16px', textAlign: 'right'}}><span>ย้อนกลับ</span></button> */}
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary float-end"
+                                        style={{ ...fontStyle, fontSize: '16px', textAlign: 'right' }}
+                                        onClick={() => {
+                                            window.history.back();
+                                        }}
+                                        >
+                                        <span>ย้อนกลับ</span>
+                                    </button>
+                                {/* </Link> */}
                                 </div>
                             </div>
                         </div>
