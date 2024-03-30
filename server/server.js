@@ -46,12 +46,14 @@ const Parent_api = require('./Parent-api')(connection);
 const Personnel_api = require('./Pesonnel-api')(connection);
 // const Student_api = require('./Student-api')(connection);
 const PostNews_api = require('./Post-news-api')(connection);
+const RecruitmentPeriod_api = require('./Recruitment-period-api')(connection);
 const google_api = require('./google-api')();
 
 //use routes
 app.use(Parent_api);
 app.use(Personnel_api);
 app.use(PostNews_api);
+app.use(RecruitmentPeriod_api);
 app.use(google_api);
 // app.use(Personnel_api);
 // app.use(Student_api);

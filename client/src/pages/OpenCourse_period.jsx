@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { Link ,useNavigate} from 'react-router-dom';
 import DateRangePicker_period from '../components/DateRangePicker_period';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
+import axios from 'axios';
 
 function OpenCourse_period() {
   const fontStyle = {
@@ -15,10 +16,76 @@ function OpenCourse_period() {
         setSelectedCourse(event.target.value);
         };
         
-        const handleSubmitPeriod = (event) => {
+        const handleSubmitPeriod = async (event) => {
           if (CheckInputDataPeriod()) {
-              console.log("DateRange",DateRange);
-
+              console.log("DateRange", selectedCourse, DateRange);
+              const courseId = findIdByCourseName(selectedCourse);
+              console.log(selectedCourse);
+              console.log(courseId);
+              
+              if (selectedCourse === 'ทั้งหมด'){
+                try {
+                  const courses = [
+                      { name: 'หลักสูตรทั่วไป', id: findIdByCourseName('หลักสูตรทั่วไป') },
+                      { name: 'English Program (EP)', id: findIdByCourseName('English Program (EP)') }
+                  ];
+              
+                  const updatedData = courses.map(course => ({
+                      id: course.id, // เพิ่มค่า id ที่ได้จากการค้นหาไปยัง updatedData
+                      course: course.name,
+                      start_date: formatDateEngYear(DateRange[0]),
+                      start_time: '00:00:00',
+                      end_date: formatDateEngYear(DateRange[1]),
+                      end_time: '00:00:00'
+                  }));
+              
+                  await Promise.all(updatedData.map(data => updateRecruitmentPeriod(data.id, data)));
+              } catch (error) {
+                  console.error('Error fetching Recruitment Period:', error);
+              }
+                // try {
+                //       const updatedRegularCourse = {
+                //         course: 'หลักสูตรทั่วไป',
+                //         start_date: formatDateEngYear(DateRange[0]),
+                //         start_time: '00:00:00',
+                //         end_date: formatDateEngYear(DateRange[1]),
+                //         end_time: '00:00:00'
+                //       };
+                //       const updatedEPCourse = {
+                //         course: 'English Program (EP)',
+                //         start_date: formatDateEngYear(DateRange[0]),
+                //         start_time: '00:00:00',
+                //         end_date: formatDateEngYear(DateRange[1]),
+                //         end_time: '00:00:00'
+                //       };
+                //       await updateRecruitmentPeriod(findIdByCourseName('หลักสูตรทั่วไป'), updatedRegularCourse);
+                //       await updateRecruitmentPeriod(findIdByCourseName('English Program (EP)'), updatedEPCourse);
+                //   } catch (error) {
+                //       console.error('Error fetching Recruitment Period:', error);
+                //   }
+              }
+              else{
+                  try {
+                        const updatedData = {
+                          course: selectedCourse,
+                          start_date: formatDateEngYear(DateRange[0]),
+                          start_time: '00:00:00',
+                          end_date: formatDateEngYear(DateRange[1]),
+                          end_time: '00:00:00'
+                        };
+                      await updateRecruitmentPeriod(courseId, updatedData);
+                  } catch (error) {
+                      console.error('Error fetching Recruitment Period:', error);
+                  }
+              }
+              const RecruitmentPeriod = await getRecruitmentPeriod();
+              const mappedCourseData = RecruitmentPeriod.map(item => ({
+                  id: item.id,
+                  course: item.course,
+                  DateStart: formatDateThaiYear(item.start_date),
+                  DateEnd: formatDateThaiYear(item.end_date)
+              }));
+              setCourseData(mappedCourseData);
           //   navigate("/");
               // setShowLoadingModal(true);
               // setShowSuccessModal(true);
@@ -43,10 +110,70 @@ function OpenCourse_period() {
 
 
         const [CourseData, setCourseData] = useState([
-          {id:1, course: "หลักสูตรทั่วไป", DateStart: "30/03/2024",DateEnd:"02/05/2024"},
-          {id:2, course: "English Program (EP)", DateStart: "12/03/2567",DateEnd:"17/04/2567"},
+          // {id:1, course: "หลักสูตรทั่วไป", DateStart: "30/03/2024",DateEnd:"02/05/2024"},
+          // {id:2, course: "English Program (EP)", DateStart: "12/03/2567",DateEnd:"17/04/2567"},
       
       ]);
+    
+      function formatDateThaiYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear() + 543; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+        const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+        return formattedDOB;
+      }
+
+      function formatDateEngYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear(); // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+        const formattedDOB = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+        return formattedDOB;
+      }
+
+      const findIdByCourseName = (courseName) => {
+        const course = CourseData.find(item => item.course === courseName);
+        return course ? course.id : null;
+    };
+    
+      async function getRecruitmentPeriod() {
+      try {
+          const response = await axios.get('http://localhost:8080/get-recruitment-period');
+          return response.data;
+        } catch (error) {
+            console.error('Error fetching Recruitment Period:', error);
+            throw error;
+        }
+      };
+
+      async function updateRecruitmentPeriod (id, updatedData) {
+        try {
+            const response = await axios.put(`http://localhost:8080/update-recruitment-period/${id}`, updatedData);
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+        } catch (error) {
+            console.error('Error updating recruitment period:', error);
+        }
+      };
+
+      useEffect(() => {
+        const fetchData = async () => {
+            try {
+              const RecruitmentPeriod = await getRecruitmentPeriod();
+              const mappedCourseData = RecruitmentPeriod.map(item => ({
+                id: item.id,
+                course: item.course,
+                DateStart: formatDateThaiYear(item.start_date),
+                DateEnd: formatDateThaiYear(item.end_date)
+                }));
+                setCourseData(mappedCourseData);
+            } catch (error) {
+              console.error('Error fetching Recruitment Period:', error);
+            }
+        };
+        fetchData();
+      }, []);
       // const [obj,setObj] = useState([
       //     {
       //         course: "ประกาศรับสมัครนักเรียนใหม่",
@@ -94,7 +221,8 @@ function OpenCourse_period() {
                             <select value={selectedCourse} onChange={handleSelectCourseChange}className="custom-select">
                                 <option value="ทั้งหมด">ทั้งหมด</option>
                                 <option value="English Program (EP)">English Program (EP)</option>
-                                <option value="Regular Program">Regular Program</option>
+                                <option value="หลักสูตรทั่วไป">หลักสูตรทั่วไป</option>
+                                {/* <option value="Regular Program">Regular Program</option> */}
                             </select>
                         </div>
                         {/* </div>
