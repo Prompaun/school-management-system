@@ -26,7 +26,7 @@ function Modal_success({show,setShow,link,text}) {
             <p className="mt-3"style={{ fontSize: '22px' }}>{text}</p>
             <Link to= {link}>
             <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleClose}>
-            Ok
+            OK
             </Button></Link>
         </Modal.Body>
         </Modal>
