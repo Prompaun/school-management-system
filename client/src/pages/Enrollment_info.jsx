@@ -20,6 +20,7 @@ const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   };
   //ข้อมูลนักเรียน NewStudentinfo
   const allowedFileTypes = ['.pdf', '.jpg', '.jpeg', '.png'];
+    const [Enroll_History, setEnroll_History] = useState(false);
     const [message, setMessage] = useState('');
     const [studentNID, setStudentNID] = useState('');
     const [nameTitle, setnameTitle] = useState('');
@@ -1417,6 +1418,8 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         if (data.length > 0) {
             // หากมีข้อมูลในฐานข้อมูล
             alert('ท่านเคยสมัครหลักสูตร ' + Enroll_Course + ' ในปีการศึกษา ' + Enroll_Year + ' แล้ว');
+            // setShowLoadingModal(false);
+            // setShowSuccessModal(false);
         } else {
             // หากไม่พบข้อมูลในฐานข้อมูล
             try {
@@ -1431,7 +1434,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                 // console.log("Enroll_Date",Enroll_Date);
                 const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
                 console.log(save_enrollment_response.data.message); // พิมพ์ข้อความตอบกลับจาก API ใน console
-
+                setEnroll_History(true);
             } catch (error) {
                 console.error('Error adding enrollment:', error);
             }
@@ -1523,101 +1526,103 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // if (confirmSubmit) {
                 
                 try {
-                    await handleSubmit(
-                        Student_picture_file, 
-                        CopyofStudentIDCardFile,
-                        PreviousSchoolEducationalRecordsFile,
-                        studentNID,
-                        nameTitle,
-                        FirstName,
-                        LastName,
-                        formatDate(Student_DateOfBirth),
-                        Transcript_type,
-                        HouseNumber,
-                        Moo,
-                        Soi,
-                        Road,
-                        Province,
-                        District,
-                        SubDistrict,
-                        HouseReg_file
-                    );
-      
                     await checkEnrollment(
                       studentNID,
                       Enroll_Date,
                       Enroll_Year,
                       Enroll_Course
                     );
-      
-                    await addParentEmails(
-                      studentNID,
-                      FatherEmail,
-                      MotherEmail,
-                      ParentEmail
-                    );
-                    
-                    if (!isFatherRecordData){
-                      
-                      const Father_Nationality = !isFatherForeigner ? "ไทย" : FatherNationality;
-                      await addParentInformation(
-                        "",
-                        FatherEmail,
-                        FatherFirstname,
-                        FatherLastname,
-                        formatDate(FatherDateOfBirth),
-                        // "",
-                        Father_Nationality,
-                        FatherOffice,
-                        FatherOccupation,
-                        "บิดา",
-                        FatherTel
-                      );
-                    }
-      
-                    if (!isMotherRecordData){
-                      const Mother_Nationality = !isMotherForeigner ? "ไทย" : MotherNationality;
-                      await addParentInformation(
-                        '',
-                        MotherEmail,
-                        MotherFirstname,
-                        MotherLastname,
-                        formatDate(MotherDateOfBirth),
-                        // "",
-                        Mother_Nationality,
-                        MotherOffice,
-                        MotherOccupation,
-                        "มารดา",
-                        MotherTel
-                      );
-                    }
-      
-                    if (whoAreParent === "SomeoneElseIsParent" && !isParentRecordData){
-                      const Parent_Nationality = !isParentForeigner ? "ไทย" : ParentNationality;
-                      // console.log('Received setFatherNationality  ไทย:', FatherNationality);
-                      await addParentInformation(
-                        '',
-                        ParentEmail,
-                        ParentFirstname,
-                        ParentLastname,
-                        formatDate(ParentDateOfBirth),
-                        // "",
-                        Parent_Nationality,
-                        ParentOffice,
-                        ParentOccupation,
-                        ParentRole,
-                        ParentTel
-                      );
-                    }
-                    // setLoading(false)
-                    // navigate("/NewUser_menu");
 
+                    if(Enroll_History === true){
+                        await handleSubmit(
+                            Student_picture_file, 
+                            CopyofStudentIDCardFile,
+                            PreviousSchoolEducationalRecordsFile,
+                            studentNID,
+                            nameTitle,
+                            FirstName,
+                            LastName,
+                            formatDate(Student_DateOfBirth),
+                            Transcript_type,
+                            HouseNumber,
+                            Moo,
+                            Soi,
+                            Road,
+                            Province,
+                            District,
+                            SubDistrict,
+                            HouseReg_file
+                        );
+        
+                        await addParentEmails(
+                            studentNID,
+                            FatherEmail,
+                            MotherEmail,
+                            ParentEmail
+                            );
+                        
+                        if (!isFatherRecordData){
+                            const Father_Nationality = !isFatherForeigner ? "ไทย" : FatherNationality;
+                            await addParentInformation(
+                                "",
+                                FatherEmail,
+                                FatherFirstname,
+                                FatherLastname,
+                                formatDate(FatherDateOfBirth),
+                                // "",
+                                Father_Nationality,
+                                FatherOffice,
+                                FatherOccupation,
+                                "บิดา",
+                                FatherTel
+                            );
+                        }
+        
+                        if (!isMotherRecordData){
+                        const Mother_Nationality = !isMotherForeigner ? "ไทย" : MotherNationality;
+                        await addParentInformation(
+                                '',
+                                MotherEmail,
+                                MotherFirstname,
+                                MotherLastname,
+                                formatDate(MotherDateOfBirth),
+                                // "",
+                                Mother_Nationality,
+                                MotherOffice,
+                                MotherOccupation,
+                                "มารดา",
+                                MotherTel
+                            );
+                        }
+        
+                        if (whoAreParent === "SomeoneElseIsParent" && !isParentRecordData){
+                            const Parent_Nationality = !isParentForeigner ? "ไทย" : ParentNationality;
+                            // console.log('Received setFatherNationality  ไทย:', FatherNationality);
+                            await addParentInformation(
+                                '',
+                                ParentEmail,
+                                ParentFirstname,
+                                ParentLastname,
+                                formatDate(ParentDateOfBirth),
+                                // "",
+                                Parent_Nationality,
+                                ParentOffice,
+                                ParentOccupation,
+                                ParentRole,
+                                ParentTel
+                            );
+                        }
+
+                        setShowLoadingModal(false);
+                        setShowSuccessModal(true);
+                        // setLoading(false)
+                        // navigate("/NewUser_menu");
+                    }
                   } catch (error) {
                       console.error('Error handling button click:', error);
                   }
                 
-                setShowLoadingModal(false);
-                setShowSuccessModal(true);
+                  setShowLoadingModal(false);
             }
             // setShowLoadingModal(false);
             // setShowSuccessModal(true);      
