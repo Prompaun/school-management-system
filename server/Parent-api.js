@@ -1387,7 +1387,8 @@ router.get("/dropdownArray_EnrollStatus/:parentEmail", async (req, res) => {
     try {
         // Query to get Student_NIDs from Applicant_ParentEmail table based on the provided ParentEmail
         connection.query(
-            "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+            // "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+            "SELECT Student_NID FROM applicant WHERE ParentEmail = ?",
             [parentEmail, parentEmail, parentEmail],
             (err, parentEmailResults, fields) => {
                 if (err) {

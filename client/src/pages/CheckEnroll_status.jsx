@@ -94,12 +94,9 @@ function CheckEnroll_status({Email}) {
                       } else {
                           console.log("มีข้อผิดพลาดในการร้องขอข้อมูล");
                       }
-                    
                     });
-    
               }
-
-              console.log("ชื่อ:", selectedName);
+                console.log("ชื่อ:", selectedName);
                 console.log("ปีการศึกษา:", selectedYear);
                 console.log("หลักสูตร:", selectedCourse);
 
