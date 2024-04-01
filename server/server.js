@@ -11,7 +11,7 @@ const RequestApi = require('./Request-api');
 const app = express();
 
 //ser port
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 // const distPath = path.join(__dirname, '../client/dist');
 
 
