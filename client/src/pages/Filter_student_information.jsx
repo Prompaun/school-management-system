@@ -5,7 +5,7 @@ import logoImage from '../images/IMG_5416.png';
 import Header from '../components/Header';
 import axios from 'axios';
 
-function Filter_student_information() {
+function Filter_student_information({login_Email}) {
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none',
@@ -20,7 +20,9 @@ function Filter_student_information() {
                     Personnel_Email: Personnel_Email
                 }
             });
+            console.log('response.data',response.data);
             return response.data;
+            
         } catch (error) {
             console.error('Error fetching Year From Classroom:', error);
             throw error;
@@ -117,16 +119,24 @@ function Filter_student_information() {
     // ];
 
     useEffect(() => {
+        
         const fetchData = async () => {
             try {
-              const Years = await getYearFromClassroom("tom.brown@example.com");
+                console.log('login_Email11111',login_Email);
+              const Years = await getYearFromClassroom(login_Email);
               setYearsList(Years);
+              console.log('Years',Years);
             } catch (error) {
               console.error('Error fetching semesters:', error);
             }
           }
         fetchData();
       }, []);
+
+    //   useEffect(() => {
+    //     console.log('login_Email',login_Email);
+
+    //   }, [login_Email]);
 
     const fontStyle = {
         fontFamily: 'Kanit, sans-serif',
@@ -185,7 +195,10 @@ function Filter_student_information() {
 
     function checkStudentID(studentID, result2) {
         // ใช้ฟังก์ชัน Array.some() เพื่อตรวจสอบว่ามีค่า studentID ใน studentID หรือไม่
-        return result2.some(item => item.Student_ID.includes(studentID));
+        if (result2 !== null){
+            return result2.some(item => item.Student_ID.includes(studentID));
+        }
+        console.log('result2',result2);
       }
 
 
@@ -193,7 +206,7 @@ function Filter_student_information() {
     const handleButtonSearchData = async (event) => { // เปลี่ยนเป็น async เพื่อให้ใช้ await ได้
         if (CheckInputData()) {
             
-            const result1 = await getClassroomInfoFromPersonnel("tom.brown@example.com");
+            const result1 = await getClassroomInfoFromPersonnel(login_Email);
             if (StudentID){
                 try {
                     if(checkStudentID(StudentID, result1)){
@@ -210,7 +223,7 @@ function Filter_student_information() {
             }
       
             if (selectedYear){
-                const result2 = await getClassroomInfoFromYear("tom.brown@example.com", selectedYear);
+                const result2 = await getClassroomInfoFromYear(login_Email, selectedYear);
                 if (result2 === null) {
                     alert("ท่านไม่ใช่ครูประจำชั้นในปีการศึกษา:" + selectedYear);
                     return;

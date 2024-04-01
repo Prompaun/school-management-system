@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Button,Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({user}) => {
+const Navbar = ({user, Role}) => {
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
   };
+
+  // const onMessage = '1111'
 
   const containerStyle = {
     position: 'relative', // เพื่อให้สามารถใส่คำว่า "ระบบ" ลงในภาพได้
@@ -46,8 +48,8 @@ const Navbar = ({user}) => {
     // {Email:"DepartTeacher@gmail.com",Role:"Administrative"},
     // {Email:"AdminTeacher@gmail.com",Role:"Administrator"},
     // {Email:"Student@gmail.com",Role:"Student"},
-    {Email:"Parent@gmail.com",Role:"Parent"},
-    // {Email:"NewParent@gmail.com",Role:"NewParent"},
+    // {Email:"Parent@gmail.com",Role:"Parent"},
+    {Email:"NewParent@gmail.com",Role:"NewParent"},
   ])
   const Path = () => {
    if (ClassifyRole[0].Role==="Student") {
@@ -61,6 +63,31 @@ const Navbar = ({user}) => {
    }
   };
 
+  
+  console.log('RoleRoleRoleRoleRole',Role);
+  useEffect(() => {
+      // if (user.Role == "Student") {
+      //   setClassifyRole({Role:"Student"});
+      // }
+      // if (Role){
+        // setClassifyRole({Role:Role});
+        console.log('RoleRoleRoleRoleRole',Role);
+        let a = [{Email:"NewParent@gmail.com",Role:Role}];
+        // if (Role){
+          setClassifyRole(a)
+          
+        // }
+      // }
+      // if (ClassifyRole[0].Role){
+      //   console.log(ClassifyRole[0].Role);
+      // }
+
+    }, [Role]);
+
+    useEffect(() => {
+
+      console.log("ClassifyRole",ClassifyRole);
+    }, [ClassifyRole]);
 
   return (
     <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>

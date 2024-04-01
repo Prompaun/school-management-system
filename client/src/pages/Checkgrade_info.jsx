@@ -3,7 +3,7 @@ import { Link} from 'react-router-dom'
 import Header from '../components/Header';
 import axios from 'axios';
 
-const Checkgrade_info = () => {
+const Checkgrade_info = ({login_Email}) => {
   const handleGoBack = () => {
     window.history.back();
   };
@@ -82,7 +82,7 @@ const Checkgrade_info = () => {
     }
   };
   // ตัวอย่างการใช้งานฟังก์ชัน
-  // const parentEmail = 'john.doe@example.com'; // เปลี่ยนเป็นอีเมลของผู้ปกครองที่ต้องการค้นหา
+  // const parentEmail = login_Email; // เปลี่ยนเป็นอีเมลของผู้ปกครองที่ต้องการค้นหา
   // getStudentIdByParentEmail(parentEmail)
   //   .then(data => {
   //       console.log('Student IDs:', data);
@@ -104,7 +104,7 @@ const Checkgrade_info = () => {
   //     Firstname: "น้ำหนึ่ง",
   //     Lastname: "ใจดี"
   //   }
-  // ]);getStudentIdByParentEmail('john.doe@example.com')
+  // ]);getStudentIdByParentEmail(login_Email)
   const [StudentData, setStudentData] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState("");
   const [selectedStudent_ID, setSelectedStudent_ID] = useState("");
@@ -128,7 +128,7 @@ useEffect(() => {
     const fetchData = async () => {
         try {
               console.log('useEffect No.1');
-              const studentDataArray = await getStudentIdByParentEmail('john.doe@example.com');
+              const studentDataArray = await getStudentIdByParentEmail(login_Email);
               const formattedStudentData = studentDataArray.map(student => ({
                   ...student,
                   key: student.Student_ID, // ใช้ Student_ID เป็น key

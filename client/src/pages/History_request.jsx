@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Header from '../components/Header';
 import axios from 'axios';
 
-const History_request = () => {
+const History_request = ({login_Email}) => {
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
@@ -163,7 +163,7 @@ async function getRequestInfoByPareantEmail(email) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-          const studentDataArray = await getStudentIdByParentEmail('john.doe@example.com');
+          const studentDataArray = await getStudentIdByParentEmail(login_Email);
           console.log('Student data array:', studentDataArray);
         
           const formattedStudentData = studentDataArray.map(student => ({
@@ -180,8 +180,8 @@ async function getRequestInfoByPareantEmail(email) {
           if (studentDataArray.length > 0) {
             const firstStudentId = studentDataArray[0].Student_ID;
 
-            // const AllRequestInfo = await getRequestInfoByPareantEmail('john.doe@example.com', firstStudentId);
-            const AllRequestInfo = await getRequestInfoByPareantEmail('john.doe@example.com');
+            // const AllRequestInfo = await getRequestInfoByPareantEmail(login_Email, firstStudentId);
+            const AllRequestInfo = await getRequestInfoByPareantEmail(login_Email);
             const formattedAllRequestInfo = AllRequestInfo.map(request => ({
                 DateRequest: new Date(request.Request_Date).toLocaleDateString(), // กำหนดรูปแบบวันที่ตามที่ต้องการ
                 NoRequest: request.Request_No,
@@ -217,7 +217,7 @@ useEffect(() => {
           // setSelectedSemester('');
 
           console.log("selectedStudent_ID:", selectedStudent_ID); // พิมพ์ค่า StudentID ที่ได้
-          const RequestInfo = await getRequestInfo('john.doe@example.com', selectedStudent_ID, selectedStatus);
+          const RequestInfo = await getRequestInfo(login_Email, selectedStudent_ID, selectedStatus);
           const formattedRequestInfo = RequestInfo.map(request => ({
             DateRequest: new Date(request.Request_Date).toLocaleDateString(), // กำหนดรูปแบบวันที่ตามที่ต้องการ
             NoRequest: request.Request_No,
@@ -272,9 +272,9 @@ useEffect(() => {
           <div className="dropdown" style={{ maxWidth: '100%'}}>
               <select value={selectedStatus} onChange={handleSelectChange}className="custom-select w-full">
                 <option value="เลือกสถานะคำร้องขอใบรับรอง">เลือกสถานะคำร้องขอใบรับรอง</option>
-                {/* <option value="รอดำเนินการ">รอดำเนินการ</option> */}
+                <option value="รอดำเนินการ">รอดำเนินการ</option>
                 <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
-                <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+                {/* <option value="กำลังดำเนินการ">กำลังดำเนินการ</option> */}
               </select>
               </div>
           </div>

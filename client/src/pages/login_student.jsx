@@ -7,7 +7,8 @@ import eye_open from "../images/eye-open.png";
 import eye_closed from "../images/eye-closed.png";
 import Header from '../components/Header';
 import axios from 'axios';
-const Login_student = () => {
+
+const Login_student = ({uuuuu}) => {
 
       const linkStyle = {
         color: 'red',
@@ -15,7 +16,11 @@ const Login_student = () => {
         fontFamily: 'Kanit, sans-serif',
         fontSize: '16px'
       };
-
+    //   uuuuu('444444');
+      const sendData = () => {
+        const data = '444444';
+        uuuuu(data);
+      };
     const navigate = useNavigate();
 
     // เพิ่ม state สำหรับเก็บข้อมูลจากฟอร์ม
@@ -44,7 +49,9 @@ const Login_student = () => {
             
             if (exist) {
                 // ถ้ามีการตรวจสอบสำเร็จและข้อมูลถูกต้อง
+                // setuuuuu(formData.username);
                 navigate("/Student_menu", { state: { studentId: formData.username } });
+                sendData();
             } else {
                 // ถ้าข้อมูลไม่ถูกต้อง
                 alert('รหัสนักเรียน หรือ รหัสประจำตัวประชาชนไม่ถูกต้อง');

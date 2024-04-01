@@ -64,35 +64,6 @@ function CheckEnroll_status({Email}) {
             });
       }, []);
 
-      // const handleNextButtonClick = () => {
-      //   if (selectedName && selectedYear && selectedCourse) {
-      //     console.log("มีค่าในทั้งสามดรอปดาวน์ด้านบน");
-      //     const nameIndex = Enroll_ArrayDropdownList[0].Name.indexOf(selectedName);
-      //     if (nameIndex !== -1) {
-      //         const nidValue = Enroll_ArrayDropdownList[0].Enroll_ID[nameIndex];
-      //         Axios.get(`http://localhost:8080/CheckEnroll_status?Enroll_ID=${nidValue}&Enroll_Year=${selectedYear}&Enroll_Course=${selectedCourse}`)
-      //           .then((response) => {
-      //             console.log("Data from http://localhost:8080/CheckEnroll_status", response.data);
-      //             setEnroll_statusList(response.data);
-      //           }).catch((err) => {
-      //             console.log(err);
-      //             if (err.response && err.response.status === 404) {
-      //               console.log("ไม่พบข้อมูลที่ค้นหา");
-      //               setEnroll_statusList([]);
-      //             } else {
-      //                 console.log("มีข้อผิดพลาดในการร้องขอข้อมูล");
-      //             }
-                
-      //           });
-
-      //     } else {
-      //         console.log("ไม่พบชื่อที่ถูกเลือกในรายการ");
-      //       }
-      //   } else {
-      //       console.log("ไม่มีค่าในทั้งสามดรอปดาวน์ด้านบน");
-      //   }
-      // }
-
       useEffect(() => {
         console.log("ค่าที่เลือกใน dropdown:", selectedApplicantData);
         if (selectedApplicantData) {

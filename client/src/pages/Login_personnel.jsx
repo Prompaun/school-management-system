@@ -10,7 +10,7 @@ import GoogleIMG from '../images/google.png'
 const Login_personnel = () => {
 
     const google = () => {
-        window.open("http://localhost:5000/auth/google", "_self");
+        window.open("http://localhost:8080/auth/google", "_self");
     };
 
 
@@ -139,9 +139,9 @@ const Login_personnel = () => {
                            
                                     <Link to='/Register' style={linkStyle}>ลืมรหัสผ่าน</Link> */}
                                
-                                    <Link to="/Personnel_menu">
+                                    {/* <Link to="/Personnel_menu">
                                         <button type="submit" className="btn btn-primary float-end" style={{fontFamily: 'Kanit, sans-serif', fontSize: '16px'}}>Log in</button>
-                                    </Link>
+                                    </Link> */}
                                     {/* <br />
                                <br /> */}
                                {/* <div className="d-flex justify-content-center" style={{flexWrap:"wrap",fontSize:"16px"}}>

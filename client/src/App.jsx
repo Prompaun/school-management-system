@@ -56,7 +56,9 @@ import OpenCourse_period from './pages/OpenCourse_period';
 function App() {
   
   const [user, setUser] = useState(null);
-
+  const [Role, setRole] = useState('');
+  const [login_Email, setlogin_Email] = useState('');
+  const [uuuuu, setuuuuu] = useState('kkkkkkkk');
   async function addParentLogin(avatar, email, token) {
     try {
         const response = await axios.post('http://localhost:8080/add-parent-login', {
@@ -71,20 +73,50 @@ function App() {
     }
   }
 
+  async function getRole(email) {
+    try {
+        const response = await axios.get(`http://localhost:8080/get-role/${email}`);
+        return response.data.role; // return role from response
+    } catch (error) {
+        console.error('Error fetching role:', error);
+        throw error;
+    }
+}
+
   // const user = false;
   useEffect(() => {
+    // if (user !== null){
+      const handleGetRole = async (email) => {
+        // const email = 'john.doe@example.com'; 
+        try {
+            const role = await getRole(email);
+            console.log('Role:', role);
+            setRole(role);
+            // ทำสิ่งที่ต้องการด้วย role ที่ได้รับ
+        } catch (error) {
+            // console.error('Failed to get role:', error);
+            console.log('error:', error);
+        }
+      // }
+
+    }
     const getUser = async () => {
       try {
         const response = await axios.get("http://localhost:8080/auth/login/success", {
           withCredentials: true,
         });
+        console.log("Hiiii");
         if (response.status === 200) {
           const resObject = response.data;
           console.log(resObject); // ตรวจสอบข้อมูลที่ได้รับกลับมาจาก API endpoint
           setUser(resObject.user); // ตั้งค่าข้อมูลผู้ใช้ในตัวแปร user
           console.log("User ID:", resObject.user.id);
           console.log("User Avatar:", resObject.user.photos[0].value);
-  
+
+          handleGetRole(resObject.user.emails[0].value);
+          setRole("ClassTeacher");
+          // console.log(user.emails[0].value);
+          setlogin_Email(resObject.user.emails[0].value);
           // เรียกใช้ฟังก์ชัน addParentLogin ด้วยข้อมูลผู้ใช้
           await addParentLogin(
             resObject.user.photos[0].value,
@@ -99,29 +131,34 @@ function App() {
       }
     };
     getUser();
+
   }, []);
 
-  
+
+  useEffect(() => {
+    
+  console.log(uuuuu);
+
+  }, [uuuuu]);
   // if (user && user.emails[0].value) {
   //   console.log(user.emails[0].value);
   // } else {
   //   console.log('User email is not available.');
   // }
-  
+  console.log('hello this is app.jsx');
 
 
   return (
       <>
       <BrowserRouter>
-      
 
-      <Navbar user={user}/>
+      <Navbar user={user} Role={Role} uuuuu={setuuuuu}/>
         {/* <RouterProvider router={router}> */}
           
           <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
-          <Route path ="/Login/Login_student" element={<Login_student />} />
+          <Route path ="/Login/Login_student" element={<Login_student uuuuu={uuuuu}/>} />
             <Route
               exact
               path="/Login/Login_parent"
@@ -144,15 +181,15 @@ function App() {
         <Route path="/Enrollment_info" element={<Enrollment_info user={user} />} />
         <Route path="/Enrollment_info_EP" element={<Enrollment_info_EP user={user} />} />
 
-        <Route path="/CheckEnroll_status" element={<CheckEnroll_status/>} />
+        <Route path="/CheckEnroll_status" element={<CheckEnroll_status Email={login_Email}/>} />
         
         <Route path="/Student_menu" element={<Student_menu />} />
-        <Route path="/Checkgrade_info" element={<Checkgrade_info />} />
+        <Route path="/Checkgrade_info" element={<Checkgrade_info login_Email={login_Email}/>} />
 
         <Route path="/Parent_menu" element={<Parent_menu />} />
         <Route path="/Checkgrade" element={<Checkgrade/>} />
-        <Route path="/Request_cert" element={<Request_cert/>} />
-        <Route path="/History_request" element={<History_request/>} />
+        <Route path="/Request_cert" element={<Request_cert login_Email={login_Email}/>} />
+        <Route path="/History_request" element={<History_request login_Email={login_Email}/>} />
         <Route path="/Health_result" element={<Check_health_result/>} />
 
         <Route path ="/Login_personnel" element={<Login_personnel />} />
@@ -162,11 +199,11 @@ function App() {
 
         <Route path="/Education_information" element={<Education_information />} />
         <Route path="/Student_List_Information" element={<Student_List_Information />} />
-        <Route path="/Filter_student_information" element={<Filter_student_information />} />
+        <Route path="/Filter_student_information" element={<Filter_student_information login_Email={login_Email}/>} />
         <Route path="/Personnel_page" element={<Personnel_page />} />
         {/* <Route path="/Sidebar" element={<Sidebar />} /> */}
 
-        <Route path="/Subject_Score_Record" element={<Subject_Score_Record />} />
+        <Route path="/Subject_Score_Record" element={<Subject_Score_Record Role={Role} Email={login_Email}/>} />
         
         <Route path="/Check_Certification_Request" element={<Check_Certification_Request />} />
         <Route path="/Check_Applicant_Information" element={<Check_Applicant_Information />} />

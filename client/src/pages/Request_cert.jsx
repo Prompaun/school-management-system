@@ -6,7 +6,7 @@ import Modal_loading from '../components/Modal_loading';
 import Modal_success from '../components/Modal_success';
 import axios from 'axios';
 
-function Request_cert() {
+function Request_cert({login_Email}) {
 
     const linkStyle = {
         color: 'gray',
@@ -65,7 +65,7 @@ function Request_cert() {
     useEffect(() => {
       const fetchData = async () => {
           try {
-                const studentDataArray = await getStudentIdByParentEmail('john.doe@example.com');
+                const studentDataArray = await getStudentIdByParentEmail(login_Email);
                 const formattedStudentData = studentDataArray.map(student => ({
                     ...student,
                     key: student.Student_ID, // ใช้ Student_ID เป็น key
@@ -109,7 +109,7 @@ function Request_cert() {
               formData.append('CheckRequestTranscript', CheckRequestTranscript.checked);
 
               formData.append('Student_ID', selectedStudent_ID);
-              formData.append('Parent_Email', 'john.doe@example.com');
+              formData.append('Parent_Email', login_Email);
               formData.append('Request_Date', formatDate(new Date()));
               
               // เพิ่มข้อมูลของนักเรียนเข้าไปใน formData
@@ -131,7 +131,7 @@ function Request_cert() {
             // if(CheckRequestTranscript){
             //   const formData = new FormData();
             //   formData.append('Student_ID', selectedStudent_ID);
-            //   formData.append('Parent_Email', 'john.doe@example.com');
+            //   formData.append('Parent_Email', login_Email);
             //   formData.append('Request_Date', formatDate(new Date()));
               
             //   // เพิ่มข้อมูลของนักเรียนเข้าไปใน formData
