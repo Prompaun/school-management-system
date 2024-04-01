@@ -7,7 +7,7 @@ import axios from 'axios';
 import Modal_confirm from '../components/Modal_confirm';
 
 // import Modal_subject from "../components/Modal_subject";
-const Subject_Score_Record = () => {
+const Subject_Score_Record = ({Role, Email}) => {
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -29,8 +29,8 @@ const Subject_Score_Record = () => {
     const { Year,Semester } = YearData;
 
     //for login
-    const [Role, setRole] = useState("administrator");
-    const [Email, setEmail] = useState("tom.brown@example.com");
+    // const [Role, setRole] = useState("administrator");
+    // const [Email, setEmail] = useState("tom.brown@example.com");
 
     async function getyeardropdown() {
         try {
