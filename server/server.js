@@ -11,7 +11,7 @@ const RequestApi = require('./Request-api');
 const app = express();
 
 //ser port
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 // const distPath = path.join(__dirname, '../client/dist');
 
 
@@ -72,7 +72,11 @@ app.use(google_api);
 //     // res.sendFile(`${__dirname}/index.html`);
 //     res.sendFile("C:/Users/promp/Downloads/School-project/client/src/pages/NewStudent_info.jsx");
 //   });
-
+// Health check route
+app.get('/health', (req, res) => {
+    // ส่งคำตอบกลับว่าแอปพลิเคชันทำงานอย่างถูกต้องด้วยสถานะ HTTP 200
+    res.status(200).send('OK');
+  });
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
