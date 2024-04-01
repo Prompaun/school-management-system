@@ -28,7 +28,8 @@ const connection = mysql.createConnection({
     database: process.env.DATABASE,
     password: process.env.PASSWORD,
     port: process.env.PORT_DB,
-    ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
+    ssl: {ca: process.env.SSL}
+    // ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
     // ssl: {ca: fs.readFileSync(process.env.SSL)}
     // ssl: process.env.SSL
   });
@@ -46,7 +47,6 @@ const role_api = require('./role-api')(connection);
 const Student_api = require('./Student-api')(connection);
 const Parent_api = require('./Parent-api')(connection);
 const Personnel_api = require('./Pesonnel-api')(connection);
-// const Student_api = require('./Student-api')(connection);
 const PostNews_api = require('./Post-news-api')(connection);
 const checkApplicant_api = require('./check-applicant-api')(connection);
 const RecruitmentPeriod_api = require('./Recruitment-period-api')(connection);
