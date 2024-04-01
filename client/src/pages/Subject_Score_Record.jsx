@@ -217,7 +217,7 @@ const Subject_Score_Record = ({Role, Email}) => {
         if (selectedSubject !== "เลือกวิชา" ) {
             try {
                 const response = await axios.post('http://localhost:8080/update-assessment-score', {
-                    score: value,
+                    score: value || null,
                     assessment: key,
                     year: selectedYear,
                     semester: selectedSemester,
@@ -225,6 +225,26 @@ const Subject_Score_Record = ({Role, Email}) => {
                     student: StudentScore[id].StudentID,
                     full_score_final: Assessment.find(element => element.Assessment_name === "คะแนนสอบปลายภาค").Assessment_proportion,
                     full_score_mid: Assessment.find(element => element.Assessment_name === "คะแนนสอบกลางภาค").Assessment_proportion
+                });
+
+                return response.data;
+            } catch (error) {
+                console.error('Error updating assessment:', error);
+                throw error;
+            }
+        }
+    };
+
+    async function updateTotalScore(total,score2grade,id) {
+        if (selectedSubject !== "เลือกวิชา" ) {
+            try {
+                const response = await axios.post('http://localhost:8080/update-grade-totalScore', {
+                    grade: score2grade,
+                    total: total,
+                    subject: selectedSubject,
+                    year: selectedYear,
+                    semester: selectedSemester,
+                    student: StudentScore[id].StudentID
                 });
                 return response.data;
             } catch (error) {
@@ -279,7 +299,7 @@ const Subject_Score_Record = ({Role, Email}) => {
                     id: Assessment[id].Assessment_id
                 });  
                 setAssessment(Assessment.filter((row) => row.id !== id));
-                // alert('ลบข้อมูลเสร็จสิ้น')
+                alert('ลบข้อมูลเสร็จสิ้น')
                 setShowModalDelete(true);
 
                 getStudentInfo();
@@ -407,7 +427,9 @@ const Subject_Score_Record = ({Role, Email}) => {
                     StudentID: response.data[index].Student_ID,
                     nameTitle: response.data[index].NameTitle, 
                     FirstName: response.data[index].FirstName                    , 
-                    Lastname: response.data[index].LastName, 
+                    // Lastname: response.data[index].LastName, 
+                    // TotalScore: gradeResponse.data[index].Total_score,
+                    SubjectScore: gradeResponse.data[index].Subject_grade,
                     scores: scores[index]
                 }));
                 setStudentScore(newInfo);
@@ -557,16 +579,10 @@ const Subject_Score_Record = ({Role, Email}) => {
                     }
                     alert('กรุณากรอกข้อมูลให้ครบ')
                 }
-                // setShowModalConfirm(true);
             } else {
-                // console.log(ShowModalConfirm, "ShowModalConfirm1")
-
-                // setShowModalConfirm(true);
-                // console.log(ShowModalConfirm, "ShowModalConfirm2")
                 getAssessmentInfo()
                 setSelectedClassYear("เลือกชั้นปี");
                 setSelectedRoom("เลือกห้อง");
-
             }
         
     };
@@ -585,11 +601,8 @@ const Subject_Score_Record = ({Role, Email}) => {
 
     const handleDeleteRow = (id) => {
         deleteAssessmentInfo(id)
-        // setShowModalDelete(true);
         setSelectedClassYear("เลือกชั้นปี");
         setSelectedRoom("เลือกห้อง");
-
-
     };
     const handleAddRow = () => {
         setAssessment([...Assessment, { id: Assessment.length, Assessment_name: '', Assessment_proportion: '', saved: false }]);
@@ -640,16 +653,37 @@ const Subject_Score_Record = ({Role, Email}) => {
     const [editingIdScore, setEditingIdScore] = useState(null);
     const handleEditRowScore = (id) => {
         setEditingIdScore(id === editingIdScore ? null : id);
-        // setShowModalConfirm(true);
-       
         if (editingIdScore !== null) {
+            let total = 0
             setShowModalSuccess(true);
-           
             Object.keys(StudentScore[id].scores).forEach(element => {
                 updateAssessmentScore(element,StudentScore[id].scores[element],id)
+                //update grade
+                if (typeof StudentScore[id].scores[element] === 'number') {
+                    total += StudentScore[id].scores[element]
+                }
             })
+            let score2grade = 5
+            if (total >= 80) {
+                score2grade = 4.0;
+            } else if (total >= 75) {
+                score2grade = 3.5;
+            } else if (total >= 70) {
+                score2grade = 3.0;
+            } else if (total >= 65) {
+                score2grade = 2.5;
+            } else if (total >= 60) {
+                score2grade = 2.0;
+            } else if (total >= 55) {
+                score2grade = 1.5; 
+            } else if (total >= 50) {
+                score2grade = 1.0; 
+            } else {
+                score2grade = 0.0;
+            }
+            updateTotalScore(total,score2grade,id)
+        
         }
-     
         getStudentInfo()
       };
       
@@ -667,14 +701,12 @@ const Subject_Score_Record = ({Role, Email}) => {
     //   const handleAddRowScore = () => {
     //     setAssessment([...StudentScore, { id: StudentScore.length + 1, Assessment_name: '', Assessmant_propotion: '' }]);
     //   };
-
     const [ShowModalConfirm,setShowModalConfirm] = useState(false);
     const [ShowModalSuccess,setShowModalSuccess] = useState(false);
     const [ShowModalDelete,setShowModalDelete] = useState(false);
-
     return (
         <>
-         {ShowModalDelete && (
+        {ShowModalDelete && (
             <Modal_success
             show={ShowModalDelete} 
             setShow={setShowModalDelete} 
@@ -1006,8 +1038,6 @@ const Subject_Score_Record = ({Role, Email}) => {
                         </div>
                         </>
                                 )}
-                           
-                            
                         </div>
                        )}
                             </>

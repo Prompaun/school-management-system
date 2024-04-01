@@ -595,6 +595,7 @@ module.exports = function(connection) {
 
     router.post('/assessment-get-grade', (req, res) => {
         const { subject,year,semester,student } = req.body;
+        // Total_score,Subject_grade
         const sql = `
             SELECT 
                 Score_mid, Score_final,grade.Student_ID
@@ -804,6 +805,36 @@ module.exports = function(connection) {
                 });
                 // res.status(200).json({message: "Insert assessment successfully"});
             }
+        });
+    });
+    
+    router.post('/update-grade-totalScore', (req, res) => {
+        const { grade,total,subject,year,semester,student } = req.body;
+        const sql = `
+            UPDATE
+                grade
+            JOIN
+                subject
+            ON
+                subject.Subject_ID = grade.Subject_ID
+            SET
+                Subject_grade = ?,
+                Total_score = ?
+            WHERE
+                Subject_Name = ?
+            AND
+                grade.Year = ?
+            AND
+                Semester = ?
+            AND
+                Student_ID = ?
+        `;
+        connection.query(sql,[grade,total,subject,year,semester,student], (err, results) => {
+            if (err) {
+                console.error('Error querying grade-totalScore information:', err);
+                return res.status(500).json({ error: 'Failed to update grade-totalScore information' });
+            }
+            res.status(200).json({results, message: "Update grade-totalScore successfully"});
         });
     });
 
@@ -1120,7 +1151,7 @@ module.exports = function(connection) {
     router.post('/get-student-assessment-score-by-teacher', (req, res) => {
         const { student } = req.body;
         const sql = `
-            SELECT 
+            SELECT
                 assessment.Assessment_Name, student_assessment.Score, student.student_id
             from
                 student
