@@ -1426,7 +1426,7 @@ router.get("/dropdownArray_EnrollStatus/:parentEmail", async (req, res) => {
                             Enroll_Year: Array.from(new Set(applicantResults.map(result => result.Enroll_Year))),
                             Enroll_Course: Array.from(new Set(applicantResults.map(result => result.Enroll_Course)))
                         };
-                
+                        // console.log('formattedData',formattedData);
                         return res.status(200).json([formattedData]);
                     }
                 );
@@ -1520,7 +1520,9 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
     try {
         // Query to get Student_NIDs from Applicant_ParentEmail table based on the provided ParentEmail
         connection.query(
-            "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+            // "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+            // [parentEmail, parentEmail, parentEmail],
+            "SELECT Student_NID FROM applicant WHERE ParentEmail = ?",
             [parentEmail, parentEmail, parentEmail],
             (err, parentEmailResults, fields) => {
                 if (err) {
@@ -1554,7 +1556,7 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
                             Enroll_Course: applicantResults.Enroll_Course,
                             Enroll_Status: applicantResults.Enroll_Status
                         }));
-                
+                        console.log('formattedData',formattedData);
                         return res.status(200).json(formattedData);
                     }
                 );
