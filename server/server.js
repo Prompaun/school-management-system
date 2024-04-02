@@ -45,7 +45,7 @@ if((err)) {
     console.log('MySQL successfully connected!');
   }
 })
-// const role_api = require('./role-api')(connection);
+const role_api = require('./role-api')(connection);
 // const Student_api = require('./Student-api')(connection);
 // const Parent_api = require('./Parent-api')(connection);
 // const Personnel_api = require('./Pesonnel-api')(connection);
@@ -58,7 +58,7 @@ if((err)) {
 
 //use routes    
 
-// app.use(role_api);
+app.use(role_api);
 // app.use(Student_api);
 // app.use(Parent_api);
 // app.use(Personnel_api);
