@@ -1381,65 +1381,65 @@ router.get("/CheckEnroll_status", async (req, res) => {
 });
 
 //คิวรี่ข้อมูลของผู้สมัครจาก parentEmail สำหรับนำมาแสดงบน dropdown
-router.get("/dropdownArray_EnrollStatus/:parentEmail", async (req, res) => {
-    const parentEmail = req.params.parentEmail;
+// router.get("/dropdownArray_EnrollStatus/:parentEmail", async (req, res) => {
+//     const parentEmail = req.params.parentEmail;
 
-    try {
-        // Query to get Student_NIDs from Applicant_ParentEmail table based on the provided ParentEmail
-        connection.query(
-            // "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
-            "SELECT Student_NID FROM applicant WHERE ParentEmail = ?",
-            [parentEmail, parentEmail, parentEmail],
-            (err, parentEmailResults, fields) => {
-                if (err) {
-                    console.log("Error while retrieving data from the database", err);
-                    return res.status(500).json({ error: err.message });
-                }
+//     try {
+//         // Query to get Student_NIDs from Applicant_ParentEmail table based on the provided ParentEmail
+//         connection.query(
+//             // "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+//             "SELECT Student_NID FROM applicant WHERE ParentEmail = ?",
+//             [parentEmail, parentEmail, parentEmail],
+//             (err, parentEmailResults, fields) => {
+//                 if (err) {
+//                     console.log("Error while retrieving data from the database", err);
+//                     return res.status(500).json({ error: err.message });
+//                 }
 
-                if (parentEmailResults.length === 0) {
-                    return res.status(404).json({ error: "No applicant found with this email" });
-                }
+//                 if (parentEmailResults.length === 0) {
+//                     return res.status(404).json({ error: "No applicant found with this email" });
+//                 }
 
-                const studentNIDs = parentEmailResults.map(result => result.Student_NID);
+//                 const studentNIDs = parentEmailResults.map(result => result.Student_NID);
 
-                // Query to fetch details from Applicant table based on the obtained Student_NIDs
-                connection.query(
-                    "SELECT app.FirstName, app.LastName, enroll.Enroll_ID, enroll.Student_NID, enroll.Enroll_Year, enroll.Enroll_Course FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE app.Student_NID IN (?)",
-                    [studentNIDs], // ใส่ค่า studentNIDs เข้าไปในพารามิเตอร์นี้
-                    (err, applicantResults, fields) => {
-                        // ตราบเท่าที่คำสั่ง SQL นี้ถูกเรียกใช้ด้วยค่า studentNIDs ที่ถูกส่งมาในพารามิเตอร์ของ query มันจะทำงานได้ถูกต้อง
-                        if (err) {
-                            console.log("Error while retrieving data from the database", err);
-                            return res.status(500).json({ error: err.message });
-                        }
+//                 // Query to fetch details from Applicant table based on the obtained Student_NIDs
+//                 connection.query(
+//                     "SELECT app.FirstName, app.LastName, enroll.Enroll_ID, enroll.Student_NID, enroll.Enroll_Year, enroll.Enroll_Course FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE app.Student_NID IN (?)",
+//                     [studentNIDs], // ใส่ค่า studentNIDs เข้าไปในพารามิเตอร์นี้
+//                     (err, applicantResults, fields) => {
+//                         // ตราบเท่าที่คำสั่ง SQL นี้ถูกเรียกใช้ด้วยค่า studentNIDs ที่ถูกส่งมาในพารามิเตอร์ของ query มันจะทำงานได้ถูกต้อง
+//                         if (err) {
+//                             console.log("Error while retrieving data from the database", err);
+//                             return res.status(500).json({ error: err.message });
+//                         }
                         
-                        if (applicantResults.length === 0) {
-                            return res.status(404).json({ error: "No applicant details found" });
-                        }
+//                         if (applicantResults.length === 0) {
+//                             return res.status(404).json({ error: "No applicant details found" });
+//                         }
                 
-                        // Prepare the data in the desired format
-                        const formattedData = {
-                            array: Array.from(new Set(applicantResults.map(result => result.Student_NID))),
-                            // array: applicantResults.map(result => result.Student_NID),
-                            Name: Array.from(new Set(applicantResults.map(result => result.FirstName + " " + result.LastName))),
-                            // Name: applicantResults.map(result => result.FirstName + " " + result.LastName),
-                            Enroll_ID: Array.from(new Set(applicantResults.map(result => result.Enroll_ID))),
-                            Enroll_Year: Array.from(new Set(applicantResults.map(result => result.Enroll_Year))),
-                            Enroll_Course: Array.from(new Set(applicantResults.map(result => result.Enroll_Course)))
-                        };
-                        console.log('dropdownArray_EnrollStatus',formattedData);
-                        return res.status(200).json([formattedData]);
-                    }
-                );
+//                         // Prepare the data in the desired format
+//                         const formattedData = {
+//                             array: Array.from(new Set(applicantResults.map(result => result.Student_NID))),
+//                             // array: applicantResults.map(result => result.Student_NID),
+//                             Name: Array.from(new Set(applicantResults.map(result => result.FirstName + " " + result.LastName))),
+//                             // Name: applicantResults.map(result => result.FirstName + " " + result.LastName),
+//                             Enroll_ID: Array.from(new Set(applicantResults.map(result => result.Enroll_ID))),
+//                             Enroll_Year: Array.from(new Set(applicantResults.map(result => result.Enroll_Year))),
+//                             Enroll_Course: Array.from(new Set(applicantResults.map(result => result.Enroll_Course)))
+//                         };
+//                         // console.log('dropdownArray_EnrollStatus',formattedData);
+//                         return res.status(200).json([formattedData]);
+//                     }
+//                 );
                 
                 
-            }
-        );
-    } catch (err) {
-        console.log(err);
-        return res.status(500).send();
-    }
-});
+//             }
+//         );
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).send();
+//     }
+// });
 
 //คิวรี่สำหรับหาข้อมูลของผู้สมัคร เพื่อที่จะนำมาใช้ในการแสดงข้อมูลการสมัครเรียน แบบ default --> ไม่ใช้แล้ว**
 // router.get("/defaultData_EnrollStatus/:parentEmail", async (req, res) => {
@@ -1540,6 +1540,7 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
                 // Query to fetch details from Applicant table based on the obtained Student_NIDs
                 connection.query(
                     "SELECT app.NameTitle, app.FirstName, app.LastName, app.Student_NID, enroll.Enroll_ID, enroll.Enroll_Year, enroll.Enroll_Course, enroll.Enroll_Status FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE app.Student_NID IN (?)",
+//app.FirstName, app.LastName, enroll.Enroll_ID, enroll.Student_NID, enroll.Enroll_Year, enroll.Enroll_Course FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID 
                     [studentNIDs],
                     (err, applicantResults, fields) => {
                         if (err) {
@@ -1557,7 +1558,7 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
                             Enroll_Course: applicantResults.Enroll_Course,
                             Enroll_Status: applicantResults.Enroll_Status
                         }));
-                        console.log('formattedData',formattedData);
+                        // console.log('formattedData',formattedData);
                         return res.status(200).json(formattedData);
                     }
                 );

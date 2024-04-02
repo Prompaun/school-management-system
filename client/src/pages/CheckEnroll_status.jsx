@@ -35,14 +35,14 @@ function CheckEnroll_status({Email}) {
 
         
         // เรียก API เมื่อหน้าเว็บโหลดขึ้นมา
-        Axios.get('http://localhost:8080/dropdownArray_EnrollStatus/'+Email)
-          .then((response) => {
-            console.log("so sad cannot connect to http://localhost:8080/dropdownArray_EnrollStatus",response.data);
-            setEnroll_ArrayDropdownList(response.data);
-            console.log("hello world",response.data[0].Name);
-          }).catch((err) => {
-            console.log(err)
-          });
+        // Axios.get('http://localhost:8080/dropdownArray_EnrollStatus/'+Email)
+        //   .then((response) => {
+        //     console.log("so sad cannot connect to http://localhost:8080/dropdownArray_EnrollStatus",response.data);
+        //     setEnroll_ArrayDropdownList(response.data);
+        //     console.log("hello world",response.data[0].Name);
+        //   }).catch((err) => {
+        //     console.log(err)
+        //   });
 
           Axios.get('http://localhost:8080/dropdownData_EnrollStatus/'+Email)
           .then((response) => {
@@ -77,12 +77,14 @@ function CheckEnroll_status({Email}) {
                 setSelectedYear(selectedYear);
                 setSelectedCourse(selectedCourse);
                 
-                
-
-                const nameIndex = Enroll_ArrayDropdownList[0].Name.indexOf(selectedName);
-                if (nameIndex !== -1) {
-                  const nidValue = Enroll_ArrayDropdownList[0].array[nameIndex];
-                  Axios.get(`http://localhost:8080/CheckEnroll_status?Enroll_ID=${nidValue}&Enroll_Year=${selectedYear}&Enroll_Course=${selectedCourse}`)
+                const studentNIDMap = new Map(Enroll_dataDropdownList.map(student => [`${student.FirstName} ${student.LastName}`, student.Student_NID]));
+                const studentNID = studentNIDMap.get(selectedName);
+                console.log("studentNIDMap",studentNIDMap);
+                console.log("studentNID",studentNID);
+                // const nameIndex = Enroll_ArrayDropdownList[0].Name.indexOf(selectedName);
+                // if (nameIndex !== -1) {
+                  // const nidValue = Enroll_ArrayDropdownList[0].array[nameIndex];
+                  Axios.get(`http://localhost:8080/CheckEnroll_status?Enroll_ID=${studentNID}&Enroll_Year=${selectedYear}&Enroll_Course=${selectedCourse}`)
                     .then((response) => {
                       console.log("Data from http://localhost:8080/CheckEnroll_status", response.data);
                       setEnroll_statusList(response.data);
@@ -95,7 +97,7 @@ function CheckEnroll_status({Email}) {
                           console.log("มีข้อผิดพลาดในการร้องขอข้อมูล");
                       }
                     });
-              }
+              // }
                 console.log("ชื่อ:", selectedName);
                 console.log("ปีการศึกษา:", selectedYear);
                 console.log("หลักสูตร:", selectedCourse);
