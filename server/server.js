@@ -55,7 +55,7 @@ if((err)) {
 })
 const role_api = require('./role-api')(connection);
 const Student_api = require('./Student-api')(connection);
-// const Parent_api = require('./Parent-api')(connection);
+const Parent_api = require('./Parent-api')(connection);
 const Personnel_api = require('./Pesonnel-api')(connection);
 const PostNews_api = require('./Post-news-api')(connection);
 const checkApplicant_api = require('./check-applicant-api')(connection);
@@ -68,7 +68,7 @@ const Health_api = require('./Health-api')(connection);
 
 app.use(role_api);
 app.use(Student_api);
-// app.use(Parent_api);
+app.use(Parent_api);
 app.use(Personnel_api);
 app.use(PostNews_api);
 app.use(checkApplicant_api);
