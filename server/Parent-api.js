@@ -1427,7 +1427,7 @@ router.get("/dropdownArray_EnrollStatus/:parentEmail", async (req, res) => {
                             Enroll_Year: Array.from(new Set(applicantResults.map(result => result.Enroll_Year))),
                             Enroll_Course: Array.from(new Set(applicantResults.map(result => result.Enroll_Course)))
                         };
-                        // console.log('formattedData',formattedData);
+                        console.log('dropdownArray_EnrollStatus',formattedData);
                         return res.status(200).json([formattedData]);
                     }
                 );
