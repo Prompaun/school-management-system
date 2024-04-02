@@ -3,7 +3,7 @@ import { Link, useLocation} from 'react-router-dom'
 import Header from '../components/Header';
 import axios from 'axios';
 
-const Checkgrade = () => {
+const Checkgrade = ({user, Role}) => {
   const handleGoBack = () => {
     window.history.back();
   };
@@ -17,6 +17,7 @@ const Checkgrade = () => {
   const location = useLocation();
   const SearchParams = new URLSearchParams(location.search);
   const studentID_param = SearchParams.get("id");
+  console.log("user",user);
   
   async function getYearSemestersByStudentId(studentId) {
     try {
@@ -102,52 +103,53 @@ const Checkgrade = () => {
 
     const fetchData = async () => {
         try {
-              const yearSemesters = await getYearSemestersByStudentId(studentID_param);
-              console.log('yearSemesters:', yearSemesters);
+              if(Role === "Student"){
+                  const yearSemesters = await getYearSemestersByStudentId(user.displayName);
+                console.log('yearSemesters:', yearSemesters);
 
-              // หา Year และ Semester ที่มีค่ามากที่สุด
-              let maxYear = 0;
-              // let maxSemester = 0;
-              yearSemesters.forEach(({ Year, Semester }) => {
-                  maxYear = Math.max(maxYear, parseInt(Year));
-              });
+                // หา Year และ Semester ที่มีค่ามากที่สุด
+                let maxYear = 0;
+                // let maxSemester = 0;
+                yearSemesters.forEach(({ Year, Semester }) => {
+                    maxYear = Math.max(maxYear, parseInt(Year));
+                });
 
-              const getSemester = await getSemesterByStudentId(studentID_param, maxYear);
-              // console.log('getSemester:', getSemester);
-              const maxSemester = Math.max(...getSemester.map(sem => parseInt(sem)));
-              console.log('getSemester:', getSemester);
-              console.log('maxSemester:', maxSemester);
-              const gradeInfo = await getGradeInfo(studentID_param, maxYear, maxSemester);
-              const mappedGradeInfo = gradeInfo.map(item => ({
-                id: item.Subject_ID,
-                name: item.Subject_Name,
-                score: item.Score_mid,
-                credits: item.Subject_Credit,
-                between_full: item.Full_score_mid,
-                final_full: item.Full_score_final,
-                between_get: item.Score_mid,
-                final_get: item.Score_final,
-                totalScore: item.Total_score,
-                grade: item.Subject_grade,
-              }));
-              setSubjectObject(mappedGradeInfo);
-              console.log('Max Year:', maxYear);
-              console.log('Max Semester:', maxSemester);
-              setTableHeader(`ปีการศึกษา ${maxYear} ภาคการศึกษาที่ ${maxSemester}`);
-              setSelectedYear(maxYear);
-              setSelectedSemester(maxSemester);
-              const years = await getYearByStudentId(studentID_param);
-              // const semesters = await getSemesterByStudentId(studentID_param, maxYear);
+                const getSemester = await getSemesterByStudentId(user.displayName, maxYear);
+                // console.log('getSemester:', getSemester);
+                const maxSemester = Math.max(...getSemester.map(sem => parseInt(sem)));
+                console.log('getSemester:', getSemester);
+                console.log('maxSemester:', maxSemester);
+                const gradeInfo = await getGradeInfo(user.displayName, maxYear, maxSemester);
+                const mappedGradeInfo = gradeInfo.map(item => ({
+                  id: item.Subject_ID,
+                  name: item.Subject_Name,
+                  score: item.Score_mid,
+                  credits: item.Subject_Credit,
+                  between_full: item.Full_score_mid,
+                  final_full: item.Full_score_final,
+                  between_get: item.Score_mid,
+                  final_get: item.Score_final,
+                  totalScore: item.Total_score,
+                  grade: item.Subject_grade,
+                }));
+                setSubjectObject(mappedGradeInfo);
+                console.log('Max Year:', maxYear);
+                console.log('Max Semester:', maxSemester);
+                setTableHeader(`ปีการศึกษา ${maxYear} ภาคการศึกษาที่ ${maxSemester}`);
+                setSelectedYear(maxYear);
+                setSelectedSemester(maxSemester);
+                const years = await getYearByStudentId(user.displayName);
+                // const semesters = await getSemesterByStudentId(studentID_param, maxYear);
 
-              // setYearData({
-              //     Year: years.map(year => year.toString()).sort(),
-              //     Semester: semesters.sort()
-              // });
-              setYearData(prevState => ({
-                ...prevState,
-                Year: years.map(year => year.toString()).sort()
-              }));
-
+                // setYearData({
+                //     Year: years.map(year => year.toString()).sort(),
+                //     Semester: semesters.sort()
+                // });
+                setYearData(prevState => ({
+                  ...prevState,
+                  Year: years.map(year => year.toString()).sort()
+                }));
+              }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -161,12 +163,15 @@ useEffect(() => {
     if (selectedYear) {
       console.log('useEffect No.3');
       try {
-        const semesters = await getSemesterByStudentId(studentID_param, selectedYear);
-        // setSemesters(semesters);
-        setYearData(prevState => ({
-          ...prevState,
-          Semester: semesters.sort()
-        }));
+        if(Role === "Student"){
+          const semesters = await getSemesterByStudentId(user.displayName, selectedYear);
+          // setSemesters(semesters);
+          setYearData(prevState => ({
+            ...prevState,
+            Semester: semesters.sort()
+          }));
+        }
+        
       } catch (error) {
         console.error('Error fetching semesters:', error);
       }
@@ -187,22 +192,23 @@ useEffect(() => {
     console.log('useEffect No.4');
     const fetchData = async () => {
       try {
-        
-        const gradeInfo = await getGradeInfo(studentID_param, selectedYear, selectedSemester);
-        console.log('Grade info:', gradeInfo);
-        const mappedGradeInfo = gradeInfo.map(item => ({
-          id: item.Subject_ID,
-          name: item.Subject_Name,
-          score: item.Score_mid,
-          credits: item.Subject_Credit,
-          between_full: item.Full_score_mid,
-          final_full: item.Full_score_final,
-          between_get: item.Score_mid,
-          final_get: item.Score_final,
-          totalScore: item.Total_score,
-          grade: item.Subject_grade,
-        }));
-        setSubjectObject(mappedGradeInfo);
+        if(Role === "Student"){
+          const gradeInfo = await getGradeInfo(user.displayName, selectedYear, selectedSemester);
+          console.log('Grade info:', gradeInfo);
+          const mappedGradeInfo = gradeInfo.map(item => ({
+            id: item.Subject_ID,
+            name: item.Subject_Name,
+            score: item.Score_mid,
+            credits: item.Subject_Credit,
+            between_full: item.Full_score_mid,
+            final_full: item.Full_score_final,
+            between_get: item.Score_mid,
+            final_get: item.Score_final,
+            totalScore: item.Total_score,
+            grade: item.Subject_grade,
+          }));
+          setSubjectObject(mappedGradeInfo);
+        }
       } catch (error) {
         console.error('Error fetching grade information:', error);
       }
