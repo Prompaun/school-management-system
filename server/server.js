@@ -79,7 +79,9 @@ app.use(role_api);
 // Health check route
 
 app.get('/', (req, res) => {
-  return res.send(`hello world TEST=${process.env.TEST} ${process.env.HOST} ${process.env.USER} ${process.env.DATABASE} ${process.env.PASSWORD} ${process.env.PORT_DB} ${process.env.SSL} `)
+  // return res.send(`hello world TEST=${process.env.TEST} ${process.env.HOST} ${process.env.USER} ${process.env.DATABASE} ${process.env.PASSWORD} ${process.env.PORT_DB} ${process.env.SSL} `)
+  return res.send(`hello world TEST=${process.env.TEST} ${process.env.USER} `)
+
 });
 
 // app.get('/health', (req, res) => {
