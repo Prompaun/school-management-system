@@ -14,7 +14,7 @@ module.exports = function(connection) {
         connection.query(sql, email, (err, results) => {
             if (err) {
                 console.error('Error fetching role:', err);
-                return res.status(500).json({ error: 'Failed to fetch role' });
+                return res.status(500).json({ error: 'Failed to fetch role', email });
             }
             if (results.length === 0) {
                 return res.status(404).json({ error: 'Email not found' });
