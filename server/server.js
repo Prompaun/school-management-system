@@ -73,12 +73,27 @@ app.use(google_api);
 //     res.sendFile("C:/Users/promp/Downloads/School-project/client/src/pages/NewStudent_info.jsx");
 //   });
 // Health check route
-app.get('/health', (req, res) => {
-    // ส่งคำตอบกลับว่าแอปพลิเคชันทำงานอย่างถูกต้องด้วยสถานะ HTTP 200
-    res.status(200).send('OK');
-  });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})
+app.get('/', (req, res) => {
+  return res.send(`hello world TEST=${process.env.TEST}`)
+});
+
+// app.get('/health', (req, res) => {
+//     // ส่งคำตอบกลับว่าแอปพลิเคชันทำงานอย่างถูกต้องด้วยสถานะ HTTP 200
+//     res.status(200).send('OK');
+//   });
+
+//initialize the app.
+async function initialize(){    
+  app.listen(PORT);
+};
+
+initialize()
+  .finally(
+      () => console.log(`app started on port:${PORT}`)
+  );
+
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// })
 
