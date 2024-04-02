@@ -40,8 +40,10 @@ connection.connect((err) => {
 if((err)) {
     console.log('Error connecting to MySQL database =', err)
     return;
-}
-console.log('MySQL successfully connected!');
+  }
+  else{
+    console.log('MySQL successfully connected!');
+  }
 })
 // const role_api = require('./role-api')(connection);
 // const Student_api = require('./Student-api')(connection);
