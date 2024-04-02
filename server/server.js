@@ -22,17 +22,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+// const connection = mysql.createConnection({
+//     host: process.env.HOST,
+//     user: process.env.USER,
+//     database: process.env.DATABASE,
+//     password: process.env.PASSWORD,
+//     port: process.env.PORT_DB,
+//     ssl: {ca: process.env.SSL}
+//     // ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
+//     // ssl: {ca: fs.readFileSync(process.env.SSL)}
+//     // ssl: process.env.SSL
+//   });
 const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD,
-    port: process.env.PORT_DB,
-    ssl: {ca: process.env.SSL}
-    // ssl: {ca: fs.readFileSync(path.join(__dirname, process.env.SSL))}
-    // ssl: {ca: fs.readFileSync(process.env.SSL)}
-    // ssl: process.env.SSL
-  });
+  host: process.env.HOST,
+  user: process.env.USER,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PORT_DB,
+  ssl: { rejectUnauthorized: false }
+});
 
 //   console.log('SSL',fs.readFileSync(path.join(__dirname, process.env.SSL)));
 
