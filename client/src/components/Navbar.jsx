@@ -2,6 +2,7 @@ import logoImage from '../images/IMG_5416.png';
 import React, { useEffect, useState } from 'react';
 import { Button,Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import personCircle from '../assets/person-circle.svg';
 
 const Navbar = ({user, Role}) => {
   const linkStyle = {
@@ -74,7 +75,7 @@ const Navbar = ({user, Role}) => {
         console.log('RoleRoleRoleRoleRole',Role);
         let a = [{Email:"NewParent@gmail.com",Role:Role}];
         // if (Role){
-          setClassifyRole(a)
+        setClassifyRole(a)
           
         // }
       // }
@@ -117,11 +118,21 @@ const Navbar = ({user, Role}) => {
           <Dropdown>
                 <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
                   <span style={{marginRight: '10px'}}>
-                    <img
-                      src={user.photos[0].value}
-                      alt=""
-                      className="avatar"
-                    />
+                  {user.photos[0].value ? (
+                      <img
+                        // src={personCircle}
+                        src={user.photos[0].value}
+                        alt=""
+                        className="avatar"
+                      />
+                    ) : (
+                      <img
+                        // src={user.photos[0].value}
+                        src={personCircle}
+                        alt=""
+                        className="avatar"
+                      />
+                    )}
                   </span>
                   {/* <span>
                     {user.displayName}+

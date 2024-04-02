@@ -34,7 +34,8 @@ function Card_menu_student(props) {
                <div className="card-body">
                 <p className="card-text mt-3" style={{ textAlign: 'center',margin: "5px" }}>{item.text}</p>
               </div>
-              <NavLink to={`/Checkgrade?id=${props.studentID_prop}`} onClick={handleClick}>
+              {/* <NavLink to={`/Checkgrade?id=${props.studentID_prop}`} onClick={handleClick}> */}
+              <NavLink to={`/Checkgrade`} onClick={handleClick}>
               
               <img src={item.imageUrl} className="card-img-top" alt={item.text} style={{ width: '100%', height: 'auto', alignSelf: 'center', objectFit: 'cover' }} />
               

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { BrowserRouter, Route, RouterProvider, Routes, Navigate, createBrowserRouter, createRoutesFromElements, Link } from 'react-router-dom';
 import axios from 'axios';
 import Home from './pages/Home';
@@ -51,6 +51,7 @@ import Enrollment_info_EP from './pages/Enrollment_info_EP';
 import PostNews from './pages/PostNews';
 import OpenCourse_period from './pages/OpenCourse_period';
 
+export const UserContext = createContext();
 
 // Main App component
 function App() {
@@ -58,7 +59,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [Role, setRole] = useState('');
   const [login_Email, setlogin_Email] = useState('');
-  const [uuuuu, setuuuuu] = useState('kkkkkkkk');
   async function addParentLogin(avatar, email, token) {
     try {
         const response = await axios.post('http://localhost:8080/add-parent-login', {
@@ -98,8 +98,8 @@ function App() {
             console.log('error:', error);
         }
       // }
-
     }
+    
     const getUser = async () => {
       try {
         const response = await axios.get("http://localhost:8080/auth/login/success", {
@@ -134,31 +134,21 @@ function App() {
 
   }, []);
 
-
   useEffect(() => {
-    
-  console.log(uuuuu);
-
-  }, [uuuuu]);
-  // if (user && user.emails[0].value) {
-  //   console.log(user.emails[0].value);
-  // } else {
-  //   console.log('User email is not available.');
-  // }
-  console.log('hello this is app.jsx');
+    console.log('appppp',Role, user)
+  }, [Role])
 
 
   return (
       <>
       <BrowserRouter>
-
-      <Navbar user={user} Role={Role} uuuuu={setuuuuu}/>
-        {/* <RouterProvider router={router}> */}
-          
+      <Navbar user={user} Role={Role}/>
+        <UserContext.Provider value={{ Role, setRole, user, setUser}}>
           <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
-          <Route path ="/Login/Login_student" element={<Login_student uuuuu={uuuuu}/>} />
+            {/* <Route path ="/Login/Login_student" /> */}
+            <Route path ="/Login/Login_student" element={<Login_student />} />
             <Route
               exact
               path="/Login/Login_parent"
@@ -187,7 +177,7 @@ function App() {
         <Route path="/Checkgrade_info" element={<Checkgrade_info login_Email={login_Email}/>} />
 
         <Route path="/Parent_menu" element={<Parent_menu />} />
-        <Route path="/Checkgrade" element={<Checkgrade/>} />
+        <Route path="/Checkgrade" element={<Checkgrade user={user} Role={Role}/>} />
         <Route path="/Request_cert" element={<Request_cert login_Email={login_Email}/>} />
         <Route path="/History_request" element={<History_request login_Email={login_Email}/>} />
         <Route path="/Health_result" element={<Check_health_result/>} />
@@ -227,6 +217,8 @@ function App() {
         <Route path="/Health_Checkup" element={<Health_Checkup />} />
         <Route path="/Growth_nutrition" element={<Growth_nutrition />} />
           </Routes>
+        </UserContext.Provider>
+
         {/* </RouterProvider> */}
         </BrowserRouter>
         </>

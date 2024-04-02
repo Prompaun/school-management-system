@@ -50,7 +50,8 @@ function Student_menu() {
       </div>
       <br></br>
       <br></br>
-      <Card_menu_student studentID_prop={StudentID_login}/> 
+      {/* <Card_menu_student studentID_prop={StudentID_login}/>  */}
+      <Card_menu_student /> 
       <br></br>
       <br></br>
 

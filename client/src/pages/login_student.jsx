@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link ,useNavigate} from 'react-router-dom';
 import school_logo from "../images/IMG_5416.png";
 import Navbar from "../components/Navbar";
@@ -7,8 +7,10 @@ import eye_open from "../images/eye-open.png";
 import eye_closed from "../images/eye-closed.png";
 import Header from '../components/Header';
 import axios from 'axios';
+import { UserContext } from '../App';
+import { BsBootstrap } from 'react-icons/bs';
 
-const Login_student = ({uuuuu}) => {
+const Login_student = () => {
 
       const linkStyle = {
         color: 'red',
@@ -16,18 +18,29 @@ const Login_student = ({uuuuu}) => {
         fontFamily: 'Kanit, sans-serif',
         fontSize: '16px'
       };
+
+      const { Role, setRole, user, setUser } = useContext(UserContext);
+    //   const [userData, setUserData] = useState(null);
     //   uuuuu('444444');
-      const sendData = () => {
-        const data = '444444';
-        uuuuu(data);
-      };
+    //   const sendData = () => {
+    //     setUserData('444444')
+    //     // uuuuu(data);
+    //   };
     const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     setRole('4444449')
+    // }, [])
 
     // เพิ่ม state สำหรับเก็บข้อมูลจากฟอร์ม
     const [formData, setFormData] = useState({
         username: '',
         password: '',
     });
+    useEffect(() => {
+        console.log('data',formData)
+    }, [formData])
+
 
     // รับค่า input จากฟอร์มและอัปเดต state ตามชื่อ input
     const handleInputChange = (event) => {
@@ -50,8 +63,12 @@ const Login_student = ({uuuuu}) => {
             if (exist) {
                 // ถ้ามีการตรวจสอบสำเร็จและข้อมูลถูกต้อง
                 // setuuuuu(formData.username);
+                setRole('Student')
+                setUser({
+                    photos: ["studentProfile"],
+                    displayName: formData.username
+                })
                 navigate("/Student_menu", { state: { studentId: formData.username } });
-                sendData();
             } else {
                 // ถ้าข้อมูลไม่ถูกต้อง
                 alert('รหัสนักเรียน หรือ รหัสประจำตัวประชาชนไม่ถูกต้อง');
@@ -78,7 +95,7 @@ const Login_student = ({uuuuu}) => {
     return (
         <>
             {/* <Navbar/> */}
-           
+            
             <Header header="ระบบบริการข้อมูล" subhead="สำหรับนักเรียน"/>
             {/* เพิ่มฟอร์มการลงทะเบียน */}
             {/* <div class="list-group"> */}
