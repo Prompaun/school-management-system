@@ -52,6 +52,7 @@ import PostNews from './pages/PostNews';
 import OpenCourse_period from './pages/OpenCourse_period';
 import TemplateRequestStudent from './components/TemplateRequestStudent';
 import AddStudentID from './pages/AddStudentID';
+import ManageStudentClass from './pages/ManageStudentClass';
 
 export const UserContext = createContext();
 
@@ -230,6 +231,8 @@ function App() {
 
 
             <Route path="/AddStudentID" element={<AddStudentID />} />
+            <Route path="/ManageStudentClass" element={<ManageStudentClass />} />
+
 
           </>
         ) : (

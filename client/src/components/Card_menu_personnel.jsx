@@ -7,6 +7,8 @@ import health_icon from "../images/health_icon.png"
 import Request_cert from "../images/request_cert.png"
 import analyze from "../images/analyze.png"
 import Postnews from "../images/promotion.png"
+import ClassRoom from "../images/ClassRoom.jpg"
+
 // import enrollment_icon from "../images/enrollment_icon.png"
 // import check_status_enroll from "../images/check_status_enroll.png"
 
@@ -44,6 +46,11 @@ function Card_menu_personnel() {
           text: "ข่าวประชาสัมพันธ์",
           imageUrl: Postnews, // แทนที่ด้วย URL รูปภาพจริง
           path: "/PostNews"
+        },
+        {
+          text: "จัดการห้องเรียนตามชั้นปี",
+          imageUrl: ClassRoom, // แทนที่ด้วย URL รูปภาพจริง
+          path: "/ManageStudentClass"
         },
         {
           text: "ระบบการรับสมัครนักเรียนใหม่",
