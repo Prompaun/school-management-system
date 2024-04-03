@@ -51,6 +51,8 @@ import Enrollment_info_EP from './pages/Enrollment_info_EP';
 import PostNews from './pages/PostNews';
 import OpenCourse_period from './pages/OpenCourse_period';
 import TemplateRequestStudent from './components/TemplateRequestStudent';
+import AddStudentID from './pages/AddStudentID';
+
 export const UserContext = createContext();
 
 // Main App component
@@ -225,6 +227,10 @@ function App() {
             <Route path="/Result_health_data" element={<Result_health_data />} />
             <Route path="/Health_Checkup" element={<Health_Checkup />} />
             <Route path="/Growth_nutrition" element={<Growth_nutrition />} />
+
+
+            <Route path="/AddStudentID" element={<AddStudentID />} />
+
           </>
         ) : (
             // ส่วนเส้นทางที่ใช้เมื่อไม่มีผู้ใช้ล็อคอิน

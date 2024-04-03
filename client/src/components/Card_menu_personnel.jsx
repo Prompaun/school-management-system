@@ -52,7 +52,7 @@ function Card_menu_personnel() {
           dropdown: [
             { text: "ตรวจสอบข้อมูลผู้สมัคร", path: "/Check_Applicant_Information" },
             { text: "จัดการช่วงวันที่เปิดรับสมัคร", path: "/OpenCourse_period" },
-
+            { text: "จัดการเลขประจำตัวนักเรียนใหม่", path: "/AddStudentID" },
             // { text: "อัปโหลดผลคะแนนการสอบ", path: "/Upload_applicant_scores" },
             // { text: "ผลคะแนนการสอบรายบุคคล", path: "/Admission_Results" },
             // { text: "อัปโหลดสถานะการมอบตัว", path: "/Upload_Enrollment_Status" },
