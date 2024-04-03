@@ -14,7 +14,7 @@ function Enrollment_info_EP({user}) {
 
 const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 // const [apiUrl, setapiUrl] = useState(false);
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.API_URL;
 
 
   const fontStyle = {
