@@ -27,9 +27,9 @@ const mutex = new Mutex();
 
 module.exports = function(connection) {
 
-// CREATE Routes
-router.post("/register", async (req, res) => {
-//   const { Email, Password } = req.body;
+    // CREATE Routes
+    router.post("/register", async (req, res) => {
+    //   const { Email, Password } = req.body;
 
   const data = req.body;
 
