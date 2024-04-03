@@ -16,7 +16,7 @@ const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 // const [apiUrl, setapiUrl] = useState(false);
 // const apiUrl = process.env.API_URL;
 const apiUrl = process.env.api
-console.log("process.env.api",process.env.api);
+// console.log("process.env.api",process.env.api);
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
