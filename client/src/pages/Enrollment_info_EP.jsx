@@ -14,9 +14,9 @@ function Enrollment_info_EP({user}) {
 
 const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 // const [apiUrl, setapiUrl] = useState(false);
-const apiUrl = process.env.API_URL;
-
-
+// const apiUrl = process.env.API_URL;
+const apiUrl = process.env.api
+console.log("process.env.api",process.env.api);
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
@@ -622,7 +622,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
         } catch (error) {
             console.error('Error checking email:', error);
-            alert('An error occurred while checking email.');
+            // alert('An error occurred while checking email.');
         }
     };
 
@@ -670,7 +670,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
         } catch (error) {
             console.error('Error checking Mother email:', error);
-            alert('An error occurred while checking Mother email.');
+            // alert('An error occurred while checking Mother email.');
         }
     };
 
@@ -720,7 +720,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
         } catch (error) {
             console.error('Error checking email:', error);
-            alert('An error occurred while checking email.');
+            // alert('An error occurred while checking email.');
         }
     };
     

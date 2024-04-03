@@ -4,7 +4,7 @@ const router = express.Router();
 module.exports = function(connection) {
     router.get('/get-role/:email', (req, res) => {
         const email = req.params.email;
-        console.log('yoke yoke',email);
+        // console.log('yoke yoke',email);
         const sql = `
             SELECT Email, Role
             FROM personnel

@@ -3,7 +3,7 @@ var express = require('express')
 const router = express.Router();
 
 module.exports = function(connection) {
-    router.post('/check-login', (req, res) => {
+    router.post('/check-login-student', (req, res) => {
         const { studentId, password } = req.body;
     
         const sql = `

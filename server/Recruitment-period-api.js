@@ -34,7 +34,7 @@ module.exports = function(connection) {
                 console.error('Error updating recruitment period:', err);
                 return res.status(500).json({ error: 'Failed to update recruitment period' });
             }
-            console.log('Updated recruitment period:', result.affectedRows);
+            // console.log('Updated recruitment period:', result.affectedRows);
             return res.status(200).json({ message: 'Recruitment period updated successfully' });
         });
     });
