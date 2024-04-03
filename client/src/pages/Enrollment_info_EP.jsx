@@ -10,10 +10,11 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import Modal_loading from '../components/Modal_loading';
 import Modal_success from '../components/Modal_success';
 
-
 function Enrollment_info_EP({user}) {
 
 const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+// const [apiUrl, setapiUrl] = useState(false);
+const apiUrl = process.env.REACT_APP_API_URL;
 
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
@@ -576,7 +577,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
       const checkFather_Email = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -626,7 +627,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
     const checkMother_Email = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -674,7 +675,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
     const checkParent_Email = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -1389,7 +1390,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
           formData.append('file', HouseReg_file);
     
 
-          await axios.post('http://localhost:8080/upload', formData, {
+          await axios.post(apiUrl + 'upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -1413,7 +1414,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
   async function checkEnrollment(Student_NID, Enroll_Date, Enroll_Year, Enroll_Course) {
     try {
-        const check_enrollment_response = await axios.get(`http://localhost:8080/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
+        const check_enrollment_response = await axios.get(apiUrl + `check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
         const data = check_enrollment_response.data;
 
         if (data.length > 0) {
@@ -1433,7 +1434,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                     Enroll_Status: "รอการสอบคัดเลือก"
                 };
                 // console.log("Enroll_Date",Enroll_Date);
-                const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
+                const save_enrollment_response = await axios.post(apiUrl + 'enrollment', formData);
                 console.log(save_enrollment_response.data.message); // พิมพ์ข้อความตอบกลับจาก API ใน console
                 setEnroll_History(true);
             } catch (error) {
@@ -1456,7 +1457,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         };
 
         // เรียกใช้ API สำหรับเพิ่มอีเมล์ของผู้ปกครอง
-        const response = await axios.post('http://localhost:8080/add-parent-emails', requestData);
+        const response = await axios.post(apiUrl + 'add-parent-emails', requestData);
         
         // หากสำเร็จ
         console.log(response.data.message);
@@ -1482,7 +1483,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         Role: Role,
         Tel: Tel
       }];
-        const response = await axios.post('http://localhost:8080/Parent_information', parentData);
+        const response = await axios.post(apiUrl + 'Parent_information', parentData);
         console.log(response.data.message);
         return response.data.message;
     } catch (error) {
