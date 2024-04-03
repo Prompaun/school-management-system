@@ -32,6 +32,7 @@ function ManageStudentClass() {
     const handleSelectRoomChange = (event) => {
         setSelectedRoom(event.target.value);
     };
+    
     const filteredStudent = StudentData.filter((student) =>
         selectedYear && SelectedRoom
         ? student.Year === selectedYear && student.Room === SelectedRoom
