@@ -27,7 +27,7 @@ const History_request = ({login_Email}) => {
         console.error('Error fetching student ID by parent email:', error);
         throw error;
     }
-}
+  }
 
 async function getRequestInfo(email, Student_ID, Request_status) {
   try {
@@ -250,11 +250,15 @@ useEffect(() => {
           <h2 className="align-items-center justify-content-center"style={{fontWeight:"bolder",fontSize:"25px"}}>สถานะคำร้องขอใบรับรอง</h2>
           <div className="d-flex"style={{ flexWrap: 'wrap'}} >
           <div className="d-flex"style={{ flexWrap: 'wrap', fontSize: '18px' ,padding: "10px"}}>
-          <div className="d-flex align-items-center">
-              <span style={{fontWeight:"bolder",marginRight:"10px"}}>เลือกข้อมูลนักเรียน :</span>
+          
+            <div className="d-flex align-items-center">
+                <span style={{fontWeight:"bolder",marginRight:"10px"}}>
+                  เลือกข้อมูลนักเรียน :
+                </span>
             </div>
+
             <div className="dropdown" style={{ maxWidth: '100%' }}>
-            <select value={selectedStudent} onChange={handleStudentChange} className="custom-select">
+              <select value={selectedStudent} onChange={handleStudentChange} className="custom-select">
                 <option value="">เลือกข้อมูล</option>
                 {StudentData.map((student, index) => (
                   <option key={index}>
@@ -263,7 +267,7 @@ useEffect(() => {
                 ))}
               </select>
             </div>
-            </div>
+          </div>
         
           <div className="d-flex"style={{ flexWrap: 'wrap', fontSize: '18px' ,padding: "10px"}}>
               <div>
