@@ -7,6 +7,9 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import Tab_health from '../components/Tab_health';
 import axios from 'axios';
+import ModalEditBMI from '../components/ModalEditBMI';
+import ModalEditHealth from '../components/ModalEditHealth';
+import ModalEditVaccine from '../components/ModalEditVaccine';
 const Health_info = () => {
 
     const linkStyle = {
@@ -310,10 +313,43 @@ const Health_info = () => {
       fetchData();
     }, []);
 
+    const [ShowEditBMI,setShowEditBMI] = useState(false);
+
+    const handleClickShowEditBMI = () => {
+      setShowEditBMI(true);
+    };
+
+    const [ShowEditHealth,setShowEditHealth] = useState(false);
+
+    const handleClickShowEditHealth = () => {
+      setShowEditHealth(true);
+    };
+
+    const [ShowEditVaccine,setShowEditVaccine] = useState(false);
+
+    const handleClickShowEditVaccine = () => {
+      setShowEditVaccine(true);
+    };
     return (
         <>
-          
-
+         {ShowEditBMI && (
+          <ModalEditBMI
+          show={ShowEditBMI}
+          setShow ={setShowEditBMI}
+          />
+          )}
+          {ShowEditHealth && (
+          <ModalEditHealth
+          show={ShowEditHealth}
+          setShow ={setShowEditHealth}
+          />
+          )}
+          {ShowEditVaccine && (
+          <ModalEditVaccine
+          show={ShowEditVaccine}
+          setShow ={setShowEditVaccine}
+          />
+          )}
             <Header header="ระบบจัดการข้อมูลสุขภาพ" subhead="" />  
              
             <div className="container"style={{fontFamily:'Kanit, sans-serif'}}> 
@@ -380,8 +416,13 @@ const Health_info = () => {
         
         <div className="container d-flex align-items-center" style={{ flexWrap: "wrap"}}>
                 <h2 className="card-heading" style={{ margin:"10px",fontSize: "25px", fontWeight: "bold" }}>
-                Summary
+                สุขภาพทั่วไป
                 </h2>
+                <button className="card-heading" style={{ margin: "10px", fontSize: "20px",color:"gray"}}
+                onClick={(e) => handleClickShowEditBMI()}
+                >
+                  แก้ไข
+                </button>
               </div>
              
               <div className="row">
@@ -544,6 +585,11 @@ const Health_info = () => {
                               <span style={{ fontSize: "25px", fontWeight: "bold",color:"#A0A0A0"}}>
                              (Latest)
                               </span>
+                              <button className="card-heading" style={{ margin: "10px", fontSize: "20px",color:"gray"}}
+                                onClick={(e) => handleClickShowEditHealth()}
+                                >
+                                  แก้ไข
+                                </button>
                               </div>
                               <div className="row">
                               
@@ -841,6 +887,11 @@ const Health_info = () => {
                               <h2 className="card-heading" style={{ margin:"10px",fontSize: "25px", fontWeight: "bold" }}>
                               การให้ภูมิคุ้มกัน
                               </h2>
+                              <button className="card-heading" style={{ margin: "10px", fontSize: "20px",color:"gray"}}
+                              onClick={(e) => handleClickShowEditVaccine()}
+                              >
+                                แก้ไข
+                              </button>
                               </div>
                                       <div className="card" style={{width:"auto",height:"auto",margin:"10px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'}}>
                                           <div className="card-body"style={{
