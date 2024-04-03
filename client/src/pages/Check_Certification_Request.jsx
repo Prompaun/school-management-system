@@ -25,6 +25,7 @@ const Check_Certification_Request = () => {
             // { id :3,request_date: '29/11/2566', request_number: 'xx-xxxx', certificate_type: 'ปพ.7', note: '-', status: 'ดำเนินการเสร็จสิ้น'},
             // เพิ่มข้อมูลผลการเรียนตามต้องการ
            
+            // {id :1,request_date: '29/11/2566', Student_ID:"33562", certificate_type: 'ปพ.7', note: '-', status: 'ดำเนินการเสร็จสิ้น'},
        
         ]);
 
@@ -213,8 +214,13 @@ const Check_Certification_Request = () => {
                             <thead>
                                 <tr>
                                     <th rowSpan="1" style={{ backgroundColor: '#FFFFFF' }}>วันที่ทำรายการ</th>
-                                    <th rowSpan="1" style={{ backgroundColor: '#FFFFFF'}}>เลขที่คำร้อง</th>
+                                    {/* <th rowSpan="1" style={{ backgroundColor: '#FFFFFF'}}>เลขที่คำร้อง</th>
+                                     */}
+                                    <th rowSpan="1" style={{ backgroundColor: '#FFFFFF'}}>เลขประจำตัวนักเรียน</th>
+
                                     <th rowSpan="1" style={{ backgroundColor: '#FFFFFF' }}>ประเภทใบรับรอง</th>
+                                    <th rowSpan="1" style={{ backgroundColor: '#FFFFFF'}}>จำนวน</th>
+
                                     <th rowSpan="1" style={{ backgroundColor: '#FFFFFF' }}>รายละเอียด</th>
                                     <th rowSpan="1" style={{ backgroundColor: '#FFFFFF' }}>สถานะ</th>
                                     <th rowSpan="1" style={{ backgroundColor: '#FFFFFF' }}>แก้ไข</th>
@@ -225,8 +231,9 @@ const Check_Certification_Request = () => {
                                 {filteredData.map((request,index) => (
                                     <tr key={index} style={{ height: 'auto' }}>
                                         <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{request.request_date}</td>
-                                        <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{request.request_number}</td>
+                                        <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{request.Student_ID}</td>
                                         <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{request.certificate_type}</td>
+                                        <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{request.amount_certificate}</td>
                                         <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{request.note}</td>
                                         <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>
                                             
