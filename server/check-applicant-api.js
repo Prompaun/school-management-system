@@ -106,7 +106,33 @@ module.exports = function(connection) {
                     return res.status(200).json({ error: 'Already have' });
                 }
             }
-            return res.status(200).json({results, message: 'Insert applitcant to student info successfully' });
+
+            const {Enroll_ID} = req.body
+            const sql = `
+                INSERT INTO student_parentemail
+                    (Student_NID, first_ParentEmail, second_ParentEmail, third_ParentEmail)
+                SELECT 
+                    applicant_parentemail.Student_NID, first_ParentEmail, second_ParentEmail, third_ParentEmail
+                FROM
+                    applicant_parentemail
+                JOIN
+                    enrollment ON enrollment.Student_NID = applicant_parentemail.Student_NID
+                WHERE
+                    Enroll_No = ?
+            `;
+            connection.query(sql, [Enroll_ID], (err, results) => {
+                if (err) {
+                    console.error('Error querying get applitcant info:', err);
+                    if (err.sqlMessage !== "Duplicate entry '' for key 'student.Student_ID'" ){
+                        return res.status(500).json({ error: 'Failed to insert applitcant to student info' });
+                    } else {
+                        return res.status(200).json({ error: 'Already have' });
+                    }
+                }
+                return res.status(200).json({results, message: 'Insert applitcant to student info successfully' });
+            });
+
+            // return res.status(200).json({results, message: 'Insert applitcant to student info successfully' });
         });
     });
 

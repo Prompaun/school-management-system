@@ -192,7 +192,7 @@ function App() {
             <Route path="/Checkgrade" element={<Checkgrade user={user} Role={Role}/>} />
             <Route path="/Request_cert" element={<Request_cert login_Email={login_Email}/>} />
             <Route path="/History_request" element={<History_request login_Email={login_Email}/>} />
-            <Route path="/Health_result" element={<Check_health_result/>} />
+            <Route path="/Health_result" element={<Check_health_result login_Email={login_Email}/>} />
 
             {/* <Route path ="/Login_personnel" element={<Login_personnel />} /> */}
           
