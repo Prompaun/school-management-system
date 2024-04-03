@@ -10,6 +10,7 @@ import axios from 'axios';
 import ModalEditBMI from '../components/ModalEditBMI';
 import ModalEditHealth from '../components/ModalEditHealth';
 import ModalEditVaccine from '../components/ModalEditVaccine';
+import ModalHistoryHealth from '../components/ModalHistoryHealth';
 const Health_info = () => {
 
     const linkStyle = {
@@ -330,6 +331,11 @@ const Health_info = () => {
     const handleClickShowEditVaccine = () => {
       setShowEditVaccine(true);
     };
+    const [ShowEditHistory,setShowEditHistory] = useState(false);
+
+    const handleClickShowEditHistory = () => {
+      setShowEditHistory(true);
+    };
     return (
         <>
          {ShowEditBMI && (
@@ -348,6 +354,12 @@ const Health_info = () => {
           <ModalEditVaccine
           show={ShowEditVaccine}
           setShow ={setShowEditVaccine}
+          />
+          )}
+          {ShowEditHistory && (
+          <ModalHistoryHealth
+          show={ShowEditHistory}
+          setShow ={setShowEditHistory}
           />
           )}
             <Header header="ระบบจัดการข้อมูลสุขภาพ" subhead="" />  
@@ -695,7 +707,13 @@ const Health_info = () => {
                   <div className="container d-flex align-items-center" style={{ flexWrap: "wrap"}}>
                       <h2 className="card-heading" style={{ margin:"10px",fontSize: "25px", fontWeight: "bold" }}>
                       ประวัติการเจ็บป่วย
-                      </h2></div>
+                      </h2>
+                      <button className="card-heading" style={{ margin: "10px", fontSize: "20px",color:"gray"}}
+                          onClick={(e) => handleClickShowEditHistory()}
+                          >
+                            แก้ไข
+                          </button>
+                      </div>
                       
                        
                       <div className="row">
