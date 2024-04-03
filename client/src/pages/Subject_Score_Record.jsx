@@ -18,6 +18,9 @@ const Subject_Score_Record = ({Role, Email}) => {
         fontFamily: 'Kanit, sans-serif',
         textDecoration: 'none'
       };
+    
+    //   const apiUrl = process.env.api
+    const apiUrl = "http://localhost:8080"
       
     const [YearData, setYearData] = useState(
     {
@@ -35,7 +38,7 @@ const Subject_Score_Record = ({Role, Email}) => {
 
     async function getyeardropdown() {
         try {
-            const response = await axios.post('http://localhost:8080/teaching-assignment-get-year', {
+            const response = await axios.post(apiUrl + '/teaching-assignment-get-year', {
                 Role: Role, 
                 email: Email
             });
@@ -54,7 +57,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function getsemesterdropdown() {
         if (selectedYear !== "เลือกปีการศึกษา") {
             try {
-                const response = await axios.post('http://localhost:8080/teaching-assignment-get-semester', {
+                const response = await axios.post(apiUrl + '/teaching-assignment-get-semester', {
                     year : selectedYear,
                     Role: Role, 
                     email: Email
@@ -81,7 +84,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function getsubjectdropdown() {
         if (selectedSemester !== "เลือกภาคการศึกษา") {
             try {
-                const response = await axios.post('http://localhost:8080/teaching-assignment-get-subject', {
+                const response = await axios.post(apiUrl + '/teaching-assignment-get-subject', {
                     year : selectedYear,
                     semester : selectedSemester,
                     Role: Role, 
@@ -113,7 +116,7 @@ const Subject_Score_Record = ({Role, Email}) => {
             ]
             let midFinal
             try {
-                midFinal = await axios.post('http://localhost:8080/assessment-get-full-score-midterm-final', {
+                midFinal = await axios.post(apiUrl + '/assessment-get-full-score-midterm-final', {
                     year : selectedYear,
                     semester : selectedSemester,
                     subject : selectedSubject
@@ -122,7 +125,7 @@ const Subject_Score_Record = ({Role, Email}) => {
                 newAssessmentInfo[0] = {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: midFinal.data[0].Full_score_mid,id: 0,saved: true}
                 newAssessmentInfo[1] = {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: midFinal.data[0].Full_score_final,id: 1,saved: true}
                 try {
-                    const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
+                    const response = await axios.post(apiUrl + '/assessment-get-name-proportion', {
                         year : selectedYear,
                         semester : selectedSemester,
                         subject : selectedSubject
@@ -148,7 +151,7 @@ const Subject_Score_Record = ({Role, Email}) => {
             } catch (error) {
                 if (error.response.request.status === 404) {
                     try {
-                        const response = await axios.post('http://localhost:8080/assessment-get-name-proportion', {
+                        const response = await axios.post(apiUrl + '/assessment-get-name-proportion', {
                             year : selectedYear,
                             semester : selectedSemester,
                             subject : selectedSubject
@@ -185,7 +188,7 @@ const Subject_Score_Record = ({Role, Email}) => {
         if (selectedSubject !== "เลือกวิชา" ) {
             if (id !== 0 && id !== 1){
                 try {
-                    const response = await axios.post('http://localhost:8080/update-assessment', {
+                    const response = await axios.post(apiUrl + '/update-assessment', {
                         assessment_name: Assessment[id].Assessment_name, 
                         assessment_proportion: Assessment[id].Assessment_proportion, 
                         id: Assessment[id].Assessment_id
@@ -197,7 +200,7 @@ const Subject_Score_Record = ({Role, Email}) => {
                 }
             } else {
                 try {
-                    const response = await axios.post('http://localhost:8080/update-full-grade', {
+                    const response = await axios.post(apiUrl + '/update-full-grade', {
                         score: Assessment[id].Assessment_proportion,
                         year: selectedYear,
                         semester: selectedSemester,
@@ -216,7 +219,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function updateAssessmentScore(key,value,id) {
         if (selectedSubject !== "เลือกวิชา" ) {
             try {
-                const response = await axios.post('http://localhost:8080/update-assessment-score', {
+                const response = await axios.post(apiUrl + '/update-assessment-score', {
                     score: value || null,
                     assessment: key,
                     year: selectedYear,
@@ -238,7 +241,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function updateTotalScore(total,score2grade,id) {
         if (selectedSubject !== "เลือกวิชา" ) {
             try {
-                const response = await axios.post('http://localhost:8080/update-grade-totalScore', {
+                const response = await axios.post(apiUrl + '/update-grade-totalScore', {
                     grade: score2grade,
                     total: total,
                     subject: selectedSubject,
@@ -258,7 +261,7 @@ const Subject_Score_Record = ({Role, Email}) => {
         if (selectedSubject !== "เลือกวิชา") {
             if (id !== 0 && id !== 1) {
                 try {
-                    const response = await axios.post('http://localhost:8080/insert-new-assessment', {
+                    const response = await axios.post(apiUrl + '/insert-new-assessment', {
                         subject: selectedSubject, 
                         assessment_name: Assessment[id].Assessment_name, 
                         assessment_proportion: Assessment[id].Assessment_proportion, 
@@ -274,7 +277,7 @@ const Subject_Score_Record = ({Role, Email}) => {
                 }
             } else {
                 try {
-                    const response = await axios.post('http://localhost:8080/insert-full-grade', {
+                    const response = await axios.post(apiUrl + '/insert-full-grade', {
                         subject: selectedSubject,
                         year: selectedYear,
                         semester: selectedSemester,
@@ -295,7 +298,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function deleteAssessmentInfo(id) {
         if (id !== 0 && id !== 1) {
             try {
-                const response = await axios.post('http://localhost:8080/delete-assessment', {
+                const response = await axios.post(apiUrl + '/delete-assessment', {
                     id: Assessment[id].Assessment_id
                 });  
                 setAssessment(Assessment.filter((row) => row.id !== id));
@@ -316,7 +319,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function getClassYear() {
         if (selectedSubject !== "เลือกวิชา"){
             try {
-                const response = await axios.post('http://localhost:8080/get-classYear-by-teacher', {
+                const response = await axios.post(apiUrl + '/get-classYear-by-teacher', {
                     email: Email,
                     year: selectedYear,
                     semester: selectedSemester,
@@ -341,7 +344,7 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function getClassRoom() {
         if (selectedClassYear !== "เลือกชั้นปี"){
             try {
-                const response = await axios.post('http://localhost:8080/get-classRoom-by-teacher', {
+                const response = await axios.post(apiUrl + '/get-classRoom-by-teacher', {
                     email: Email,
                     year: selectedYear,
                     semester: selectedSemester,
@@ -366,24 +369,24 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function getStudentInfo() {
         if (selectedRoom !== "เลือกห้อง"){
             try {
-                const response = await axios.post('http://localhost:8080/get-student-info-by-teacher', {
+                const response = await axios.post(apiUrl + '/get-student-info-by-teacher', {
                     year: selectedYear,
                     level: selectedClassYear,
                     room: selectedRoom
                 });
 
-                const assessmentNameResponse = await axios.post('http://localhost:8080/get-assessment-name-by-teacher', {
+                const assessmentNameResponse = await axios.post(apiUrl + '/get-assessment-name-by-teacher', {
                     year: selectedYear,
                     semester: selectedSemester,
                     subject: selectedSubject
                 });
 
                 const student = response.data.map(item => item.Student_ID);
-                const scoreResponse = await axios.post('http://localhost:8080/get-student-assessment-score-by-teacher', {
+                const scoreResponse = await axios.post(apiUrl + '/get-student-assessment-score-by-teacher', {
                     student: student
                 });
 
-                const gradeResponse = await axios.post('http://localhost:8080/assessment-get-grade', {
+                const gradeResponse = await axios.post(apiUrl + '/assessment-get-grade', {
                     year: selectedYear, 
                     semester: selectedSemester, 
                     subject: selectedSubject,

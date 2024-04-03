@@ -18,7 +18,6 @@ module.exports = function() {
     
     router.use(
         session({
-          // secret: "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",
         secret: process.env.GOOGLE_CLIENT_SECRET,
           resave: false,
           saveUninitialized: true,
