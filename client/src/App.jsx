@@ -50,7 +50,7 @@ import Checkgrade_info from './pages/Checkgrade_info';
 import Enrollment_info_EP from './pages/Enrollment_info_EP';
 import PostNews from './pages/PostNews';
 import OpenCourse_period from './pages/OpenCourse_period';
-
+import TemplateRequestStudent from './components/TemplateRequestStudent';
 export const UserContext = createContext();
 
 // Main App component
@@ -216,6 +216,9 @@ function App() {
         <Route path="/Result_health_data" element={<Result_health_data />} />
         <Route path="/Health_Checkup" element={<Health_Checkup />} />
         <Route path="/Growth_nutrition" element={<Growth_nutrition />} />
+        <Route path="/TemplateRequestStudent" element={<TemplateRequestStudent />} />
+
+
           </Routes>
         </UserContext.Provider>
 
