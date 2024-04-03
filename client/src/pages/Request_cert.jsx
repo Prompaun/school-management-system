@@ -100,13 +100,13 @@ function Request_cert({login_Email}) {
             console.log("Student_ID",selectedStudent_ID);
             console.log("Request_Date",formatDate(new Date()));
             console.log("Requested_Copies",AmountRequestStudent);
-            console.log("Request_detail",selectedOption);
+            // console.log("Request_detail",selectedOption);
 
 
             // if(CheckRequestStudent){
               const formData = new FormData();
               formData.append('CheckRequestStudent', CheckRequestStudent.checked);
-              formData.append('CheckRequestTranscript', CheckRequestTranscript.checked);
+              // formData.append('CheckRequestTranscript', CheckRequestTranscript.checked);
 
               formData.append('Student_ID', selectedStudent_ID);
               formData.append('Parent_Email', login_Email);
@@ -115,9 +115,9 @@ function Request_cert({login_Email}) {
               // เพิ่มข้อมูลของนักเรียนเข้าไปใน formData
               // formData.append('Request_type', 'ปพ.7');
               formData.append('AmountRequestStudent', AmountRequestStudent);
-              formData.append('AmountRequestTranscript', AmountRequestTranscript);
+              // formData.append('AmountRequestTranscript', AmountRequestTranscript);
 
-              formData.append('Request_detail', selectedOption);
+              // formData.append('Request_detail', selectedOption);
               formData.append('file', Student_picture_file);
               formData.append('Request_status', 'รอดำเนินการ');
 
@@ -168,9 +168,19 @@ function Request_cert({login_Email}) {
         setSelectedStudent(selectedStudentValue);
       };
       const [CheckRequestStudent,setCheckRequestStudent] = useState({ checked: false });
-      const [CheckRequestTranscript,setCheckRequestTranscript] = useState({ checked: false });
       const [AmountRequestStudent,setAmountRequestStudent] = useState('');
+
+      const [CheckRequestTranscript,setCheckRequestTranscript] = useState({ checked: false });
       const [AmountRequestTranscript,setAmountRequestTranscript] = useState('');
+
+      const [CheckRequestScore,setCheckRequestScore] = useState({ checked: false });
+      const [AmountRequestScore,setAmountRequestScore] = useState('');
+
+      const [CheckRequestGrade,setCheckRequestGrade] = useState({ checked: false });
+      const [AmountRequestGrade,setAmountRequestGrade] = useState('');
+
+      const [CheckRequestYear,setCheckRequestYear] = useState({ checked: false });
+      const [AmountRequestYear,setAmountRequestYear] = useState('');
       
       const handleCheckRequestStudentChange= (event) => {
         setCheckRequestStudent({ checked: event.target.checked });
@@ -184,40 +194,69 @@ function Request_cert({login_Email}) {
         }
         setAmountRequestStudent(AmountRequestStudent);
       };
-      const handleCheckRequestTranscriptChange= (event) => {
-        setCheckRequestTranscript({ checked: event.target.checked });
+      const handleCheckRequestScoreChange= (event) => {
+        setCheckRequestScore({ checked: event.target.checked });
       };
-      const handleAmountRequestTranscriptChange= (event) => {
+      const handleAmountCheckRequestScoreChange= (event) => {
         const inputValue = event.target.value;
-        const AmountRequestTranscript = inputValue.replace(/[^0-9]/g, "");
-        if (inputValue !== AmountRequestTranscript) {
+        const AmountRequestScore = inputValue.replace(/[^0-9]/g, "");
+        if (inputValue !== AmountRequestScore) {
             alert("กรุณากรอกเฉพาะตัวเลขเท่านั้น")
-          event.target.value = AmountRequestTranscript;
+          event.target.value = AmountRequestScore;
         }
-        setAmountRequestTranscript(AmountRequestTranscript);
+        setAmountRequestScore(AmountRequestScore);
+      };
+     
+
+      const handleCheckRequestGradeChange= (event) => {
+        setCheckRequestGrade({ checked: event.target.checked });
+      };
+      const handleAmountCheckRequestGradeChange= (event) => {
+        const inputValue = event.target.value;
+        const AmountRequestGrade = inputValue.replace(/[^0-9]/g, "");
+        if (inputValue !== AmountRequestGrade) {
+            alert("กรุณากรอกเฉพาะตัวเลขเท่านั้น")
+          event.target.value = AmountRequestGrade;
+        }
+        setAmountRequestGrade(AmountRequestGrade);
       };
 
-      useEffect(() => {
-        console.log("CheckRequestStudent",CheckRequestStudent);
-        if (!CheckRequestStudent.checked){
-            setAmountRequestStudent('');
+      const handleCheckRequestYearChange= (event) => {
+        setCheckRequestYear({ checked: event.target.checked });
+      };
+      const handleAmountRequestYearChange= (event) => {
+        const inputValue = event.target.value;
+        const AmountRequestYear = inputValue.replace(/[^0-9]/g, "");
+        if (inputValue !== AmountRequestYear) {
+            alert("กรุณากรอกเฉพาะตัวเลขเท่านั้น")
+          event.target.value = AmountRequestYear;
         }
-        
-      }, [CheckRequestStudent]);
-      
-      useEffect(() => {
-        console.log("CheckRequestTranscript",CheckRequestTranscript);
-        if (!CheckRequestTranscript.checked){
-            setAmountRequestTranscript('');
-        }
-        
-      }, [CheckRequestTranscript]);
+        setAmountRequestYear(AmountRequestYear);
+      };
 
  
-      const [selectedOption, setSelectedOption] = useState('');
+      const [selectedOptionRequestStudent, setSelectedOptionRequestStudent] = useState('');
 
-    const handleSelectChange = (event) => {
-      setSelectedOption(event.target.value);
+    const handleSelectOptionRequestStudentChange = (event) => {
+      setSelectedOptionRequestStudent(event.target.value);
+    };
+
+    const [selectedOptionRequestScore, setSelectedOptionRequestScore] = useState('');
+
+    const handleSelectOptionRequestScoreChange = (event) => {
+      setSelectedOptionRequestScore(event.target.value);
+    };
+
+    const [selectedOptionRequestGrade, setSelectedOptionRequestGrade] = useState('');
+
+    const handleSelectOptionRequestGradeChange = (event) => {
+      setSelectedOptionRequestGrade(event.target.value);
+    };
+
+    const [selectedOptionRequestYear, setSelectedOptionRequestYear] = useState('');
+
+    const handleSelectOptionRequestYearChange = (event) => {
+      setSelectedOptionRequestYear(event.target.value);
     };
     // const [Student_picture_file,setStudent_picture_file] = useState("");
     const allowedFileTypes = ['.pdf', '.jpg', '.jpeg', '.png'];
@@ -275,40 +314,120 @@ function Request_cert({login_Email}) {
             return false;
         }
 
-        if (!CheckRequestStudent.checked && !CheckRequestTranscript.checked) {
+        if (!CheckRequestStudent.checked && !CheckRequestScore.checked && !CheckRequestGrade.checked && !CheckRequestYear.checked) {
             alert('กรุณาเลือกประเภทใบรับรอง');
-            // CheckRequestStudent.scrollIntoView({ behavior: 'smooth' });
-            // setTimeout(() => CheckRequestStudent.focus(), 100);
+            
             return false;
         }
         if (CheckRequestStudent.checked) {
             const AmountRequestStudent = document.getElementById('AmountRequestStudent');
             if(AmountRequestStudent.value===""){
-                alert('กรุณาระบุจำนวนใบรับรองการเป็นนักเรียน (ปพ.7)');
+                alert('กรุณาระบุจำนวนใบรับรองการเป็นนักเรียน');
                 AmountRequestStudent.scrollIntoView({ behavior: 'smooth' });
                 setTimeout(() => AmountRequestStudent.focus(), 100);
             return false;
             }
-        }
-        if (CheckRequestTranscript.checked) {
-            
-            const AmountRequestTranscript = document.getElementById('AmountRequestTranscript');
-            if(AmountRequestTranscript.value===""){
-                alert('กรณีขอหนังสือรับรองผลการเรียนรายวิชา');
-                AmountRequestTranscript.scrollIntoView({ behavior: 'smooth' });
-                setTimeout(() => AmountRequestTranscript.focus(), 100);
-            return false;
+            const selectedOptionRequestStudent = document.getElementById('selectedOptionRequestStudent');
+
+            if(selectedOptionRequestStudent.value==="") {
+                alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+                selectedOptionRequestStudent.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => selectedOptionRequestStudent.focus(), 100);
+                return false;
             }
+            if(selectedOptionRequestStudent.value==="อื่นๆ") {
+              const OptionRequestStudent = document.getElementById('OptionRequestStudent');
+              if(OptionRequestStudent.value===""){
+                alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+                OptionRequestStudent.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => OptionRequestStudent.focus(), 100);
+                return false;
+              }
+
+          }
         }
+        if (CheckRequestScore.checked) {
+          const AmountRequestScore = document.getElementById('AmountRequestScore');
+          if(AmountRequestScore.value===""){
+              alert('กรุณาระบุจำนวนใบรับรองผลการเรียนแบบคะแนนรายวิชา');
+              AmountRequestScore.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => AmountRequestScore.focus(), 100);
+          return false;
+          }
+          const selectedOptionRequestScore = document.getElementById('selectedOptionRequestScore');
 
-        const selectedOption = document.getElementById('selectedOption');
+          if(selectedOptionRequestScore.value==="") {
+              alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+              selectedOptionRequestScore.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => selectedOptionRequestScore.focus(), 100);
+              return false;
+          }
+          if(selectedOptionRequestScore.value==="อื่นๆ") {
+            const OptionRequestScore = document.getElementById('OptionRequestScore');
+            if(OptionRequestScore.value===""){
+              alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+              OptionRequestScore.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => OptionRequestScore.focus(), 100);
+              return false;
+            }
 
-        if(selectedOption.value==="") {
+        }
+      }
+      if (CheckRequestGrade.checked) {
+        const AmountRequestGrade = document.getElementById('AmountRequestGrade');
+        if(AmountRequestGrade.value===""){
+            alert('กรุณาระบุจำนวนใบรับรองผลการเรียนเกรดเฉลี่ยประจำปีการศึกษา');
+            AmountRequestGrade.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => AmountRequestGrade.focus(), 100);
+        return false;
+        }
+        const selectedOptionRequestGrade = document.getElementById('selectedOptionRequestGrade');
+
+        if(selectedOptionRequestGrade.value==="") {
             alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
-            selectedOption.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => selectedOption.focus(), 100);
+            selectedOptionRequestGrade.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => selectedOptionRequestGrade.focus(), 100);
             return false;
         }
+        if(selectedOptionRequestGrade.value==="อื่นๆ") {
+          const OptionRequestGrade = document.getElementById('OptionRequestGrade');
+          if(OptionRequestGrade.value===""){
+            alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+            OptionRequestGrade.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => OptionRequestGrade.focus(), 100);
+            return false;
+          }
+
+      }
+    }
+        if (CheckRequestYear.checked) {
+          const AmountRequestYear = document.getElementById('AmountRequestYear');
+          if(AmountRequestYear.value===""){
+              alert('กรุณาระบุจำนวนใบรับรองผลการเรียน ชั้นป.4-5');
+              AmountRequestYear.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => AmountRequestYear.focus(), 100);
+          return false;
+          }
+          const selectedOptionRequestYear = document.getElementById('selectedOptionRequestYear');
+
+          if(selectedOptionRequestYear.value==="") {
+              alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+              selectedOptionRequestYear.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => selectedOptionRequestYear.focus(), 100);
+              return false;
+          }
+          if(selectedOptionRequestYear.value==="อื่นๆ") {
+            const OptionRequestYear = document.getElementById('OptionRequestYear');
+            if(OptionRequestYear.value===""){
+              alert('กรุณาระบุหมายเหตุในการขอใบรับรอง');
+              OptionRequestYear.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => OptionRequestYear.focus(), 100);
+              return false;
+            }
+
+        }
+      }
+        
         const customFile = document.getElementById('customFile');
 
         if(customFile.value==="") {
@@ -319,8 +438,13 @@ function Request_cert({login_Email}) {
         return true;
       };
 
-      const [ShowInputRequestTranscript,setShowInputRequestTranscript] =useState(false);
+      
       const [ShowInputRequestStudent,setShowInputRequestStudent] =useState(false);
+      const [ShowInputRequestScore,setShowInputRequestScore] =useState(false);
+      const [ShowInputRequestGrade,setShowInputRequestGrade] =useState(false);
+      const [ShowInputRequestYear,setShowInputRequestYear] =useState(false);
+
+
       useEffect(() => {
         
         if (CheckRequestStudent.checked){
@@ -328,26 +452,131 @@ function Request_cert({login_Email}) {
         }
         else {
             setShowInputRequestStudent(false);
+            setAmountRequestStudent('');
+            setSelectedOptionRequestStudent("");
         }
         
       }, [CheckRequestStudent]);
+     
       useEffect(() => {
         
-        if (CheckRequestTranscript.checked){
-            setShowInputRequestTranscript(true);
+        if (CheckRequestScore.checked){
+          setShowInputRequestScore(true);
         }
         else {
-            setShowInputRequestTranscript(false);
+          setShowInputRequestScore(false);
+          setAmountRequestScore('');
+          setSelectedOptionRequestScore("");
         }
         
-      }, [CheckRequestTranscript]);
+      }, [CheckRequestScore]);
 
+      useEffect(() => {
+        
+        if (CheckRequestGrade.checked){
+          setShowInputRequestGrade(true);
+        }
+        else {
+          setShowInputRequestGrade(false);
+          setAmountRequestGrade('');
+          setSelectedOptionRequestGrade("");
+        }
+        
+      }, [CheckRequestGrade]);
+
+      useEffect(() => {
+        
+        if (CheckRequestYear.checked){
+          setShowInputRequestYear(true);
+        }
+        else {
+          setShowInputRequestYear(false);
+          setAmountRequestYear('');
+          setSelectedOptionRequestYear("");
+        }
+        
+      }, [CheckRequestYear]);
+     
       const [showConfirmModal, setshowConfirmModal] = useState(false);
       const [showLoadingModal, setShowLoadingModal] = useState(false);
       const [showSuccessModal, setShowSuccessModal] = useState(false);
       const handleCloseModal = () => {
         setshowConfirmModal(false);
       }
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      const [ShowOptionInput,setShowOptionInput] =useState(false);
+      const [OptionRequestStudent,setOptionRequestStudent] = useState("");
+      const handleOptionRequestStudentChange = (event) => {
+        setOptionRequestStudent(event.target.value);
+      };
+      useEffect(() => {
+        
+        if (selectedOptionRequestStudent==="อื่นๆ"){
+          setShowOptionInput(true);
+        }
+        else {
+          setShowOptionInput(false);
+          setOptionRequestStudent("");
+        }
+        
+      }, [selectedOptionRequestStudent]);
+
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////
+      const [ShowOptionInputScore,setShowOptionInputScore] =useState(false);
+
+      const [OptionRequestScore,setOptionRequestScore] = useState("");
+      const handleOptionRequestScoreChange = (event) => {
+        setOptionRequestScore(event.target.value);
+      };
+      useEffect(() => {
+        
+        if (selectedOptionRequestScore==="อื่นๆ"){
+          setShowOptionInputScore(true);
+        }
+        else {
+          setShowOptionInputScore(false);
+          setOptionRequestScore("");
+        }
+        
+      }, [selectedOptionRequestScore]);
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      const [ShowOptionInputGrade,setShowOptionInputGrade] =useState(false);
+
+      const [OptionRequestGrade,setOptionRequestGrade] = useState("");
+      const handleOptionRequestGradeChange = (event) => {
+        setOptionRequestGrade(event.target.value);
+      };
+      useEffect(() => {
+        
+        if (selectedOptionRequestGrade==="อื่นๆ"){
+          setShowOptionInputGrade(true);
+        }
+        else {
+          setShowOptionInputGrade(false);
+          setOptionRequestGrade("");
+        }
+        
+      }, [selectedOptionRequestGrade]);
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      const [ShowOptionInputYear,setShowOptionInputYear] =useState(false);
+
+      const [OptionRequestYear,setOptionRequestYear] = useState("");
+      const handleOptionRequestYearChange = (event) => {
+        setOptionRequestYear(event.target.value);
+      };
+      useEffect(() => {
+        
+        if (selectedOptionRequestYear==="อื่นๆ"){
+          setShowOptionInputYear(true);
+        }
+        else {
+          setShowOptionInputYear(false);
+          setOptionRequestYear("");
+        }
+        
+      }, [selectedOptionRequestYear]);
+
+
       return (
         <>
       {showConfirmModal && (
@@ -434,73 +663,236 @@ function Request_cert({login_Email}) {
                 <div class="form-group col-md-15 fone">
                     <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px"}}>
                         <input class="form-check-input" type="checkbox" 
-                        value="ปพ.7" 
+                        value="ใบรับรองการเป็นนักเรียน" 
                         onChange={handleCheckRequestStudentChange} 
                         id="CheckRequestStudent"
                         style={{border: "1px solid #a7a7a7"}}/>
 
-                        <label class="form-check-label custom-body" style={{ fontSize: '18px'}} for="flexCheckDefault">
-                            กรณีขอใบรับรองการเป็นนักเรียน (ปพ.7)
+                        <label class="form-check-label custom-body" style={{ fontSize: '20px'}} for="flexCheckDefault">
+                            กรณีขอใบรับรองการเป็นนักเรียน
                         </label>
                     </div>
                     {ShowInputRequestStudent && (
+                      <>
+                    
                     <div className="mb-3 d-flex px-3">
                         <input
                             type="text"
                             id = "AmountRequestStudent"
                             className="form-control ml-3 px-3"
                             placeholder="จำนวน"
-                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7"}}
+                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"20px"}}
                             value={AmountRequestStudent}
                             onChange={handleAmountRequestStudentChange}
                             required
                         />
                         <h5 className="ms-2 mt-2 custom-body" style={{ fontSize: '18px'}}>ฉบับ</h5>
                     </div>
-                    )}       
-                    <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px"}}>
+
+                    <h1 class="card-heading px-3" style={{fontSize: '18px',fontWeight: 'bold',marginLeft:"20px"}}>ต้องการขอเอกสารครั้งนี้เพื่อ</h1>
+              
+                            <div class="dropdown px-3"style={{maxWidth:"55%",fontSize: '18px',marginLeft:"20px"}} >
+                                <select value={selectedOptionRequestStudent} onChange={handleSelectOptionRequestStudentChange} class="custom-select" id="selectedOptionRequestStudent">
+                                    <option value="">ระบุหมายเหตุ</option>
+                                    <option value="เพื่อใช้ในการขอทุนการศึกษา">เพื่อใช้ในการขอทุนการศึกษา</option>
+                                    <option value="เพื่อใช้ในการสมัครเข้าศึกษาต่อ">เพื่อใช้ในการสมัครเข้าศึกษาต่อ</option>
+                                    <option value="อื่นๆ">อื่นๆ</option>
+
+                                </select>
+                            </div>
+                      
+                    {ShowOptionInput && (
+                      <textarea
+                      type="text"
+                      id = "OptionRequestStudent"
+                      className="form-control ml-3 px-3"
+                      placeholder="ระบุหมายเหตุในการขอใบรับรอง"
+                      style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"35px",marginTop:"10px"}}
+                      value={OptionRequestStudent}
+                      onChange={handleOptionRequestStudentChange}
+                      required
+                  />
+                    )}
+                  
+                    </>
+                    )} 
+                    
+                    {/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      */}
+                    <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px",marginTop:"10px"}}>
                         <input class="form-check-input"
                         type="checkbox" 
-                        value="ปพ.1" 
-                        onChange={handleCheckRequestTranscriptChange} 
+                        value="ใบรับรองผลการเรียนแบบคะแนนรายวิชา" 
+                        onChange={handleCheckRequestScoreChange} 
                         id="flexCheckChecked"
                         style={{border: "1px solid #a7a7a7"}}/>
 
-                        <label class="form-check-label custom-body" style={{ fontSize: '18px'}} for="flexCheckChecked">
-                            กรณีขอหนังสือรับรองผลการเรียนรายวิชา
+                        <label class="form-check-label custom-body" style={{ fontSize: '20px'}} for="flexCheckChecked">
+                            กรณีขอใบรับรองผลการเรียนแบบคะแนนรายวิชา
                         </label>
                     </div>
-                    {ShowInputRequestTranscript && (
+                    {ShowInputRequestScore && (
+                      <>
                     <div className="mb-3 d-flex px-3" >
                         <input
                             type="text"
-                            id="AmountRequestTranscript"
+                            id="AmountRequestScore"
                             className="form-control ml-3 px-3"
                             placeholder="จำนวน"
-                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7"}}
-                            value={AmountRequestTranscript}
-                            onChange={handleAmountRequestTranscriptChange}
+                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"20px"}}
+                            value={AmountRequestScore}
+                            onChange={handleAmountCheckRequestScoreChange}
                             required
                         />
                         <h5 className="ms-2 mt-2 custom-body"style={{ fontSize: '18px'}}>ฉบับ</h5>
                     </div>
+                    <h1 class="card-heading px-3" style={{fontSize: '18px',fontWeight: 'bold',marginLeft:"20px"}}>ต้องการขอเอกสารครั้งนี้เพื่อ</h1>
+              
+                        <div class="dropdown px-3"style={{maxWidth:"55%",fontSize: '18px',marginLeft:"20px"}} >
+                            <select value={selectedOptionRequestScore} onChange={handleSelectOptionRequestScoreChange} class="custom-select" id="selectedOptionRequestScore">
+                                <option value="">ระบุหมายเหตุ</option>
+                                <option value="เพื่อใช้ในการขอทุนการศึกษา">เพื่อใช้ในการขอทุนการศึกษา</option>
+                                <option value="เพื่อใช้ในการสมัครเข้าศึกษาต่อ">เพื่อใช้ในการสมัครเข้าศึกษาต่อ</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+
+                            </select>
+                        </div>
+                        
+                      {ShowOptionInputScore && (
+                        <textarea
+                        type="text"
+                        id = "OptionRequestScore"
+                        className="form-control ml-3 px-3"
+                        placeholder="ระบุหมายเหตุในการขอใบรับรอง"
+                        style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"35px",marginTop:"10px"}}
+                        value={OptionRequestScore}
+                        onChange={handleOptionRequestScoreChange}
+                        required
+                    />
+                      )}
+    
+                    </>
+                   
                     )}
+                    {/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      */}
+
+                     <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px",marginTop:"10px"}}>
+                        <input class="form-check-input" type="checkbox" 
+                        value="ใบรับรองผลการเรียนเกรดเฉลี่ยประจำปีการศึกษา" 
+                        onChange={handleCheckRequestGradeChange} 
+                        id="CheckRequestGrade"
+                        style={{border: "1px solid #a7a7a7"}}/>
+
+                        <label class="form-check-label custom-body" style={{ fontSize: '20px'}} for="flexCheckDefault">
+                            กรณีขอใบรับรองผลการเรียนเกรดเฉลี่ยประจำปีการศึกษา
+                        </label>
+                    </div>
+                    {ShowInputRequestGrade && (
+                      <>
+                    <div className="mb-3 d-flex px-3" >
+                        <input
+                            type="text"
+                            id="AmountRequestGrade"
+                            className="form-control ml-3 px-3"
+                            placeholder="จำนวน"
+                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"20px"}}
+                            value={AmountRequestGrade}
+                            onChange={handleAmountCheckRequestGradeChange}
+                            required
+                        />
+                        <h5 className="ms-2 mt-2 custom-body"style={{ fontSize: '18px'}}>ฉบับ</h5>
+                    </div>
+                    <h1 class="card-heading px-3" style={{fontSize: '18px',fontWeight: 'bold',marginLeft:"20px"}}>ต้องการขอเอกสารครั้งนี้เพื่อ</h1>
+              
+                        <div class="dropdown px-3"style={{maxWidth:"55%",fontSize: '18px',marginLeft:"20px"}} >
+                            <select value={selectedOptionRequestGrade} onChange={handleSelectOptionRequestGradeChange} class="custom-select" id="selectedOptionRequestGrade">
+                                <option value="">ระบุหมายเหตุ</option>
+                                <option value="เพื่อใช้ในการขอทุนการศึกษา">เพื่อใช้ในการขอทุนการศึกษา</option>
+                                <option value="เพื่อใช้ในการสมัครเข้าศึกษาต่อ">เพื่อใช้ในการสมัครเข้าศึกษาต่อ</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+
+                            </select>
+                        </div>
+                        
+                      {ShowOptionInputGrade && (
+                        <textarea
+                        type="text"
+                        id = "OptionRequestGrade"
+                        className="form-control ml-3 px-3"
+                        placeholder="ระบุหมายเหตุในการขอใบรับรอง"
+                        style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"35px",marginTop:"10px"}}
+                        value={OptionRequestGrade}
+                        onChange={handleOptionRequestGradeChange}
+                        required
+                    />
+                      )}
+    
+                    </>
+                   
+                    )}
+
+                    {/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      */}
+
+                    <div class="form-check"style={{ marginLeft:"15px",marginBottom:"5px",marginTop:"10px"}}>
+                        <input class="form-check-input" type="checkbox" 
+                        value="ใบรับรองผลการเรียน ชั้นป.4-5" 
+                        onChange={handleCheckRequestYearChange} 
+                        id="CheckRequestYear"
+                        style={{border: "1px solid #a7a7a7"}}/>
+
+                        <label class="form-check-label custom-body" style={{ fontSize: '20px'}} for="flexCheckDefault">
+                            กรณีขอใบรับรองผลการเรียน ชั้นป.4-5
+                        </label>
+                    </div>
+
+                    {ShowInputRequestYear && (
+                      <>
+                    <div className="mb-3 d-flex px-3" >
+                        <input
+                            type="text"
+                            id="AmountRequestYear"
+                            className="form-control ml-3 px-3"
+                            placeholder="จำนวน"
+                            style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"20px"}}
+                            value={AmountRequestYear}
+                            onChange={handleAmountRequestYearChange}
+                            required
+                        />
+                        <h5 className="ms-2 mt-2 custom-body"style={{ fontSize: '18px'}}>ฉบับ</h5>
+                    </div>
+                    <h1 class="card-heading px-3" style={{fontSize: '18px',fontWeight: 'bold',marginLeft:"20px"}}>ต้องการขอเอกสารครั้งนี้เพื่อ</h1>
+              
+                        <div class="dropdown px-3"style={{maxWidth:"55%",fontSize: '18px',marginLeft:"20px"}} >
+                            <select value={selectedOptionRequestYear} onChange={handleSelectOptionRequestYearChange} class="custom-select" id="selectedOptionRequestYear">
+                                <option value="">ระบุหมายเหตุ</option>
+                                <option value="เพื่อใช้ในการขอทุนการศึกษา">เพื่อใช้ในการขอทุนการศึกษา</option>
+                                <option value="เพื่อใช้ในการสมัครเข้าศึกษาต่อ">เพื่อใช้ในการสมัครเข้าศึกษาต่อ</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+
+                            </select>
+                        </div>
+                        
+                      {ShowOptionInputYear && (
+                        <textarea
+                        type="text"
+                        id = "OptionRequestYear"
+                        className="form-control ml-3 px-3"
+                        placeholder="ระบุหมายเหตุในการขอใบรับรอง"
+                        style={{maxWidth:"50%", fontFamily: 'Kanit, sans-serif',border: "1px solid #a7a7a7",marginLeft:"35px",marginTop:"10px"}}
+                        value={OptionRequestYear}
+                        onChange={handleOptionRequestYearChange}
+                        required
+                    />
+                      )}
+    
+                    </>
+                   
+                    )}
+
+                    {/* ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////      */}
+
                     <br></br>
                     
-                    <h1 class="card-heading px-3" style={{fontSize: '20px',fontWeight: 'bold'}}>ต้องการขอเอกสารครั้งนี้เพื่อ</h1>
-                    <div class="h-screen flex flex-col justify-left sm:flex-row">
-                        <div class="sm:w-1_3 sm:pr-3">
-                            <div class="dropdown px-3"style={{maxWidth:"70%",fontSize: '18px'}} >
-                                <select value={selectedOption} onChange={handleSelectChange} class="custom-select" id="selectedOption">
-                                    <option value="">ระบุหมายเหตุ</option>
-                                    <option value="เพื่อใช้ในการขอทุนการศึกษา">เพื่อใช้ในการขอทุนการศึกษา</option>
-                                    <option value="เพื่อใช้ในการสมัครเข้าศึกษาต่อ">เพื่อใช้ในการสมัครเข้าศึกษาต่อ</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <br></br>
-                    <br></br>
+                
                     <h1 class="card-heading px-3" style={{fontSize: '20px',fontWeight: 'bold'}}>อัปโหลดรูปภาพนักเรียน</h1>
                     <h2 class="card-heading px-3"style={{ fontSize: '18px'}}>หมายเหตุ</h2>
                     <h5 class="card-heading px-3"style={{ fontSize: '16px'}}>1. รูปถ่ายต้องถ่ายไว้ไม่เกิน 6 เดือน</h5>
