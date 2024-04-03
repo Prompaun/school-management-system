@@ -1,4 +1,4 @@
-import React,{useState,useRef, useEffect } from 'react'
+import React,{useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 // import Tab_enroll from '../components/Tab_enroll';
@@ -16,7 +16,7 @@ const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 // const [apiUrl, setapiUrl] = useState(false);
 // const apiUrl = process.env.API_URL;
 const apiUrl = process.env.api
-console.log("process.env.api",process.env.api);
+// console.log("process.env.api",process.env.api);
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
