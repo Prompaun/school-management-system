@@ -1,26 +1,26 @@
 import React, { useState, useEffect,useRef } from 'react';
 import Header from '../components/Header';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
+import Modal_success from '../components/Modal_success';
 
 function ManageStudentClass() {
     const [StudentData,setStudentData] = useState([
         {StudentID:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Year:"",Room:""},
-        {StudentID:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Year:"5",Room:"6"}
-
+        {StudentID:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Year:"5",Room:"6"},
+        {StudentID:3,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"5",Room:"9"},
+        {StudentID:4,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"4",Room:"7"},
+        {StudentID:5,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"6",Room:"9"}
     ])
    
 
     const [ClassYear, setClassYear] = useState([
         { Year: [1, 2, 3, 4, 5, 6] },
-        // { Room: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
+      
     ])
     const [ClassRoom, setClassRoom] = useState([
-        // { Year: [1, 2, 3, 4, 5, 6] },
         { Room: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] },
     ])
-    // const { Year } = ClassYear;
-
-    // const { Room } = ClassRoom;
+   
     const [selectedYear, setSelectedYear] = useState("")
     const [SelectedRoom, setSelectedRoom] = useState("")
    
@@ -32,47 +32,81 @@ function ManageStudentClass() {
     const handleSelectRoomChange = (event) => {
         setSelectedRoom(event.target.value);
     };
+    // const [editedYear, setEditedYear] = useState("");
+    // const [editedRoom, setEditedRoom] = useState("");
     
-    const filteredStudent = StudentData.filter((student) =>
-        selectedYear && SelectedRoom
-        ? student.Year === selectedYear && student.Room === SelectedRoom
-            : true
-        );
-    
+   
     const [editingId, setEditingId] = useState(null);
+    
+    const filteredStudent = editingId !== null ? StudentData : StudentData.filter((student) =>
+        // selectedYear
+        //     ? ((SelectedRoom ? (student.Year === selectedYear && student.Room === SelectedRoom) :  student.Year === selectedYear))
+        //     : student.Year === "" && student.Year === "" 
+        {
+            if (selectedYear === '' && SelectedRoom ===""){
+                return student.Year === "" && student.Room === "";
+             }
+             if (selectedYear !== "" && SelectedRoom !==""){
+                return student.Year === selectedYear && student.Room === SelectedRoom;
+                }
+            if (selectedYear !== ""){
+                return student.Year === selectedYear;
+            }
+            // return true;
+        }
+            
+    );
+    
 
     const handleEditRow = async (StudentID) => {
         setEditingId(StudentID === editingId ? null : StudentID);
         if (editingId!== null) {
-            handleSave(editingId);
+            // handleSave(editingId);
+            // setShowModalSuccess(true);
         };
     };
     
     const handleChange = (StudentID, field, value) => {
-        if (field === "Year") setEditedYear(value);
-        if (field === "Room") setEditedRoom(value);
-      };
-    const [editedYear, setEditedYear] = useState("");
-    const [editedRoom, setEditedRoom] = useState("");
-
-    const handleSave = (StudentID) => {
-        if (editedYear!== "" && editedRoom!== "") {
-          setStudentData(
+        setStudentData(
             StudentData.map((item) =>
-              item.StudentID === StudentID
-            ? {...item, Year: editedYear, Room: editedRoom }
-                : item
+            item.StudentID === StudentID ? {...item, [field]: value } : item
             )
-          );
-        }
-        setEditingId(null);
-        setEditedYear("");
-        setEditedRoom("");
+        );
+         
+    
       };
+    
 
+    // const handleSave = (StudentID) => {
+    //     if (editedYear!== "" && editedRoom!== "") {
+    //       setStudentData(
+    //         StudentData.map((item) =>
+    //           item.StudentID === StudentID
+    //         ? {...item, Year: editedYear, Room: editedRoom }
+    //             : item
+    //         )
+    //       );
+    //       setShowModalSuccess(true);
+    //     }
+        
+    //     setEditingId(null);
+    //     setEditedYear("");
+    //     setEditedRoom("");
+    //   };
+
+      const [ShowModalSuccess,setShowModalSuccess] = useState(false);
 
   return (
     <>
+     
+     {ShowModalSuccess && (
+            <Modal_success
+            show={ShowModalSuccess} 
+            setShow={setShowModalSuccess} 
+            // link="/Parent_menu" 
+            text="ระบบได้ทำการบันทึกเรียบร้อยแล้ว"
+            />
+         )}
     <Header
     header="ระบบจัดการสารสนเทศ"
     subhead="บริการสำหรับบุคลากรภายในโรงเรียน"
@@ -165,16 +199,17 @@ function ManageStudentClass() {
                                         <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.nameTitle}{item.FirstName} {item.LastName}</td>
                                        
                                         <td style={{ backgroundColor: "#FFFFFF", fontSize: "16px" }}>
-                                            {editingId === item.StudentID? (
+                                        {editingId === item.StudentID? (
                                             <input
                                                 type="text"
-                                                value={editedYear}
+                                                value={item.Year}
                                                 onChange={(e) => {
                                                 const inputValue = e.target.value;
                                                 const isInteger = Number.isInteger(parseInt(inputValue, 10));
-                                                if (isInteger || inputValue === "") {
+                                                if ((isInteger && inputValue >= 1 && inputValue <= 6) || inputValue === "") {
                                                     handleChange(item.StudentID, "Year", inputValue);
                                                 }
+                                               
                                                 }}
                                             />
                                             ) : (
@@ -185,11 +220,11 @@ function ManageStudentClass() {
                                             {editingId === item.StudentID? (
                                             <input
                                                 type="text"
-                                                value={editedRoom}
+                                                value={item.Room}
                                                 onChange={(e) => {
                                                 const inputValue = e.target.value;
                                                 const isInteger = Number.isInteger(parseInt(inputValue, 10));
-                                                if (isInteger || inputValue === "") {
+                                                if ((isInteger && inputValue >= 1 && inputValue <= 20) || inputValue === "") {
                                                     handleChange(item.StudentID, "Room", inputValue);
                                                 }
                                                 }}

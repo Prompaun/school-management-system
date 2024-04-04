@@ -29,13 +29,13 @@ const Check_Certification_Request = () => {
        
         ]);
 
-    const filteredData = data.filter((item) => {
-        if (selectedOption !== 'ทั้งหมด'){
-            return item.status === selectedOption;
-            }
-        return true;
+    // const filteredData = data.filter((item) => {
+    //     if (selectedOption !== 'ทั้งหมด'){
+    //         return item.status === selectedOption;
+    //         }
+    //     return true;
             
-        });
+    //     });
 
     function formatDateThaiYear(dateString) {
         const dob = new Date(dateString);
@@ -136,6 +136,7 @@ const Check_Certification_Request = () => {
         }
     }, [selectedOption]);
     
+   
 
 
     const handleSelectChange = (event) => {
@@ -143,19 +144,29 @@ const Check_Certification_Request = () => {
       };
 
       const [editingId, setEditingId] = useState(null);
-      
+
+      const filteredData = editingId !== null ? data : data.filter((item) => {
+            if (selectedOption !== 'ทั้งหมด') {
+                return item.status === selectedOption;
+            }
+            return true;
+        });
+
       const handleEditRow = async (id) => {
           setEditingId(id === editingId ? null : id);
-          if (editingId === id) {
+          if (editingId!== null) {
+           
             setShowModalSuccess(true)
             const selectedItem = data.find((item) => item.id === id);
             console.log(selectedItem);
             const requestData = {
                 Request_status: selectedItem.status
+           
             };
             
             updateRequest(id, requestData);
         }
+     
       };
       
       const handleChange = (id, field, value) => {
@@ -165,6 +176,9 @@ const Check_Certification_Request = () => {
             )
           );
         }
+       
+
+
         const [ShowModalSuccess,setShowModalSuccess] = useState(false);
       
     return (
@@ -194,9 +208,9 @@ const Check_Certification_Request = () => {
                             <div className="dropdown" style={{ maxWidth: '100%'}}>
                             <select value={selectedOption} onChange={handleSelectChange}className="custom-select w-full">
                                 <option value="ทั้งหมด">ทั้งหมด</option>
-                                {/* <option value="รอดำเนินการ">รอดำเนินการ</option> */}
-                                <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
                                 <option value="รอดำเนินการ">รอดำเนินการ</option>
+                                <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
+                                {/* <option value="รอดำเนินการ">รอดำเนินการ</option> */}
                             </select>
                         </div>
                         </div>
@@ -248,8 +262,10 @@ const Check_Certification_Request = () => {
                                                     value={request.status}
                                                     onChange={(e) => handleChange(request.id, 'status', e.target.value)}
                                                     className="custom-select">
-                                                    <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
+                                                    {/* <option value=""></option> */}
                                                     <option value="รอดำเนินการ">รอดำเนินการ</option>
+                                                    <option value="ดำเนินการเสร็จสิ้น">ดำเนินการเสร็จสิ้น</option>
+                                                   
                                                 </select>
                                             </div>
                                              ) : (
@@ -257,28 +273,7 @@ const Check_Certification_Request = () => {
                                             )}
                                             
                                             </td>
-                                        {/* <td style={{ backgroundColor: '#FFFFFF' }}>
-                                            <button
-                                                style={{
-                                                    backgroundColor: 'transparent', // ตั้งค่าสีพื้นหลังเป็นโปร่ง
-                                                    border: 'none', // ลบเส้นขอบ
-                                                    padding: '0', // ลบ Padding
-                                                    cursor: 'pointer' // เพิ่ม cursor: 'pointer' เพื่อแสดงว่าเป็นองค์ประกอบที่คลิกได้
-                                                }}
-                                                onClick={() => {
-                                                    // กระทำตามที่คุณต้องการทำเมื่อปุ่มถูกคลิก
-                                                }}
-                                            >
-                                                <i 
-                                                    className="fs-5 bi-check-circle-fill" 
-                                                    style={{
-                                                        color: '#32CD32',
-                                                        fontSize: '20px',
-                                                        marginRight: '5px'
-                                                    }}
-                                                ></i>
-                                            </button>
-                                        </td> */}
+                                        
                                         <td >
                                                 <span className="actions"
                                                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}

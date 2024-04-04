@@ -79,7 +79,7 @@ const Check_Applicant_Information = () => {
     const handleSelectEnrollStatusChange = (event) => {
         setSelectedEnrollStatus(event.target.value);
         };
-    
+    const [editingId, setEditingId] = useState(null);
     const filteredData = data.filter((item) => {
         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
             return true;
@@ -107,7 +107,6 @@ const Check_Applicant_Information = () => {
           
         });
 
-    const [editingId, setEditingId] = useState(null);
     const handleEditRow = (Enroll_ID) => {
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
         if (editingId===Enroll_ID){
