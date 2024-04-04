@@ -79,8 +79,17 @@ const Check_Applicant_Information = () => {
     const handleSelectEnrollStatusChange = (event) => {
         setSelectedEnrollStatus(event.target.value);
         };
+
     const [editingId, setEditingId] = useState(null);
+    // const [editedData, setEditedData] = useState(data);
+    const [isEditing, setIsEditing] = useState(false);
+
     const filteredData = data.filter((item) => {
+        
+        if (isEditing && item.Enroll_ID === editingId) {
+            return true;
+        }
+        
         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
             return true;
          }
@@ -103,11 +112,14 @@ const Check_Applicant_Information = () => {
         if (selectedCourse !== 'ทั้งหมด'){
             return item.Educational_Program === selectedCourse;
          }
-         
+        
           
         });
+    
+
 
     const handleEditRow = (Enroll_ID) => {
+        setIsEditing(true);
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
         if (editingId===Enroll_ID){
             setShowModalSuccess(true)
@@ -118,17 +130,11 @@ const Check_Applicant_Information = () => {
                 if (changeData.ExamStatus === "ผ่าน") {
                     insertApplicanttoStudentInfo(changeData)
                 }
+                setIsEditing(false);
         }
        getApplicantInfo()
     };
-    // const handleEditRow = (Enroll_ID) => {
-    //     setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
-    //     if (Enroll_ID === editingId) {
-    //       setCurrentItem(data.find((item) => item.Enroll_ID === Enroll_ID));
-    //     } else {
-    //       setCurrentItem(null);
-    //     }
-    //   };
+
 
     const handleChange = (Enroll_ID, field, value) => {
         if (value === "") {
@@ -143,7 +149,7 @@ const Check_Applicant_Information = () => {
         );
         
       } 
-
+    
 
     const [SearchData,setSearchData] = useState("");
     const handleCheckChange = (e) => {
