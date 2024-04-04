@@ -850,24 +850,24 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             return false;
           }
 
-        const option1 = document.getElementById('option1');
-        const option2 = document.getElementById('option2');
-        const option3 = document.getElementById('option3');
-        const option4 = document.getElementById('option4');
+        // const option1 = document.getElementById('option1');
+        // const option2 = document.getElementById('option2');
+        // const option3 = document.getElementById('option3');
+        // const option4 = document.getElementById('option4');
 
-        if (!option1.checked && !option2.checked && !option3.checked && !option4.checked) {
-            alert('กรุณาเลือกประเภทของหลักฐานการศึกษาจากโรงเรียนเดิม');
-            return false;
-        }
+        // if (!option1.checked && !option2.checked && !option3.checked && !option4.checked) {
+        //     alert('กรุณาเลือกประเภทของหลักฐานการศึกษาจากโรงเรียนเดิม');
+        //     return false;
+        // }
         
 
-           const PreviousSchoolEducationalRecordsFile = document.getElementById('PreviousSchoolEducationalRecordsFile');
-          const PreviousSchoolEducationalRecordsFile_input = document.getElementById('PreviousSchoolEducationalRecordsFile_input');
-          if (PreviousSchoolEducationalRecordsFile_input.title === "") {
-            alert('กรุณาเลือกไฟล์หลักฐานการศึกษาจากโรงเรียนเดิม');
-            PreviousSchoolEducationalRecordsFile.focus();
-            return false;
-          }
+        //    const PreviousSchoolEducationalRecordsFile = document.getElementById('PreviousSchoolEducationalRecordsFile');
+        //   const PreviousSchoolEducationalRecordsFile_input = document.getElementById('PreviousSchoolEducationalRecordsFile_input');
+        //   if (PreviousSchoolEducationalRecordsFile_input.title === "") {
+        //     alert('กรุณาเลือกไฟล์หลักฐานการศึกษาจากโรงเรียนเดิม');
+        //     PreviousSchoolEducationalRecordsFile.focus();
+        //     return false;
+        //   }
 
           return true;
         }
@@ -1842,7 +1842,7 @@ return (
         </div>
         <br />
 
-        <div className="row" style={{ fontFamily: 'Kanit, sans-serif',fontWeight: 'bold', fontSize: '20px', marginRight: '5px', gap: '0'}}>
+        {/* <div className="row" style={{ fontFamily: 'Kanit, sans-serif',fontWeight: 'bold', fontSize: '20px', marginRight: '5px', gap: '0'}}>
             <div className="col-sm d-flex align-items-center">
                 <label htmlFor="Education_data" className="col-form-label">ข้อมูลการศึกษา</label>
             </div>
@@ -1889,7 +1889,7 @@ return (
                 </label>
         </div>
 
-        <br />
+        <br /> */}
         <div style={{ display: 'flex', flexWrap: "wrap", justifyContent: 'flex-end' }}>
 
                 <button id="next-button" type="button" onClick={handlePersonalNextClick} className="btn btn-primary" style={{ ...fontStyle, color: 'white', fontSize: '16px' }}>

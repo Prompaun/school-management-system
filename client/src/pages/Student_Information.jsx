@@ -226,16 +226,16 @@ function Student_Information(props) {
                     <button type="submit" className="btn btn-primary">file</button>
                 </div> */}
 
-                <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
+                {/* <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
                     <label htmlFor="education_data" className="col-form-label">ข้อมูลการศึกษา</label>
                 </div>
             
                 <div style={{ display: 'flex',flexWrap: 'wrap', gap: '10px', fontFamily: 'Kanit, sans-serif' }}>
                     <div className="align-items-center"style={{flexWrap:"wrap", fontSize: '18px'}}>
                         <label htmlFor="Education_Document" className="col-form-label">หลักฐานการศึกษาจากโรงเรียนเดิม</label>
-                    </div> 
+                    </div>  */}
 
-                    <div className="align-items-center"style={{ maxWidth:"100%"}}> 
+                    {/* <div className="align-items-center"style={{ maxWidth:"100%"}}> 
                         <input
                             type="text"
                             className="form-control"
@@ -251,10 +251,10 @@ function Student_Information(props) {
                                 fontSize: '18px'
                             }} 
                         />
-                    </div>
+                    </div> */}
 
                     {/* <div className="align-items-center"> */}
-                    <button 
+                    {/* <button 
                             type="submit" 
                             className="btn btn-custom" 
                             style={{
@@ -272,7 +272,7 @@ function Student_Information(props) {
                         >
                             <span>file</span>
                     </button>
-                </div>
+                </div> */}
             </div>
         </>
         )}
