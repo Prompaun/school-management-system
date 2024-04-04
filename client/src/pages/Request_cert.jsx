@@ -170,8 +170,8 @@ function Request_cert({login_Email}) {
       const [CheckRequestStudent,setCheckRequestStudent] = useState({ checked: false });
       const [AmountRequestStudent,setAmountRequestStudent] = useState('');
 
-      const [CheckRequestTranscript,setCheckRequestTranscript] = useState({ checked: false });
-      const [AmountRequestTranscript,setAmountRequestTranscript] = useState('');
+      // const [CheckRequestTranscript,setCheckRequestTranscript] = useState({ checked: false });
+      // const [AmountRequestTranscript,setAmountRequestTranscript] = useState('');
 
       const [CheckRequestScore,setCheckRequestScore] = useState({ checked: false });
       const [AmountRequestScore,setAmountRequestScore] = useState('');
