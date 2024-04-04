@@ -64,7 +64,7 @@ const RecruitmentPeriod_api = require('./Recruitment-period-api')(connection);
 const Request_api = require('./Request-api')(connection);
 const Health_api = require('./Health-api')(connection);
 const googleLogin_api = require('./google-login-api')();
-const googleUpload_api = require('./google-upload-api')();
+const googleUpload_api = require('./google-upload-api')(connection);
 
 //use routes    
 

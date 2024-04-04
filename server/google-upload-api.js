@@ -145,7 +145,33 @@ module.exports = function(connection) {
 
                 // ดึงข้อมูลนักเรียนที่ส่งมาจากฟอร์ม
                 // const { Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_status } = body;
-                const { CheckRequestStudent, CheckRequestTranscript, Student_ID, Parent_Email, Request_Date, AmountRequestStudent, AmountRequestTranscript, Request_detail, Request_status } = body;
+                const { 
+                    CheckRequestStudent, 
+                    CheckRequestScore, 
+                    CheckRequestGrade, 
+                    CheckRequestYear,
+                    Student_ID, 
+                    Parent_Email, 
+                    Request_Date, 
+                    AmountRequestStudent, 
+                    AmountRequestScore, 
+                    AmountRequestGrade, 
+                    AmountRequestYear, 
+                    ShowOptionInput, 
+                    ShowOptionInputScore, 
+                    ShowOptionInputGrade, 
+                    ShowOptionInputYear, 
+                    OptionRequestStudent,
+                    OptionRequestScore,
+                    OptionRequestGrade,
+                    OptionRequestYear,
+                    selectedOptionRequestStudent,
+                    selectedOptionRequestScore,
+                    selectedOptionRequestGrade,
+                    selectedOptionRequestYear,
+                    Request_detail, 
+                    Request_status 
+                } = body;
 
                 console.log("files",files);
 
@@ -157,23 +183,49 @@ module.exports = function(connection) {
                 }
 
                 console.log("requestFilesUrls",requestFilesUrls);
-                // ตรวจสอบว่ามี URL ของไฟล์ที่อัปโหลดพอสำหรับการเข้าถึงหรือไม่
+                
                 console.log("111111",AmountRequestStudent);
-                console.log("2222222",AmountRequestTranscript);
+                console.log("2222222",AmountRequestScore);
                 if (requestFilesUrls.length >= 1) {
                     try {
-                        // await addRequestToDatabase(Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, requestFilesUrls[0], Request_status);
-                        console.log("777777777",CheckRequestStudent);
-                        if(CheckRequestStudent === "true"){
-                            console.log("555555555",AmountRequestTranscript);
-                            await addRequestToDatabase(Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestStudent, Request_detail, requestFilesUrls[0], Request_status);
-                        }
+                            if(CheckRequestStudent === "true"){
+                                if(ShowOptionInput === "true"){
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestStudent, OptionRequestStudent, requestFilesUrls[0], Request_status);
+                                }
+                                else{
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestStudent, selectedOptionRequestStudent, requestFilesUrls[0], Request_status);
+                                }
+                            }
 
-                        if(CheckRequestTranscript === "true"){
-                            await addRequestToDatabase(Student_ID, Parent_Email, Request_Date, 'ปพ.1', AmountRequestTranscript, Request_detail, requestFilesUrls[0], Request_status);
-                        }
-                        
-                        res.status(200).send("Form Submitted");
+                            if(CheckRequestScore === "true"){
+                                if(ShowOptionInputScore === "true"){
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestScore, OptionRequestScore, requestFilesUrls[0], Request_status);
+                                }  
+                                else
+                                {
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestScore, selectedOptionRequestScore, requestFilesUrls[0], Request_status);
+                                }                          
+                            }
+
+                            if(CheckRequestGrade === "true"){
+                                if(ShowOptionInputGrade === "true"){
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestGrade, OptionRequestGrade, requestFilesUrls[0], Request_status);
+                                }
+                                else{
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestGrade, selectedOptionRequestGrade, requestFilesUrls[0], Request_status);
+                                }
+                            }
+
+                            if(CheckRequestYear === "true"){
+                                if(ShowOptionInputYear === "true"){
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestYear, OptionRequestYear, requestFilesUrls[0], Request_status);
+                                }
+                                else{
+                                    await addRequestToDatabase(connection, Student_ID, Parent_Email, Request_Date, 'ปพ.7', AmountRequestYear, selectedOptionRequestYear, requestFilesUrls[0], Request_status);
+                                }
+                            }
+                            
+                            res.status(200).send("Form Submitted");
                     } catch (error) {
                         console.error(error);
                         res.status(500).json({ error: "Failed to save request information" });
@@ -194,7 +246,33 @@ module.exports = function(connection) {
             }
         });
 
-    const addRequestToDatabase = async (Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_StudentPicture, Request_status) => {
+    // const addRequestToDatabase = async (connection, Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_StudentPicture, Request_status) => {
+    //     const sql = `
+    //         INSERT INTO Request (Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_StudentPicture, Request_status)
+    //         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    //     `;
+    
+    //     return new Promise((resolve, reject) => {
+    //         connection.query(sql, [Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_StudentPicture, Request_status], (err, results) => {
+    //             if (err) {
+    //                 console.error('Error saving request information:', err);
+    //                 reject(err);
+    //             } else {
+    //                 console.log('Request information saved successfully');
+    //                 resolve(results);
+    //             }
+    //         });
+    //     });
+    // };
+    const addRequestToDatabase = async (connection, Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_StudentPicture, Request_status) => {
+        console.log('Student_ID',Student_ID);
+        console.log('Parent_Email',Parent_Email);
+        console.log('Request_Date',Request_Date);
+        console.log('Request_type',Request_type);
+        console.log('Requested_Copies',Requested_Copies);
+        console.log('Request_detail',Request_detail);
+        console.log('Request_StudentPicture',Request_StudentPicture);
+        console.log('Request_status',Request_status);
         const sql = `
             INSERT INTO Request (Student_ID, Parent_Email, Request_Date, Request_type, Requested_Copies, Request_detail, Request_StudentPicture, Request_status)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -211,6 +289,8 @@ module.exports = function(connection) {
             // res.status(200).json({ message: 'Request information saved successfully' });
         });
     };
+        
+        
     
     
     

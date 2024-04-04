@@ -62,6 +62,110 @@ function Request_cert({login_Email}) {
     const [selectedStudent_ID, setSelectedStudent_ID] = useState("");
     const [Student_picture_file,setStudent_picture_file] = useState("");
 
+    const [selectedOptionRequestStudent, setSelectedOptionRequestStudent] = useState('');
+
+    const handleSelectOptionRequestStudentChange = (event) => {
+      setSelectedOptionRequestStudent(event.target.value);
+    };
+
+    const [selectedOptionRequestScore, setSelectedOptionRequestScore] = useState('');
+
+    const handleSelectOptionRequestScoreChange = (event) => {
+      setSelectedOptionRequestScore(event.target.value);
+    };
+
+    const [selectedOptionRequestGrade, setSelectedOptionRequestGrade] = useState('');
+
+    const handleSelectOptionRequestGradeChange = (event) => {
+      setSelectedOptionRequestGrade(event.target.value);
+    };
+
+    const [selectedOptionRequestYear, setSelectedOptionRequestYear] = useState('');
+
+    const handleSelectOptionRequestYearChange = (event) => {
+      setSelectedOptionRequestYear(event.target.value);
+    };
+
+    const [showConfirmModal, setshowConfirmModal] = useState(false);
+    const [showLoadingModal, setShowLoadingModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const handleCloseModal = () => {
+      setshowConfirmModal(false);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const [ShowOptionInput,setShowOptionInput] =useState(false);
+    const [OptionRequestStudent,setOptionRequestStudent] = useState("");
+    const handleOptionRequestStudentChange = (event) => {
+      setOptionRequestStudent(event.target.value);
+    };
+    useEffect(() => {
+      
+      if (selectedOptionRequestStudent==="อื่นๆ"){
+        setShowOptionInput(true);
+      }
+      else {
+        setShowOptionInput(false);
+        setOptionRequestStudent("");
+      }
+      
+    }, [selectedOptionRequestStudent]);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const [ShowOptionInputScore,setShowOptionInputScore] = useState(false);
+
+    const [OptionRequestScore,setOptionRequestScore] = useState("");
+    const handleOptionRequestScoreChange = (event) => {
+      setOptionRequestScore(event.target.value);
+    };
+    useEffect(() => {
+      
+      if (selectedOptionRequestScore==="อื่นๆ"){
+        setShowOptionInputScore(true);
+      }
+      else {
+        setShowOptionInputScore(false);
+        setOptionRequestScore("");
+      }
+      
+    }, [selectedOptionRequestScore]);
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const [ShowOptionInputGrade,setShowOptionInputGrade] =useState(false);
+
+    const [OptionRequestGrade,setOptionRequestGrade] = useState("");
+    const handleOptionRequestGradeChange = (event) => {
+      setOptionRequestGrade(event.target.value);
+    };
+    useEffect(() => {
+      
+      if (selectedOptionRequestGrade==="อื่นๆ"){
+        setShowOptionInputGrade(true);
+      }
+      else {
+        setShowOptionInputGrade(false);
+        setOptionRequestGrade("");
+      }
+      
+    }, [selectedOptionRequestGrade]);
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const [ShowOptionInputYear,setShowOptionInputYear] =useState(false);
+
+    const [OptionRequestYear,setOptionRequestYear] = useState("");
+    const handleOptionRequestYearChange = (event) => {
+      setOptionRequestYear(event.target.value);
+    };
+    useEffect(() => {
+      
+      if (selectedOptionRequestYear==="อื่นๆ"){
+        setShowOptionInputYear(true);
+      }
+      else {
+        setShowOptionInputYear(false);
+        setOptionRequestYear("");
+      }
+      
+    }, [selectedOptionRequestYear]);
+
     useEffect(() => {
       const fetchData = async () => {
           try {
@@ -95,17 +199,36 @@ function Request_cert({login_Email}) {
             const selectedStudent_ID = selectedStudent.split(' ')[0];
             setSelectedStudent_ID(selectedStudent_ID);
             console.log("selectedStudent_ID:", selectedStudent_ID); // พิมพ์ค่า StudentID ที่ได้
-            console.log("Student_picture_file:", Student_picture_file);
+            // console.log("Student_picture_file:", Student_picture_file);
 
-            console.log("Student_ID",selectedStudent_ID);
-            console.log("Request_Date",formatDate(new Date()));
-            console.log("Requested_Copies",AmountRequestStudent);
+            // console.log("Student_ID",selectedStudent_ID);
+            // console.log("Request_Date",formatDate(new Date()));
+            // console.log("Requested_Copies",AmountRequestStudent);
             // console.log("Request_detail",selectedOption);
 
+            // console.log("OptionRequestStudent",OptionRequestStudent);
+            // console.log("OptionRequestScore",OptionRequestScore);
+            // console.log("OptionRequestGrade",OptionRequestGrade);
+            // console.log("OptionRequestYear",OptionRequestYear);
+
+            // console.log("ShowOptionInput",ShowOptionInput);
+            // console.log("ShowOptionInputScore",ShowOptionInputScore);
+            // console.log("ShowOptionInputGrade",ShowOptionInputGrade);
+            // console.log("ShowOptionInputYear",ShowOptionInputYear);
+
+            // console.log('selectedOptionRequestStudent', selectedOptionRequestStudent);
+            // console.log('selectedOptionRequestScore', selectedOptionRequestScore);
+            // console.log('selectedOptionRequestGrade', selectedOptionRequestGrade);
+            // console.log('selectedOptionRequestYear', selectedOptionRequestYear);
 
             // if(CheckRequestStudent){
+            
+
               const formData = new FormData();
               formData.append('CheckRequestStudent', CheckRequestStudent.checked);
+              formData.append('CheckRequestScore', CheckRequestScore.checked);
+              formData.append('CheckRequestGrade', CheckRequestGrade.checked);
+              formData.append('CheckRequestYear', CheckRequestYear.checked);
               // formData.append('CheckRequestTranscript', CheckRequestTranscript.checked);
 
               formData.append('Student_ID', selectedStudent_ID);
@@ -115,6 +238,25 @@ function Request_cert({login_Email}) {
               // เพิ่มข้อมูลของนักเรียนเข้าไปใน formData
               // formData.append('Request_type', 'ปพ.7');
               formData.append('AmountRequestStudent', AmountRequestStudent);
+              formData.append('AmountRequestScore', AmountRequestScore);
+              formData.append('AmountRequestGrade', AmountRequestGrade);
+              formData.append('AmountRequestYear', AmountRequestYear);
+
+              formData.append('ShowOptionInput', ShowOptionInput);
+              formData.append('ShowOptionInputScore', ShowOptionInputScore);
+              formData.append('ShowOptionInputGrade', ShowOptionInputGrade);
+              formData.append('ShowOptionInputYear', ShowOptionInputYear);
+
+              formData.append('OptionRequestStudent', OptionRequestStudent);
+              formData.append('OptionRequestScore', OptionRequestScore);
+              formData.append('OptionRequestGrade', OptionRequestGrade);
+              formData.append('OptionRequestYear', OptionRequestYear);
+
+              formData.append('selectedOptionRequestStudent', selectedOptionRequestStudent);
+              formData.append('selectedOptionRequestScore', selectedOptionRequestScore);
+              formData.append('selectedOptionRequestGrade', selectedOptionRequestGrade);
+              formData.append('selectedOptionRequestYear', selectedOptionRequestYear);
+
               // formData.append('AmountRequestTranscript', AmountRequestTranscript);
 
               // formData.append('Request_detail', selectedOption);
@@ -126,6 +268,9 @@ function Request_cert({login_Email}) {
                   'Content-Type': 'multipart/form-data'
                 }
               });
+
+
+
             // }
 
             // if(CheckRequestTranscript){
@@ -235,29 +380,7 @@ function Request_cert({login_Email}) {
       };
 
  
-      const [selectedOptionRequestStudent, setSelectedOptionRequestStudent] = useState('');
-
-    const handleSelectOptionRequestStudentChange = (event) => {
-      setSelectedOptionRequestStudent(event.target.value);
-    };
-
-    const [selectedOptionRequestScore, setSelectedOptionRequestScore] = useState('');
-
-    const handleSelectOptionRequestScoreChange = (event) => {
-      setSelectedOptionRequestScore(event.target.value);
-    };
-
-    const [selectedOptionRequestGrade, setSelectedOptionRequestGrade] = useState('');
-
-    const handleSelectOptionRequestGradeChange = (event) => {
-      setSelectedOptionRequestGrade(event.target.value);
-    };
-
-    const [selectedOptionRequestYear, setSelectedOptionRequestYear] = useState('');
-
-    const handleSelectOptionRequestYearChange = (event) => {
-      setSelectedOptionRequestYear(event.target.value);
-    };
+      
     // const [Student_picture_file,setStudent_picture_file] = useState("");
     const allowedFileTypes = ['.pdf', '.jpg', '.jpeg', '.png'];
     const handleFileChange = (event) => {
@@ -496,85 +619,6 @@ function Request_cert({login_Email}) {
         }
         
       }, [CheckRequestYear]);
-     
-      const [showConfirmModal, setshowConfirmModal] = useState(false);
-      const [showLoadingModal, setShowLoadingModal] = useState(false);
-      const [showSuccessModal, setShowSuccessModal] = useState(false);
-      const handleCloseModal = () => {
-        setshowConfirmModal(false);
-      }
-      //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const [ShowOptionInput,setShowOptionInput] =useState(false);
-      const [OptionRequestStudent,setOptionRequestStudent] = useState("");
-      const handleOptionRequestStudentChange = (event) => {
-        setOptionRequestStudent(event.target.value);
-      };
-      useEffect(() => {
-        
-        if (selectedOptionRequestStudent==="อื่นๆ"){
-          setShowOptionInput(true);
-        }
-        else {
-          setShowOptionInput(false);
-          setOptionRequestStudent("");
-        }
-        
-      }, [selectedOptionRequestStudent]);
-
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const [ShowOptionInputScore,setShowOptionInputScore] =useState(false);
-
-      const [OptionRequestScore,setOptionRequestScore] = useState("");
-      const handleOptionRequestScoreChange = (event) => {
-        setOptionRequestScore(event.target.value);
-      };
-      useEffect(() => {
-        
-        if (selectedOptionRequestScore==="อื่นๆ"){
-          setShowOptionInputScore(true);
-        }
-        else {
-          setShowOptionInputScore(false);
-          setOptionRequestScore("");
-        }
-        
-      }, [selectedOptionRequestScore]);
-      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const [ShowOptionInputGrade,setShowOptionInputGrade] =useState(false);
-
-      const [OptionRequestGrade,setOptionRequestGrade] = useState("");
-      const handleOptionRequestGradeChange = (event) => {
-        setOptionRequestGrade(event.target.value);
-      };
-      useEffect(() => {
-        
-        if (selectedOptionRequestGrade==="อื่นๆ"){
-          setShowOptionInputGrade(true);
-        }
-        else {
-          setShowOptionInputGrade(false);
-          setOptionRequestGrade("");
-        }
-        
-      }, [selectedOptionRequestGrade]);
-      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const [ShowOptionInputYear,setShowOptionInputYear] =useState(false);
-
-      const [OptionRequestYear,setOptionRequestYear] = useState("");
-      const handleOptionRequestYearChange = (event) => {
-        setOptionRequestYear(event.target.value);
-      };
-      useEffect(() => {
-        
-        if (selectedOptionRequestYear==="อื่นๆ"){
-          setShowOptionInputYear(true);
-        }
-        else {
-          setShowOptionInputYear(false);
-          setOptionRequestYear("");
-        }
-        
-      }, [selectedOptionRequestYear]);
 
 
       return (
