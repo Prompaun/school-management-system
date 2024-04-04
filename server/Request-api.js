@@ -4,7 +4,7 @@ const router = express.Router();
 module.exports = function(connection) {
     router.get('/get-all-requests', (req, res) => {
         const sql = `
-            SELECT Request_No, Request_Date, Request_type, Request_detail, Request_status
+            SELECT Request_No, Student_ID, Request_Date, Request_type, Requested_Copies, Request_detail, Request_status
             FROM Request
         `;
 
@@ -21,7 +21,7 @@ module.exports = function(connection) {
         const status = req.params.status;
     
         const sql = `
-            SELECT Request_No, Request_Date, Request_type, Request_detail, Request_status
+            SELECT Request_No, Student_ID, Request_Date, Request_type, Requested_Copies, Request_detail, Request_status
             FROM Request
             WHERE Request_status = ?
         `;
