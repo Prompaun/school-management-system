@@ -100,7 +100,9 @@ const Check_Certification_Request = () => {
                         id: item.Request_No,
                         request_date: formatDateThaiYear(item.Request_Date),
                         request_number: item.Request_No,
+                        Student_ID: item.Student_ID,
                         certificate_type: item.Request_type,
+                        amount_certificate: item.Requested_Copies,
                         note: item.Request_detail,
                         status: item.Request_status
                     }));
@@ -119,7 +121,9 @@ const Check_Certification_Request = () => {
                         id: item.Request_No,
                         request_date: formatDateThaiYear(item.Request_Date),
                         request_number: item.Request_No,
+                        Student_ID: item.Student_ID,
                         certificate_type: item.Request_type,
+                        amount_certificate: item.Requested_Copies,
                         note: item.Request_detail,
                         status: item.Request_status
                     }));
@@ -130,7 +134,7 @@ const Check_Certification_Request = () => {
             }
             fetchRequests(); 
         }
-    }, [selectedOption]); // ใช้ [] เพื่อให้ useEffect ทำงานเพียงครั้งเดียวหลังจากการ render แรก
+    }, [selectedOption]);
     
 
 
