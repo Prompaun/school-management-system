@@ -56,7 +56,7 @@ module.exports = function(connection) {
                 }
 
                 // ตรวจสอบว่ามี URL ของไฟล์ที่อัปโหลดพอสำหรับการเข้าถึงหรือไม่
-                if (transcriptFilesUrls.length >= 4) {
+                if (transcriptFilesUrls.length >= 3) {
                     // เรียกใช้งานฟังก์ชันเพื่อเพิ่มข้อมูลลงในฐานข้อมูล
                     await addApplicantToDatabase(Student_NID, NameTitle, FirstName, LastName, Student_DOB, transcriptFilesUrls[0], HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, Transcript_type, transcriptFilesUrls[1], transcriptFilesUrls[2], transcriptFilesUrls[3], ParentEmail);
                     res.status(200).send("Form Submitted");
@@ -64,7 +64,7 @@ module.exports = function(connection) {
                     // จัดการข้อผิดพลาดหาก URL ของไฟล์ไม่เพียงพอ
                     console.error("Not enough transcript file URLs for accessing.");
                     // ส่งคำตอบเฉพาะข้อผิดพลาดกลับไป
-                    res.status(500).json({ error: "Not enough transcript file URLs for accessing." });
+                    res.status(200).json({ error: "Not enough transcript file URLs for accessing." });
                 }
 
                 // อัปโหลดไฟล์ที่ส่งมาไปยัง Google Drive
