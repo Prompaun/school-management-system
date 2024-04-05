@@ -103,7 +103,7 @@ function Card_menu_personnel() {
         <div className="d-flex align-items-center justify-content-center" style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', fontFamily: 'Kanit, sans-serif'}}>
           {filteredRole.map((item, index) => (
             <div key={index} className="card-menu" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)' }}>
-              <NavLink to={item.path} onClick={handleClick} style={{ color: 'black', textDecoration: 'none' }}>
+              <NavLink to={item.path} style={{ color: 'black', textDecoration: 'none' }}>
               <div className="card-body justify-content-center text-center">
                 <p className="card-text mt-3" style={{ textAlign: 'center', margin: "5px", fontWeight:"bold",fontSize:"20px"}}>{item.text}</p>
                 <p className="card-text" style={{ textAlign: 'center', marginTop: "2px",fontSize:"18px"}}>{item.subtext}</p>

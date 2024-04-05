@@ -31,18 +31,12 @@ function Card_menu_student(props) {
           {obj.map((item, index) => (
             
             <div key={index} className="card-menu" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)' }}>
+              <NavLink to={`/Checkgrade`} style={{ color: 'black', textDecoration: 'none' }}>
                <div className="card-body">
-                <p className="card-text mt-3" style={{ textAlign: 'center',margin: "5px" }}>{item.text}</p>
-              </div>
-              {/* <NavLink to={`/Checkgrade?id=${props.studentID_prop}`} onClick={handleClick}> */}
-              <NavLink to={`/Checkgrade`} onClick={handleClick}>
-              
+                <p className="card-text mt-3" style={{ textAlign: 'center', margin: "10px", fontWeight:"bold",fontSize:"20px" }}>{item.text}</p>      
               <img src={item.imageUrl} className="card-img-top" alt={item.text} style={{ width: '100%', height: 'auto', alignSelf: 'center', objectFit: 'cover' }} />
-              
+              </div>
               </NavLink>
-              {/* <NavLink to={{ }} onClick={handleClick}>
-                  <img src={item.imageUrl} className="card-img-top" alt={item.text} style={{ width: '100%', height: 'auto', alignSelf: 'center', objectFit: 'cover' }} />
-              </NavLink> */}
             </div>
           ))}
         </div>
