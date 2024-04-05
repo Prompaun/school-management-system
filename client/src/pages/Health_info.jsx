@@ -395,8 +395,8 @@ const Health_info = () => {
           )}
           {ShowEditHistory && (
           <ModalHistoryHealth
-          show={ShowEditHistory}
-          setShow ={setShowEditHistory}
+          show = {ShowEditHistory}
+          setShow = {setShowEditHistory}
           />
           )}
             <Header header="ระบบจัดการข้อมูลสุขภาพ" subhead="" />  

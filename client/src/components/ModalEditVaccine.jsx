@@ -16,6 +16,7 @@ function ModalEditVaccine({show,setShow,Student_id}) {
 
     const handleSaveButton = () => {
     //    if (CheckInput()){
+        console.log("OptionalVac",OptionalVac)
         alert("Save")
         setShow(false);
     //    }
@@ -40,8 +41,10 @@ function ModalEditVaccine({show,setShow,Student_id}) {
         setEPI_program(
           EPI_program.map((row) => {
             if (row.id === id) {
+                console.log("row.value",!row.value)
               return {...row, value:!row.value };
             }
+            // console.log("row.value",!row.value)
             return row;
           })
         );
@@ -54,6 +57,7 @@ function ModalEditVaccine({show,setShow,Student_id}) {
     
     ])
     const handleDeleteRow = (id) => {
+        console.log("row.id",id)
         setOptionalVaccine(OptionalVaccine.filter((row) => row.id!== id));
       };
     
@@ -72,6 +76,27 @@ function ModalEditVaccine({show,setShow,Student_id}) {
     let nextId = 0;
     const [AddOptionalVac, setAddOptionalVac] = useState('');
     const [OptionalVac, setOptionalVac] = useState([]);
+
+    const handleOptionalVac = () => {
+        if (AddOptionalVac.trim().length > 0) {
+            if (OptionalVac.length>0){
+                const lastId = OptionalVac.length > 0? OptionalVac[OptionalVac.length - 1].id : null;
+                setOptionalVac([
+                ...OptionalVac,
+                { id: lastId+1, name: AddOptionalVac }
+                ]);
+        }
+        else {
+            setOptionalVac([
+                ...OptionalVac,
+                { id: nextId, name: AddOptionalVac }
+                ]);
+        }
+           
+            setAddOptionalVac('');
+        }
+    };
+
   return (
     <Modal
         show={show}
@@ -208,14 +233,7 @@ function ModalEditVaccine({show,setShow,Student_id}) {
                                 />
                             </div>
                             <div className="col-2">
-                            <button className="btn btn-primary" onClick={() => {
-                                if (AddOptionalVac.trim().length > 0) {
-                                    setOptionalVac([
-                                    ...OptionalVac,
-                                    { id: nextId++, name: AddOptionalVac }
-                                    ]);
-                                }
-                                }}>Add</button>
+                            <button className="btn btn-primary" onClick={handleOptionalVac}>Add</button>
                             </div>
                             </div>
                         <ul>
