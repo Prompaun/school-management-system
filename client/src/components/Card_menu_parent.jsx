@@ -35,12 +35,12 @@ function Card_menu_parent() {
             path: "/Request_cert"
           },
           {
-            text: "ตรวจสอบประวัติการขอใบรับรอง",
+            text: "ตรวจสอบการขอใบรับรอง",
             imageUrl: History_request_icon, // แทนที่ด้วย URL รูปภาพจริง
             path: "/History_request"
           },
           {
-            text: "ผลการตรวจสุขภาพของนักเรียน",
+            text: "ระบบข้อมูลสุขภาพของนักเรียน",
             imageUrl: health_icon, // แทนที่ด้วย URL รูปภาพจริง
             path: "/Health_result"
           },
@@ -66,17 +66,18 @@ function Card_menu_parent() {
       return (
         <div className="d-flex align-items-center justify-content-center" style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', fontFamily: 'Kanit, sans-serif'}}>
           {filteredRole.map((item, index) => (
-            
+             
             <div key={index} className="card-menu" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)', alignItems: 'center' }}>
-               <div className="card-body">
-                <p className="card-text mt-3" style={{ textAlign: 'center',margin: "5px" }}>{item.text}</p>
+              <NavLink to={item.path} style={{ color: 'black', textDecoration: 'none' }}>
+              <div className="card-body justify-content-center text-center">
+                <p className="card-text mt-3"style={{ textAlign: 'center', margin: "10px", fontWeight:"bold",fontSize:"20px"}}>{item.text}</p>
+                <img src={item.imageUrl} className="card-img-top mt-2" alt={item.text} style={{ width:"80%", height: 'auto', alignItems: 'center', objectFit: 'cover' }} />
               </div>
-              <NavLink to={item.path} onClick={handleClick}>
-              
-              <img src={item.imageUrl} className="card-img-top" alt={item.text} style={{ width: '87%', height: 'auto',marginLeft:"10px" }} />
+            
               
               </NavLink>
             </div>
+            
           ))}
         </div>
         
