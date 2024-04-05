@@ -1702,7 +1702,7 @@ return (
               <Modal.Body className="text-center p-lg-4" >
                   
                 
-                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะสมัครหลักสูตรทั่วไปใช่หรือไม่</p>
+                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะสมัครหลักสูตร English Program (EP) ใช่หรือไม่</p>
              
                   <Button
                     variant="sm"
