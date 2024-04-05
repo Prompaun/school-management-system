@@ -102,9 +102,9 @@ const Login_student = () => {
             <Header header="ระบบบริการข้อมูล" subhead="สำหรับนักเรียน"/>
             {/* เพิ่มฟอร์มการลงทะเบียน */}
             {/* <div class="list-group"> */}
-            <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif'}}>
-            <div className="container mt-5" >
-                <div className="card mx-auto mt-5" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)',maxWidth: '90%',Height: '100vh'  }}>
+            <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif',height: '100vh'  }}>
+            <div className="container" >
+                <div className="card mx-auto mt-3" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)',maxWidth: '90%'}}>
                     <div className="card-body">
                 <div style={{ display: 'flex', flexWrap: 'wrap',gap:"10px"}}>
                     

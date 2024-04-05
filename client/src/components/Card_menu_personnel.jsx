@@ -24,11 +24,13 @@ function Card_menu_personnel() {
     const [obj, setObj] = useState([
         {
           text: "ระบบจัดการสารสนเทศ",
+          subtext:"ค้นหาข้อมูลนักเรียน",
           imageUrl: analyze, // แทนที่ด้วย URL รูปภาพจริง
           path: "/Filter_student_information"
         },
         {
           text: "ระบบจัดการข้อมูลการศึกษา",
+          subtext:"บันทึกคะแนนรายวิชา",
           imageUrl: student_icon, // แทนที่ด้วย URL รูปภาพจริง
           path: "/Subject_Score_Record"
         },
@@ -39,6 +41,7 @@ function Card_menu_personnel() {
         // },
         {
           text: "ระบบจัดการออกใบรับรอง",
+          subtext:"ตรวจสอบคำขอใบรับรอง",
           imageUrl: Request_cert, // แทนที่ด้วย URL รูปภาพจริง
           path: "/Check_Certification_Request"
         },
@@ -48,12 +51,14 @@ function Card_menu_personnel() {
           path: "/PostNews"
         },
         {
-          text: "จัดการห้องเรียนตามชั้นปี",
+          text: "จัดการห้องเรียนของนักเรียน",
+          subtext: "ตามปีการศึกษา",
           imageUrl: ClassRoom, // แทนที่ด้วย URL รูปภาพจริง
           path: "/ManageStudentClass"
         },
         {
           text: "ระบบการรับสมัครนักเรียนใหม่",
+          subtext: "จัดการข้อมูลนักเรียน",
           imageUrl: enrollment_icon,
           // path: "/Enrollment_Student",
           dropdown: [
@@ -98,26 +103,26 @@ function Card_menu_personnel() {
         <div className="d-flex align-items-center justify-content-center" style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', fontFamily: 'Kanit, sans-serif'}}>
           {filteredRole.map((item, index) => (
             <div key={index} className="card-menu" style={{ boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)' }}>
-              <div className="card-body">
-                <p className="card-text mt-3" style={{ textAlign: 'center',margin: "5px" }}>{item.text}</p>
-              
+              <NavLink to={item.path} onClick={handleClick} style={{ color: 'black', textDecoration: 'none' }}>
+              <div className="card-body justify-content-center text-center">
+                <p className="card-text mt-3" style={{ textAlign: 'center', margin: "5px", fontWeight:"bold",fontSize:"20px"}}>{item.text}</p>
+                <p className="card-text" style={{ textAlign: 'center', marginTop: "2px",fontSize:"18px"}}>{item.subtext}</p>
+                <img src={item.imageUrl} className="card-img-top mt-2" alt={item.text} style={{ width:"70%", height: 'auto', alignItems: 'center', objectFit: 'cover' }} />
               </div>
-              <NavLink to={item.path} onClick={handleClick}>
-                <img src={item.imageUrl} className="card-img-top" alt={item.text} style={{ width: '100%', height: 'auto', alignSelf: 'center', objectFit: 'cover' }} />
               </NavLink>
               {item.dropdown && (
                   <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic"style={{ width: "100%", padding: "10px" }}>
-                      Menu
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {item.dropdown.map((subItem, subIndex) => (
-                        <Dropdown.Item key={subIndex} as={NavLink} to={subItem.path} style={{color: "black" }}>
-                          {subItem.text}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
+                   <Dropdown.Toggle variant="success" id="dropdown-basic"style={{ width: "100%", padding: "10px" }}>
+                     Menu
+                   </Dropdown.Toggle>
+                   <Dropdown.Menu>
+                     {item.dropdown.map((subItem, subIndex) => (
+                       <Dropdown.Item key={subIndex} as={NavLink} to={subItem.path} style={{color: "black" }}>
+                         {subItem.text}
+                       </Dropdown.Item>
+                     ))}
+                   </Dropdown.Menu>
+               </Dropdown>
                 )}
             </div>
           ))}
