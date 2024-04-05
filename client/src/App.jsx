@@ -117,7 +117,7 @@ function App() {
           console.log("User Avatar:", resObject.user.photos[0].value);
 
           handleGetRole(resObject.user.emails[0].value);
-          setRole("ClassTeacher");
+          // setRole("ClassTeacher");
           // console.log(user.emails[0].value);
           setlogin_Email(resObject.user.emails[0].value);
           // เรียกใช้ฟังก์ชัน addParentLogin ด้วยข้อมูลผู้ใช้
