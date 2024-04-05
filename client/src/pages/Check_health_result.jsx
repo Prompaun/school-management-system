@@ -421,7 +421,7 @@ function Check_health_result({login_Email}) {
 
   
   const [HealthCheckUp,setHealthCheckUp] = useState([
-    {id:1,DateCheck:"",Eyesight:"",Hearing:"",Mouth:""}
+    // {id:1,DateCheck:"",Eyesight:"",Hearing:"",Mouth:""}
     // {id:1,DateCheck:"12/05/2024",Eyesight:"ปกติ",Hearing:"ปกติ",Mouth:"ปกติ"}
   ])
 
@@ -750,7 +750,7 @@ function Check_health_result({login_Email}) {
                              (Latest)
                               </span>
                               </div>
-                              {BodyData.length === 0 ? (
+                              {HealthCheckUp.length === 0 ? (
                                 <div className="card" style={{width:"auto",height:"auto",margin:"5px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'
                                 }}>
                                   <div className="card-body"style={{width:"auto",height:"auto"}} >
