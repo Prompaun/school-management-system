@@ -130,7 +130,9 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
     
     const handleSaveButton = () => {
     //    if (CheckInput()){
-        if(OptionalVac[0].name){
+        setShowLoadingModal(true)
+        if(OptionalVac.length >= 1){
+            // setShowLoadingModal(true)
             console.log("OptionalVac",OptionalVac[0].name)
             OptionalVac.forEach(async (item) => {
                 addAlternativeVaccine(Student_id, item.name, formatDate(new Date()), 'ไม่มี', 'ยังไม่มีข้อความ')
@@ -143,12 +145,14 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
                     // ทำสิ่งที่ต้องการหลังจากการเพิ่มข้อมูลล้มเหลว
                 });
             });
+            // setShowLoadingModal(false)
+            // setShowSuccessModal(true)
         }
         
 
+        setShowLoadingModal(false)
+        setShowSuccessModal(true)
         
-        alert("Save")
-        setShow(false);
     //    }
       
     }
@@ -310,7 +314,95 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
         }
     };
 
+    const [showConfirmModal, setshowConfirmModal] = useState(false);
+
+    const [showLoadingModal, setShowLoadingModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    
+    const handleCloseModal = () => {
+        setshowConfirmModal(false);
+        }
+
+    const handleCloseSuccess = () => {
+        setShowSuccessModal(false);
+        };
+
+    const handleClick = () => {
+        handleCloseSuccess();
+        setShow(false);
+        };
+
   return (
+
+    <>
+    {showConfirmModal && (
+          
+          <Modal
+              show={showConfirmModal}
+              onHide={handleCloseModal}
+              backdrop="static"
+              keyboard={false}
+              size="sm"
+              centered
+              style={{ fontFamily: 'Kanit, sans-serif' }}
+              >
+              <Modal.Body className="text-center p-lg-4" >
+                  
+                
+                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะบันทึกข้อมูลใช่หรือไม่</p>
+             
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px" }}
+                    className="btn-success btn-same-size"
+                    onClick={() => {
+                      handleSaveButton();
+                      handleCloseModal();
+                    }}
+                  >
+                    OK
+                  </Button>
+                  <br />
+                  <Button
+                    variant="sm"
+                    style={{ fontSize: "20px",marginTop:"10px"}}
+                    className="btn-secondary btn-same-size"
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </Button>
+  
+                  {/* </Link> */}
+              </Modal.Body>
+              </Modal>
+  
+        )}  
+        {showLoadingModal && (
+            <Modal_loading show={showLoadingModal} setShow={setShowLoadingModal} />
+      )}
+      {showSuccessModal && (
+            <Modal
+            show={showSuccessModal}
+            onHide={handleCloseSuccess}
+            backdrop="static"
+            keyboard={false}
+            size="sm"
+            centered
+            style={{ fontFamily: 'Kanit, sans-serif' }}
+        >
+            <Modal.Body className="text-center p-lg-4">
+          <h4 className="text-success mt-3" style={{ fontSize: '30px'}}>
+              COMPLETE
+          </h4>
+          {/* ระบบได้รับข้อมูลการสมัครของท่านแล้ว */}
+          <p className="mt-3"style={{ fontSize: '22px' }}>ระบบได้บันทึกข้อมูลแล้ว</p>
+         
+          <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleClick}>
+          OK
+          </Button>
+      </Modal.Body>
+      </Modal>
+        )} 
     <Modal
         show={show}
         onHide={handleClose}
@@ -458,11 +550,12 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
                         </Modal.Body>
       <Modal.Footer>
        
-        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={handleSaveButton}>
+        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => setshowConfirmModal(true)}>
             Save
         </button>
       </Modal.Footer>
     </Modal>
+    </>
   )
 }
 
