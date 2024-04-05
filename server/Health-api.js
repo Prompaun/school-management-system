@@ -40,71 +40,6 @@ module.exports = function(connection) {
         });
     });
     
-    router.get('/get-basic-vaccines', (req, res) => {
-        const sql = `
-            SELECT BasicVaccine_name
-            FROM Basic_Vaccine
-        `;
-    
-        connection.query(sql, (err, results) => {
-            if (err) {
-                console.error('Error querying basic vaccine information:', err);
-                return res.status(500).json({ error: 'Failed to retrieve basic vaccine information' });
-            }
-    
-            const basicVaccines = results.map(result => result.BasicVaccine_name);
-            return res.status(200).json(basicVaccines);
-        });
-    });
-    
-    router.get('/get-basic-injection-info', (req, res) => {
-        const { studentId } = req.query;
-    
-        const sql = `
-            SELECT ibv.Vaccinated_Date, ibv.Side_Effects, ibv.Note, bv.BasicVaccine_name
-            FROM Injection_Basic_Vaccine AS ibv
-            INNER JOIN Basic_Vaccine AS bv ON ibv.Basic_Vaccine_ID = bv.Basic_Vaccine_ID
-            WHERE ibv.Student_ID = ?
-        `;
-    
-        connection.query(sql, [studentId], (err, results) => {
-            if (err) {
-                console.error('Error querying injection information:', err);
-                return res.status(500).json({ error: 'Failed to retrieve injection information' });
-            }
-    
-            return res.status(200).json(results);
-        });
-    });
-    
-    // router.get('/get-alternative-vaccine-info/:studentId', (req, res) => {
-    router.get('/get-alternative-vaccine-info', (req, res) => {
-        // let studentId;
-        // if (req.query.studentId) {
-        //     studentId = req.query.studentId;
-        // } else if (req.params.studentId) {
-        //     studentId = req.params.studentId;
-        // } else {
-        //     return res.status(400).json({ error: 'Student ID is required' });
-        // }
-        const { studentId } = req.query;
-        
-        const sql = `
-          SELECT Vaccine_name, Vaccinated_Date, Side_Effects, Note
-          FROM Injection_Alternative_vaccine
-          WHERE Student_ID = ?
-        `;
-        
-        connection.query(sql, [studentId], (err, results) => {
-          if (err) {
-            console.error('Error querying alternative vaccine information:', err);
-            return res.status(500).json({ error: 'Failed to retrieve alternative vaccine information' });
-          }
-      
-          return res.status(200).json(results);
-        });
-      });
-    
     // router.get('/get-congenital-disease-info', (req, res) => {
     //     const { studentId } = req.query;
         
@@ -347,23 +282,6 @@ module.exports = function(connection) {
         });
     });
 
-    router.get('/get-injection-alternative-vaccine-info/:studentId', (req, res) => {
-        const studentId = req.params.studentId;
-        const sql = `
-            SELECT Alternative_Vaccine_ID, Vaccine_name
-            FROM injection_alternative_vaccine
-            WHERE Student_ID = ?
-        `;
-    
-        connection.query(sql, studentId, (err, results) => {
-            if (err) {
-                console.error('Error fetching injection alternative vaccine information:', err);
-                return res.status(500).json({ error: 'Failed to fetch injection alternative vaccine information' });
-            }
-            return res.status(200).json(results);
-        });
-    });
-
     router.get('/get-health_check/:studentId', (req, res) => {
         const studentId = req.params.studentId;
         const sql = `
@@ -421,32 +339,6 @@ module.exports = function(connection) {
             return res.status(200).json({ message: 'Health check data updated successfully' });
         });
     });
-    
-
-
-    router.get('/check-vaccine/:studentId', (req, res) => {
-        const studentId = req.params.studentId;
-        
-        // สร้างคำสั่ง SQL เพื่อดึงข้อมูลการฉีดวัคซีนของนักเรียนจากตาราง Injection_Basic_Vaccine
-        const sql = `
-                    SELECT bv.Basic_Vaccine_ID, bv.BasicVaccine_name, 
-                    CASE WHEN ibv.Student_ID IS NULL THEN false ELSE true END AS value
-            FROM Basic_Vaccine bv
-            LEFT JOIN Injection_Basic_Vaccine ibv ON bv.Basic_Vaccine_ID = ibv.Basic_Vaccine_ID
-                                                        AND ibv.Student_ID = ?
-            ORDER BY value DESC;
-        `;
-    
-        connection.query(sql, studentId, (err, results) => {
-            if (err) {
-                console.error('Error checking vaccines:', err);
-                return res.status(500).json({ error: 'Failed to check vaccines' });
-            }
-            console.log(results);
-            return res.status(200).json(results);
-        });
-    });
-    
     
     return router;
 }

@@ -2,9 +2,11 @@ import React, { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { BsArrowLeftRight,BsFillTrashFill } from "react-icons/bs";
 import { Button, Modal,Spinner } from 'react-bootstrap';
-function ModalEditVaccine({show,setShow,Student_id}) {
+import axios from 'axios';
 
-    
+function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
+
+    const [Click, setClick] = useState (false);
     const handleClose = () => {
         setShow(false);
       };
@@ -13,10 +15,136 @@ function ModalEditVaccine({show,setShow,Student_id}) {
         textDecoration: 'none'
       };
 
+    const formatDate = (date) => {
+        if (date !== ''){
+            const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        let day = date.getDate();
+        day = day < 10 ? '0' + day : day;
+        // 
+        // console.log(`${year}-${month}-${day}`);
+        return `${year}-${month}-${day}`;
+        }
+        else{
+            return new Date();
+        }
+    };
 
+    async function checkVaccine(studentId) {
+        try {
+            // เรียกใช้ API ด้วย Axios
+            const response = await axios.get(`http://localhost:8080/check-vaccine/${studentId}`);
+            // return ข้อมูลที่ได้รับกลับมา
+            return response.data;
+        } catch (error) {
+            // กรณีเกิด error ในการเรียก API
+            console.log('Error checking vaccines:', error);
+            throw error;
+        }
+    }
+
+    const getVaccineIdFromId = (id, epiProgram) => {
+        // const epiProgram = [
+        //     { id: 3, Vaccine_ID: 76, Vaccine: 'วัคซีนคอตีบ-บาดทะยัก-ไอกรน (Diphtheria, Tetanus, Pertussis : DPT)', value: 1 },
+        //     { id: 2, Vaccine_ID: 77, Vaccine: 'วัคซีนตับอักเสบบี (Hepatitis B Vaccine : HBV)', value: 1 },
+        //     { id: 1, Vaccine_ID: 78, Vaccine: 'วัคซีนป้องกันวัณโรค (BCG Vaccine)', value: 1 },
+        //     { id: 7, Vaccine_ID: 79, Vaccine: 'วัคซีนป้องกันไข้หวัดใหญ่ (Influenza Vaccine)', value: 1 },
+        //     { id: 5, Vaccine_ID: 80, Vaccine: 'วัคซีนหัด-หัดเยอรมัน-คางทูม (Measles mumps rubella vaccine : MMR)', value: 1 },
+        //     { id: 8, Vaccine_ID: 81, Vaccine: 'วัคซีนเอชพีวี (HPV)', value: 1 },
+        //     { id: 4, Vaccine_ID: 82, Vaccine: 'วัคซีนโปลิโอ (Polio)', value: 1 },
+        //     { id: 6, Vaccine_ID: 83, Vaccine: 'วัคซีนไข้สมองอักเสบเจอี (Japanese encephalitis virus : JE)', value: 1 }
+        // ];
+    
+        const epiData = epiProgram.find(item => item.id === id);
+        if (epiData) {
+            const { Vaccine_ID } = epiData;
+            return Vaccine_ID;
+        }
+        return null; // หากไม่พบ ID ที่ตรงกัน
+    };
+
+    const addInjectionBasicVaccine = async (basicVaccineId, studentId, vaccinatedDate, sideEffects, note) => {
+        try {
+            const response = await axios.post('http://localhost:8080/add-injection-basic-vaccine', {
+                Basic_Vaccine_ID: basicVaccineId,
+                Student_ID: studentId,
+                Vaccinated_Date: vaccinatedDate,
+                Side_Effects: sideEffects,
+                Note: note
+            });
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.log('Error adding injection basic vaccine information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+    const deleteInjectionBasicVaccine = async (vaccineId) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete-injection-basic-vaccine/${vaccineId}`);
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.log('Error deleting injection basic vaccine information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+    // useEffect(() => {
+    //     setEPI_program(EPIProgram);
+    //     console.log(EPIProgram,'EPIProgram');
+    //   }, []);
+    const addAlternativeVaccine = async (studentId, vaccineName, vaccinatedDate, sideEffects, note) => {
+        try {
+            const response = await axios.post('http://localhost:8080/add-injection-alternative-vaccine', {
+                Student_ID: studentId,
+                Vaccine_name: vaccineName,
+                Vaccinated_Date: vaccinatedDate,
+                Side_Effects: sideEffects,
+                Note: note
+            });
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.log('Error adding injection alternative vaccine information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+    const deleteInjectionAlternativeVaccine = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete-injection-alternative-vaccine/${id}`);
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.log('Error deleting injection alternative vaccine information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+
+    
+    
+    
     const handleSaveButton = () => {
     //    if (CheckInput()){
-        console.log("OptionalVac",OptionalVac[0].name)
+        if(OptionalVac[0].name){
+            console.log("OptionalVac",OptionalVac[0].name)
+            OptionalVac.forEach(async (item) => {
+                addAlternativeVaccine(Student_id, item.name, formatDate(new Date()), 'ไม่มี', 'ยังไม่มีข้อความ')
+                .then((data) => {
+                    console.log('Injection alternative vaccine information added successfully:', data);
+                    // ทำสิ่งที่ต้องการหลังจากเพิ่มข้อมูลสำเร็จ
+                })
+                .catch((error) => {
+                    console.error('Failed to add injection alternative vaccine information:', error);
+                    // ทำสิ่งที่ต้องการหลังจากการเพิ่มข้อมูลล้มเหลว
+                });
+            });
+        }
+        
 
         
         alert("Save")
@@ -28,39 +156,122 @@ function ModalEditVaccine({show,setShow,Student_id}) {
     
     //วัคซีนพื้นฐาน จำเป็น 8 ชนิด
     const [EPI_program,setEPI_program] = useState([
-        {id:1,Vaccine:"วัคซีนป้องกันวัณโรค (BCG Vaccine)",value:true},
-        {id:2,Vaccine:"วัคซีนตับอักเสบบี (Hepatitis B Vaccine : HBV)",value:true},
-        {id:3,Vaccine:"วัคซีนคอตีบ-บาดทะยัก-ไอกรน (Diphtheria, Tetanus, Pertussis : DPT)",value:true},
-        {id:4,Vaccine:"วัคซีนโปลิโอ (Polio)",value:true},
-        {id:5,Vaccine:"วัคซีนหัด-หัดเยอรมัน-คางทูม (Measles mumps rubella vaccine : MMR)",value:true},
-        {id:6,Vaccine:"วัคซีนไข้สมองอักเสบเจอี (Japanese encephalitis virus : JE)",value:true},
-        {id:7,Vaccine:"วัคซีนป้องกันไข้หวัดใหญ่ (Influenza Vaccine)",value:false},
-        {id:8,Vaccine:"วัคซีนเอชพีวี (HPV)",value:false},
+        // {id:1,Vaccine:"วัคซีนป้องกันวัณโรค (BCG Vaccine)",value:false},
+        // {id:2,Vaccine:"วัคซีนตับอักเสบบี (Hepatitis B Vaccine : HBV)",value:false},
+        // {id:3,Vaccine:"วัคซีนคอตีบ-บาดทะยัก-ไอกรน (Diphtheria, Tetanus, Pertussis : DPT)",value:false},
+        // {id:4,Vaccine:"วัคซีนโปลิโอ (Polio)",value:false},
+        // {id:5,Vaccine:"วัคซีนหัด-หัดเยอรมัน-คางทูม (Measles mumps rubella vaccine : MMR)",value:false},
+        // {id:6,Vaccine:"วัคซีนไข้สมองอักเสบเจอี (Japanese encephalitis virus : JE)",value:false},
+        // {id:7,Vaccine:"วัคซีนป้องกันไข้หวัดใหญ่ (Influenza Vaccine)",value:false},
+        // {id:8,Vaccine:"วัคซีนเอชพีวี (HPV)",value:false},
 
     ])
 
     const handleVaccineClick = (id) => {
+        setClick(true);
         setEPI_program(
           EPI_program.map((row) => {
             if (row.id === id) {
-                console.log("row.value",!row.value)
-              return {...row, value:!row.value };
+                console.log("row.value",!row.value, id, EPI_program)
+                const vaccineId = getVaccineIdFromId(id, EPI_program);
+                console.log("vaccineId",vaccineId, id,)
+                if(!row.value){
+                    addInjectionBasicVaccine(id, Student_id, formatDate(new Date()), 'ไม่มี', 'ยังไม่มีข้อความ')
+                        .then((data) => {
+                            console.log('Injection basic vaccine information added successfully:', data);
+                        })
+                        .catch((error) => {
+                            console.log('Failed to add injection basic vaccine information:', error, id);
+                        });
+                }
+                else{
+                    deleteInjectionBasicVaccine(vaccineId)
+                                .then((data) => {
+                                    console.log('Injection basic vaccine information deleted successfully:', data);
+                                })
+                                .catch((error) => {
+                                    console.log('Failed to delete injection basic vaccine information:', error, id);
+                                });
+                }
+                // const fetchEditVaccine = async () => {
+                //     try {          
+                //           const Basic_Vaccine  = await checkVaccine(Student_id);
+                //           console.log('Basic_Vaccine:', Basic_Vaccine);
+                //           const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
+                //               // id: item.Basic_Vaccine_ID,
+                //               id: item.Basic_Vaccine_ID,
+                //               Vaccine_ID: item.Vaccine_ID,
+                //               Vaccine: item.BasicVaccine_name,
+                //               value: item.value
+                //             }));
+                            
+                //           setEPI_program(mappedBasic_Vaccine);
+                //         console.log('mappedBasic_Vaccine:', mappedBasic_Vaccine);
+                        
+                        
+                //     } catch (error) {
+                //       console.log('Error fetching data:', error);
+                //     }
+                // };
+                // fetchEditVaccine();
+                
+
+                return {...row, value:!row.value };
             }
             // console.log("row.value",!row.value)
             return row;
           })
         );
      }
+     useEffect(() => {
+        setOptionalVaccine(Optional_Vaccine);
+        // console.log(congenital_disease,'congenitalDisease',congenitalDisease);
+      }, []);
+
+     useEffect(() => {
+        // if (ShowEditVaccine === false){
+            const fetchEditVaccine = async () => {
+              try {          
+                    const Basic_Vaccine  = await checkVaccine(Student_id);
+                    console.log('Basic_Vaccine:', Basic_Vaccine);
+                    const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
+                        // id: item.Basic_Vaccine_ID,
+                        id: item.Basic_Vaccine_ID,
+                        Vaccine_ID: item.Vaccine_ID,
+                        Vaccine: item.BasicVaccine_name,
+                        value: item.value
+                      }));
+                      
+                    setEPI_program(mappedBasic_Vaccine);
+                      console.log('mappedBasic_Vaccine:', mappedBasic_Vaccine);
+              } catch (error) {
+                console.log('Error fetching data:', error);
+              }
+          };
+          fetchEditVaccine();
+          setClick(false);
+        // }
+        
+      }, [Click]);
     //วัคซีนทางเลือก ข้อมูลเพิ่มจะถือว่าฉีดแล้ว
     const [OptionalVaccine,setOptionalVaccine] = useState([
-        {id:1,Vaccine:"วัคซีนโรต้าไวรัส (Rotavirus)"},
-        {id:2,Vaccine:"วัคซีนไข้เลือดออก (Dengue Vaccine)"},
-        {id:3,Vaccine:"วัคซีนป้องกันโรคอีสุกอีใส  (Varicella vaccine)"},
-    
+        // {id:1,Vaccine:"วัคซีนโรต้าไวรัส (Rotavirus)"},
+        // {id:2,Vaccine:"วัคซีนไข้เลือดออก (Dengue Vaccine)"},
+        // {id:3,Vaccine:"วัคซีนป้องกันโรคอีสุกอีใส  (Varicella vaccine)"},
     ])
+
     const handleDeleteRow = (id) => {
         console.log("row.id",id)
         setOptionalVaccine(OptionalVaccine.filter((row) => row.id!== id));
+        deleteInjectionAlternativeVaccine(id)
+            .then((data) => {
+                console.log('Injection alternative vaccine information deleted successfully:', data);
+                // ทำสิ่งที่ต้องการหลังจากลบข้อมูลสำเร็จ
+            })
+            .catch((error) => {
+                console.log('Failed to delete injection alternative vaccine information:', error);
+                // ทำสิ่งที่ต้องการหลังจากการลบข้อมูลล้มเหลว
+            });
       };
     
     // const CheckInput = () => {

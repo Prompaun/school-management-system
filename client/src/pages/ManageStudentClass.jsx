@@ -5,6 +5,7 @@ import Modal_success from '../components/Modal_success';
 import axios from 'axios';
 import { kMaxLength } from 'buffer';
 import { Button, Modal,Spinner } from 'react-bootstrap';
+
 function ManageStudentClass() {
     const [StudentData,setStudentData] = useState([
         // {StudentID:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Year:"",Room:""},
@@ -41,10 +42,26 @@ function ManageStudentClass() {
    
     const [editingId, setEditingId] = useState(null);
     
-    const filteredStudent = editingId !== null ? StudentData : StudentData.filter((student) =>
-        // selectedYear
-        //     ? ((SelectedRoom ? (student.Year === selectedYear && student.Room === SelectedRoom) :  student.Year === selectedYear))
-        //     : student.Year === "" && student.Year === "" 
+    // const filteredStudent = editingId !== null ? StudentData : StudentData.filter((student) =>
+    //     // selectedYear
+    //     //     ? ((SelectedRoom ? (student.Year === selectedYear && student.Room === SelectedRoom) :  student.Year === selectedYear))
+    //     //     : student.Year === "" && student.Year === "" 
+    //     {
+    //         if (selectedYear === '' && SelectedRoom ===""){
+    //             return student.Year === "" && student.Room === "";
+    //          }
+    //          if (selectedYear !== "" && SelectedRoom !==""){
+    //             return student.Year === selectedYear && student.Room === SelectedRoom;
+    //             }
+    //         if (selectedYear !== ""){
+    //             return student.Year === selectedYear;
+    //         }
+    //         // return true;
+    //     }
+            
+    // );
+
+    const StudentByDropdown = oldStudentData.filter((student) =>
         {
             if (selectedYear === '' && SelectedRoom ===""){
                 return student.Year === "" && student.Room === "";
@@ -57,8 +74,13 @@ function ManageStudentClass() {
             }
             // return true;
         }
+        // console.log('stu',student)
             
-    );
+    ).map((student) => student.id);
+
+    const filteredStudent = StudentData.map((item) => 
+        StudentByDropdown.includes(item.id) ? item : null
+    ).filter((item) => item !== null)
     
     const handleEditRow = async (id) => {
         setEditingId(id === editingId ? null : id);
