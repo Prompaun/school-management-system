@@ -53,6 +53,7 @@ if((err)) {
     console.log('MySQL successfully connected!');
   }
 })
+// const addStudentID_api = require('./add-student-id-api')(connection);
 const role_api = require('./role-api')(connection);
 const Student_api = require('./Student-api')(connection);
 const Parent_api = require('./Parent-api')(connection);
@@ -68,6 +69,7 @@ const googleUpload_api = require('./google-upload-api')(connection);
 
 //use routes    
 
+// app.use(addStudentID_api);
 app.use(role_api);
 app.use(Student_api);
 app.use(Parent_api);
@@ -114,4 +116,3 @@ initialize()
 // app.listen(PORT, () => {
 //     console.log(`Server is running on port ${PORT}`);
 // })
-
