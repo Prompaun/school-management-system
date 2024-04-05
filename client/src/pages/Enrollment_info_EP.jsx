@@ -15,7 +15,7 @@ function Enrollment_info_EP({user}) {
 const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 // const [apiUrl, setapiUrl] = useState(false);
 // const apiUrl = process.env.API_URL;
-const apiUrl = process.env.api
+const apiUrl = process.env.API_URL
 // console.log("process.env.api",process.env.api);
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
@@ -53,8 +53,8 @@ const apiUrl = process.env.api
         else{
           return new Date();
         }
-        
     };
+    
     const [Enroll_Date, setEnroll_Date] = useState(formatDate(new Date()));  // สร้าง state เพื่อเก็บวันที่ปัจจุบัน
     const [Enroll_Course, setEnroll_Course] = useState("English Program (EP)");
     
@@ -578,7 +578,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
       const checkFather_Email = async (email) => {
         try {
-            const response = await axios.get(apiUrl + `check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -628,7 +628,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
     const checkMother_Email = async (email) => {
         try {
-            const response = await axios.get(apiUrl + `check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -676,7 +676,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
     const checkParent_Email = async (email) => {
         try {
-            const response = await axios.get(apiUrl + `check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -1415,7 +1415,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
   async function checkEnrollment(Student_NID, Enroll_Date, Enroll_Year, Enroll_Course) {
     try {
-        const check_enrollment_response = await axios.get(apiUrl + `check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
+        const check_enrollment_response = await axios.get(apiUrl + `/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
         const data = check_enrollment_response.data;
 
         if (data.length > 0) {
@@ -1435,7 +1435,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                     Enroll_Status: "รอการสอบคัดเลือก"
                 };
                 // console.log("Enroll_Date",Enroll_Date);
-                const save_enrollment_response = await axios.post(apiUrl + 'enrollment', formData);
+                const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
                 console.log(save_enrollment_response.data.message); // พิมพ์ข้อความตอบกลับจาก API ใน console
                 setEnroll_History(true);
             } catch (error) {
@@ -1458,7 +1458,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         };
 
         // เรียกใช้ API สำหรับเพิ่มอีเมล์ของผู้ปกครอง
-        const response = await axios.post(apiUrl + 'add-parent-emails', requestData);
+        const response = await axios.post(apiUrl + '/add-parent-emails', requestData);
         
         // หากสำเร็จ
         console.log(response.data.message);
@@ -1484,7 +1484,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         Role: Role,
         Tel: Tel
       }];
-        const response = await axios.post(apiUrl + 'Parent_information', parentData);
+        const response = await axios.post(apiUrl + '/Parent_information', parentData);
         console.log(response.data.message);
         return response.data.message;
     } catch (error) {
