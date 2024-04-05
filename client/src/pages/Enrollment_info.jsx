@@ -1,4 +1,4 @@
-import React,{useState,useRef, useEffect } from 'react'
+import React,{useState, useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 // import Tab_enroll from '../components/Tab_enroll';
@@ -10,10 +10,14 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import Modal_loading from '../components/Modal_loading';
 import Modal_success from '../components/Modal_success';
 
-
 function Enrollment_info({user}) {
-const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
+const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+// const [apiUrl, setapiUrl] = useState(false);
+const apiUrl = "http://localhost:8080";
+// const apiUrl = process.env.API_URL
+// console.log("process.env.api",process.env.api);
+console.log("apiUrl",apiUrl);
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
@@ -50,8 +54,8 @@ const [showSuccessPopup, setShowSuccessPopup] = useState(false);
         else{
           return new Date();
         }
-        
     };
+    
     const [Enroll_Date, setEnroll_Date] = useState(formatDate(new Date()));  // สร้าง state เพื่อเก็บวันที่ปัจจุบัน
     const [Enroll_Course, setEnroll_Course] = useState("หลักสูตรทั่วไป");
     
@@ -575,7 +579,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
       const checkFather_Email = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -619,13 +623,13 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
         } catch (error) {
             console.error('Error checking email:', error);
-            alert('An error occurred while checking email.');
+            // alert('An error occurred while checking email.');
         }
     };
 
     const checkMother_Email = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -667,13 +671,13 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
         } catch (error) {
             console.error('Error checking Mother email:', error);
-            alert('An error occurred while checking Mother email.');
+            // alert('An error occurred while checking Mother email.');
         }
     };
 
     const checkParent_Email = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
+            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -717,7 +721,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
         } catch (error) {
             console.error('Error checking email:', error);
-            alert('An error occurred while checking email.');
+            // alert('An error occurred while checking email.');
         }
     };
     
@@ -1388,7 +1392,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
           formData.append('file', HouseReg_file);
     
 
-          await axios.post('http://localhost:8080/upload', formData, {
+          await axios.post(apiUrl + '/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -1399,7 +1403,9 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
           
         
       } catch (error) {
-        if (error.response && error.response.status === 409) {
+        // if (error.response && error.response.status === 409) {
+        if (error.response && error.response.status === 200) {
+            console.log(error);
           // setMessage('Identification number already exists. Please try with a different one.');
           // alert('Identification number already exists. Please try with a different one.');
         } else {
@@ -1412,7 +1418,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
   async function checkEnrollment(Student_NID, Enroll_Date, Enroll_Year, Enroll_Course) {
     try {
-        const check_enrollment_response = await axios.get(`http://localhost:8080/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
+        const check_enrollment_response = await axios.get(apiUrl + `/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
         const data = check_enrollment_response.data;
 
         if (data.length > 0) {
@@ -1421,6 +1427,41 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // setShowLoadingModal(false);
             // setShowSuccessModal(false);
         } else {
+            // หากไม่พบข้อมูลในฐานข้อมูล
+            // try {
+            //     // ส่งข้อมูลไปยัง API ด้วย Axios
+            //     const formData = {
+            //         Student_NID: Student_NID,
+            //         Enroll_Date: Enroll_Date,
+            //         Enroll_Year: Enroll_Year,
+            //         Enroll_Course: Enroll_Course,
+            //         Enroll_Status: "รอการสอบคัดเลือก"
+            //     };
+            //     console.log("formData",formData);
+            //     const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
+                // const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
+                // console.log('1439:',save_enrollment_response.data.message); 
+                setEnroll_History(true);
+            // } catch (error) {
+            //     console.log('Error adding enrollment:', error);
+            // }
+        }
+    } catch (error) {
+        console.error('เกิดข้อผิดพลาดในการเรียกใช้ API:', error);
+    }
+  }
+
+  async function addEnrollment(Student_NID, Enroll_Date, Enroll_Year, Enroll_Course) {
+    // try {
+        // const check_enrollment_response = await axios.get(apiUrl + `/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
+        // const data = check_enrollment_response.data;
+
+        // if (data.length > 0) {
+        //     // หากมีข้อมูลในฐานข้อมูล
+        //     alert('ท่านเคยสมัครหลักสูตร ' + Enroll_Course + ' ในปีการศึกษา ' + Enroll_Year + ' แล้ว');
+        //     // setShowLoadingModal(false);
+        //     // setShowSuccessModal(false);
+        // } else {
             // หากไม่พบข้อมูลในฐานข้อมูล
             try {
                 // ส่งข้อมูลไปยัง API ด้วย Axios
@@ -1431,17 +1472,18 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                     Enroll_Course: Enroll_Course,
                     Enroll_Status: "รอการสอบคัดเลือก"
                 };
-                // console.log("Enroll_Date",Enroll_Date);
-                const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
-                console.log(save_enrollment_response.data.message); // พิมพ์ข้อความตอบกลับจาก API ใน console
-                setEnroll_History(true);
+                console.log("formData",formData);
+                const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
+                // const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
+                console.log('1476:',save_enrollment_response.data.message); 
+                // setEnroll_History(true);
             } catch (error) {
-                console.error('Error adding enrollment:', error);
+                console.log('Error adding enrollment:', error);
             }
-        }
-    } catch (error) {
-        console.error('เกิดข้อผิดพลาดในการเรียกใช้ API:', error);
-    }
+        // }
+    // } catch (error) {
+    //     console.error('เกิดข้อผิดพลาดในการเรียกใช้ API:', error);
+    // }
   }
 
   const addParentEmails = async (Student_NID, first_ParentEmail, second_ParentEmail, third_ParentEmail) => {
@@ -1455,7 +1497,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         };
 
         // เรียกใช้ API สำหรับเพิ่มอีเมล์ของผู้ปกครอง
-        const response = await axios.post('http://localhost:8080/add-parent-emails', requestData);
+        const response = await axios.post(apiUrl + '/add-parent-emails', requestData);
         
         // หากสำเร็จ
         console.log(response.data.message);
@@ -1481,7 +1523,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         Role: Role,
         Tel: Tel
       }];
-        const response = await axios.post('http://localhost:8080/Parent_information', parentData);
+        const response = await axios.post(apiUrl + '/Parent_information', parentData);
         console.log(response.data.message);
         return response.data.message;
     } catch (error) {
@@ -1526,15 +1568,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // if (confirmSubmit) {
                 
                 try {
-                    await checkEnrollment(
-                      studentNID,
-                      Enroll_Date,
-                      Enroll_Year,
-                      Enroll_Course
-                    );
-
-                    if(Enroll_History === true){
-                        await handleSubmit(
+                    await handleSubmit(
                             Student_picture_file, 
                             CopyofStudentIDCardFile,
                             PreviousSchoolEducationalRecordsFile,
@@ -1553,6 +1587,21 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             SubDistrict,
                             HouseReg_file
                         );
+
+                    await checkEnrollment(
+                      studentNID,
+                      Enroll_Date,
+                      Enroll_Year,
+                      Enroll_Course
+                    );
+
+                    // if(Enroll_History === true){
+                        await addEnrollment(
+                            studentNID,
+                            Enroll_Date,
+                            Enroll_Year,
+                            Enroll_Course
+                          );
         
                         await addParentEmails(
                             studentNID,
@@ -1617,7 +1666,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                         setShowSuccessModal(true);
                         // setLoading(false)
                         // navigate("/NewUser_menu");
-                    }
+                    // }
                   } catch (error) {
                       console.error('Error handling button click:', error);
                   }
