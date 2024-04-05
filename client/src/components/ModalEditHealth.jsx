@@ -165,12 +165,12 @@ function ModalEditHealth({show, setShow, Student_id, HealthCheckUp}) {
                             };
 
                             
-                            // if (HealthCheckUp[0].id) {
-                            //     const updatedData = await updateHealthCheck(HealthCheckUp[0].id, HealthCheckData);
-                            //     console.log(updatedData);
-                            // } else {
+                            if (HealthCheckUp[0].id) {
+                                const updatedData = await updateHealthCheck(HealthCheckUp[0].id, HealthCheckData);
+                                console.log(updatedData);
+                            } else {
                                 const addedData = await addHealthCheck(HealthCheckData);
-                            // }
+                            }
                         } catch (error) {
                             console.error('Error fetching Data:', error);
                         }
