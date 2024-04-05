@@ -68,6 +68,8 @@ const googleLogin_api = require('./google-login-api')();
 const googleUpload_api = require('./google-upload-api')(connection);
 const manageClass_api = require('./manage-student-class-api')(connection)
 
+const congenitalDisease_api = require('./congenital-disease-api')(connection)
+
 //use routes    
 app.use(addStudentID_api);
 app.use(role_api);
@@ -83,6 +85,8 @@ app.use(Health_api);
 app.use(googleLogin_api);
 app.use(googleUpload_api);
 app.use(manageClass_api)
+
+app.use(congenitalDisease_api);
 // app.use(Personnel_api);
 // app.use(Student_api);
 
