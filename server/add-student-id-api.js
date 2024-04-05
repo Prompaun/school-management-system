@@ -3,15 +3,15 @@ const router = express.Router();
 
 module.exports = function(connection) {
     router.get('/add-student-id-get-student-info', (req, res) => {
-        const sql = 
+        const sql = `
             SELECT
                 id, NameTitle, FirstName, LastName, course, Student_ID
             FROM
                 student
             WHERE
-                enroll_year = 2024
-        ;
-
+				enroll_year = 2024
+        `;
+    
         connection.query(sql, (err, results) => {
             if (err) {
                 console.error('Error fetching student info id:', err);
@@ -23,18 +23,18 @@ module.exports = function(connection) {
             return res.status(200).json(results);
         });
     });
-
+    
     router.post('/add-student-id-update-student-info', (req, res) => {
         const {student_id, id} = req.body
-        const sql = 
+        const sql = `
             UPDATE 
                 student
             SET
                 Student_ID = ?
             WHERE
                 id = ?
-        ;
-
+        `;
+    
         connection.query(sql, [student_id, id], (err, results) => {
             if (err) {
                 console.error('Error updating student info id:', err);
@@ -43,6 +43,6 @@ module.exports = function(connection) {
             return res.status(200).json(results);
         });
     });
-
+    
     return router;
 }
