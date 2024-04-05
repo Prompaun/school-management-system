@@ -237,7 +237,7 @@ function CheckEnroll_status({Email}) {
                 
               </div>
               {/* </div> */}
-              {val.Enroll_Status === "รอการสอบคัดเลือก" && (
+              {/* {val.Enroll_Status === "รอการสอบคัดเลือก" && (
                   <button
                     type="button"
                     className="btn btn-primary float-end"
@@ -255,7 +255,7 @@ function CheckEnroll_status({Email}) {
                   >
                     <span>พิมพ์บัตรประจำตัวผู้สอบ</span>
                   </button>
-                )}
+                )} */}
             </div>
             </div>
           ))}

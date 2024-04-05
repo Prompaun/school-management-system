@@ -4,7 +4,7 @@ import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons
 import Modal_success from '../components/Modal_success';
 import axios from 'axios';
 import { kMaxLength } from 'buffer';
-
+import { Button, Modal,Spinner } from 'react-bootstrap';
 function ManageStudentClass() {
     const [StudentData,setStudentData] = useState([
         // {StudentID:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Year:"",Room:""},
@@ -78,9 +78,11 @@ function ManageStudentClass() {
                 }
                 updateStidentInfo(mode,id)
                 setOldStudentData(StudentData)
+                setShowSuccessModal(true);
             }
             // handleSave(editingId);
-            // setShowModalSuccess(true); 
+          
+          // setShowModalSuccess(true); 
         } else {
             setStudentData(oldStudentData)
         }
@@ -157,10 +159,36 @@ function ManageStudentClass() {
       useState(() => {
         getStidentInfo()
       })
-
+      const [showSuccessModal, setShowSuccessModal] = useState(false);
+      
+      const handleCloseSuccess = () => {
+          setShowSuccessModal(false);
+          };
   return (
     <>
-     
+      {showSuccessModal && (
+          <Modal
+          show={showSuccessModal}
+          onHide={handleCloseSuccess}
+          backdrop="static"
+          keyboard={false}
+          size="sm"
+          centered
+          style={{ fontFamily: 'Kanit, sans-serif' }}
+      >
+      <Modal.Body className="text-center p-lg-4">
+          <h4 className="text-success mt-3" style={{ fontSize: '30px'}}>
+              COMPLETE
+          </h4>
+          {/* ระบบได้รับข้อมูลการสมัครของท่านแล้ว */}
+          <p className="mt-3"style={{ fontSize: '22px' }}>ระบบได้บันทึกข้อมูลแล้ว</p>
+         
+          <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleCloseSuccess}>
+          OK
+          </Button>
+      </Modal.Body>
+      </Modal>
+        )} 
      {ShowModalSuccess && (
             <Modal_success
             show={ShowModalSuccess} 
