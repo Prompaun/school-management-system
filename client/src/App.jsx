@@ -197,7 +197,7 @@ function App() {
             {/* <Route path ="/Login_personnel" element={<Login_personnel />} /> */}
           
             {/* <Route path="/Login_personnel/Class_instrctor_menu" element={<Class_instructor_menu />} /> */}
-            <Route path="/Personnel_menu" element={<Personnel_menu/>} />
+            <Route path="/Personnel_menu" element={<Personnel_menu Role={Role}/>} />
 
             <Route path="/Education_information" element={<Education_information />} />
             <Route path="/Student_List_Information" element={<Student_List_Information />} />
