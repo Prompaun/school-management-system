@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import axios from 'axios';
+import { Button, Modal,Spinner } from 'react-bootstrap';
 
 function AddStudentID() {
 
@@ -37,6 +38,8 @@ function AddStudentID() {
         if (id === editingId) {
           setoldData(NewStudent)
           updateStidentInfo(id)
+          setShowSuccessModal(true);
+
         } else {
           setNewStudent(oldData)
         }
@@ -97,10 +100,38 @@ function AddStudentID() {
       useEffect(() => {
         console.log('newstu',NewStudent)
       }, [NewStudent])
-
+      const [showSuccessModal, setShowSuccessModal] = useState(false);
+      
+      const handleCloseSuccess = () => {
+          setShowSuccessModal(false);
+          };
 
   return (
     <>
+    
+    {showSuccessModal && (
+          <Modal
+          show={showSuccessModal}
+          onHide={handleCloseSuccess}
+          backdrop="static"
+          keyboard={false}
+          size="sm"
+          centered
+          style={{ fontFamily: 'Kanit, sans-serif' }}
+      >
+      <Modal.Body className="text-center p-lg-4">
+          <h4 className="text-success mt-3" style={{ fontSize: '30px'}}>
+              COMPLETE
+          </h4>
+          {/* ระบบได้รับข้อมูลการสมัครของท่านแล้ว */}
+          <p className="mt-3"style={{ fontSize: '22px' }}>ระบบได้บันทึกข้อมูลแล้ว</p>
+         
+          <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleCloseSuccess}>
+          OK
+          </Button>
+      </Modal.Body>
+      </Modal>
+        )} 
     <Header
     header="ระบบจัดการสารสนเทศ"
     subhead="บริการสำหรับบุคลากรภายในโรงเรียน"
@@ -119,7 +150,7 @@ function AddStudentID() {
                   จัดการเลขประจำตัวนักเรียน
                 </h2>
                 <h2 className="card-heading" style={{ fontSize: "25px", color:"gray",marginLeft:"5px" }}>
-                  (สำหรับนักเรียนที่ยังไม่มีเลขประจำตัว)
+                  (สำหรับนักเรียนใหม่)
                 </h2>
               </div>
                 <br />
