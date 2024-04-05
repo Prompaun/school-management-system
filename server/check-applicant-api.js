@@ -66,9 +66,9 @@ module.exports = function(connection) {
         const sql = `
         INSERT INTO student 
             (Student_ID, Student_NID, NameTitle, FirstName, LastName, Student_DOB, House_No, Moo, Soi, Road, Province, District, 
-            Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, Password, Avatar, parent)
+            Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, Password, Avatar, parent, course, enroll_year)
         SELECT 
-            "",
+            null,
             applicant.Student_NID,
             applicant.NameTitle,
             applicant.FirstName,
@@ -87,7 +87,9 @@ module.exports = function(connection) {
             applicant.HouseReg_file,
             applicant.Student_NID,
             applicant.Avatar,
-            ""
+            applicant.Parent,
+            enrollment.Enroll_Course,
+            ?
         FROM
             enrollment
         JOIN
@@ -97,7 +99,7 @@ module.exports = function(connection) {
         WHERE
             enrollment.Enroll_No = ?;
         `;
-        connection.query(sql, [Enroll_ID], (err, results) => {
+        connection.query(sql, [new Date().getFullYear(), Enroll_ID], (err, results) => {
             if (err) {
                 console.error('Error querying get applitcant info:', err);
                 if (err.sqlMessage !== "Duplicate entry '' for key 'student.Student_ID'" ){

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
+import axios from 'axios';
 
 function AddStudentID() {
 
     const [NewStudent,setNewStudent] = useState([
-        {id:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Course:"หลักสูตรทั่วไป",StudentNewID:"88888"},
-        {id:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Course:"English Program (EP)",StudentNewID:""}
+        // {id:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Course:"หลักสูตรทั่วไป",StudentNewID:"9"},
+        // {id:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Course:"English Program (EP)",StudentNewID:""}
 
+    ])
+    const [oldData,setoldData] = useState([
     ])
     const [selectedOption,setSelectedOption] = useState("ทั้งหมด")
     
@@ -31,7 +34,12 @@ function AddStudentID() {
 
     const handleEditRow = async (id) => {
         setEditingId(id === editingId ? null : id);
-   
+        if (id === editingId) {
+          setoldData(NewStudent)
+          updateStidentInfo(id)
+        } else {
+          setNewStudent(oldData)
+        }
     };
     
     const handleChange = (id, field, value) => {
@@ -41,6 +49,54 @@ function AddStudentID() {
           )
         );
       };
+
+      //=============================api=============================
+      async function getStidentInfo() {
+        try {
+            const response = await axios.get('http://localhost:8080/add-student-id-get-student-info', {});
+            const newData = response.data.map((item,index) => ({
+              id: index,
+              Data_id:item.id,
+              nameTitle: item.NameTitle,
+              FirstName:item.FirstName,
+              LastName: item.LastName,
+              Course: item.course,
+              StudentNewID: item.Student_ID === null ? "" : item.Student_ID
+            }))
+            setNewStudent(newData)
+            setoldData(newData)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching student id and info:', error);
+            throw error;
+        }
+      };
+
+      async function updateStidentInfo(id) {
+        try {
+            console.log('current', NewStudent[id].StudentNewID, NewStudent[id].Data_id)
+            const response = await axios.post('http://localhost:8080/add-student-id-update-student-info', {
+              student_id: NewStudent[id].StudentNewID, 
+              id: NewStudent[id].Data_id
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error updating student id:', error);
+            throw error;
+        }
+      };
+
+      useState(() => {
+        getStidentInfo()
+      })
+
+      useEffect(() => {
+        console.log('oldd',oldData)
+      }, [oldData])
+
+      useEffect(() => {
+        console.log('newstu',NewStudent)
+      }, [NewStudent])
 
 
   return (
@@ -63,7 +119,7 @@ function AddStudentID() {
                   จัดการเลขประจำตัวนักเรียน
                 </h2>
                 <h2 className="card-heading" style={{ fontSize: "25px", color:"gray",marginLeft:"5px" }}>
-                  (สำหรับนักเรียนใหม่ปีปัจจุบัน)
+                  (สำหรับนักเรียนที่ยังไม่มีเลขประจำตัว)
                 </h2>
               </div>
                 <br />
@@ -128,7 +184,7 @@ function AddStudentID() {
                                                 const inputValue = e.target.value;
                                                 const isInteger = Number.isInteger(parseInt(inputValue, 10));
                                                 if (isInteger || inputValue === '') {
-                                                handleChange(item.id, 'StudentNewID', inputValue);
+                                                  handleChange(item.id, 'StudentNewID', inputValue);
                                                 }
                                             }}
                                             />
