@@ -5,7 +5,7 @@ import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons
 function AddStudentID() {
 
     const [NewStudent,setNewStudent] = useState([
-        {id:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Course:"หลักสูตรทั่วไป",StudentNewID:""},
+        {id:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Course:"หลักสูตรทั่วไป",StudentNewID:"88888"},
         {id:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Course:"English Program (EP)",StudentNewID:""}
 
     ])
@@ -63,7 +63,7 @@ function AddStudentID() {
                   จัดการเลขประจำตัวนักเรียน
                 </h2>
                 <h2 className="card-heading" style={{ fontSize: "25px", color:"gray",marginLeft:"5px" }}>
-                  (สำหรับนักเรียนที่ยังไม่มีเลขประจำตัว)
+                  (สำหรับนักเรียนใหม่ปีปัจจุบัน)
                 </h2>
               </div>
                 <br />
