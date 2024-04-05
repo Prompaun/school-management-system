@@ -249,12 +249,12 @@ const Health_info = () => {
       // if (ShowEditBMI === false){
         const fetchEditBMI = async () => {
           try {
-            const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
-            const mappedCongenitalDisease = CongenitalDisease.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                congenital_disease: item.Congenital_Disease
-              }));
+            // const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
+            // const mappedCongenitalDisease = CongenitalDisease.map(item => ({
+            //     id: item.id,
+            //     DateCheck: formatDateThaiYear(item.Date),
+            //     congenital_disease: item.Congenital_Disease
+            //   }));
               
             const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
             const mappedHistoryDisease = HistoryDisease.map(item => ({
@@ -308,7 +308,7 @@ const Health_info = () => {
                 }));
                 
 
-              setcongenital_disease(mappedCongenitalDisease);
+              // setcongenital_disease(mappedCongenitalDisease);
               setDiseases(mappedHistoryDisease);
               setallergic(mappedAllergic);
               setaccident(mappedaccident);
@@ -368,6 +368,26 @@ const Health_info = () => {
       }
     }, [ShowEditHealth]);
 
+    useEffect(() => {
+      if (ShowEditHistory === false){
+          const fetchEditHealth = async () => {
+            try {          
+                  const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
+                  const mappedCongenitalDisease = CongenitalDisease.map(item => ({
+                      id: item.id,
+                      DateCheck: formatDateThaiYear(item.Date),
+                      congenital_disease: item.Congenital_Disease
+                    }));
+                    setcongenital_disease(mappedCongenitalDisease);
+                    console.log('mappedCongenitalDisease:', mappedCongenitalDisease);
+            } catch (error) {
+              console.log('Error fetching data:', error);
+            }
+        };
+        fetchEditHealth();
+      }
+    }, [ShowEditHistory]);
+
     
     return (
         <>
@@ -399,6 +419,7 @@ const Health_info = () => {
           show={ShowEditHistory}
           setShow ={setShowEditHistory}
           Student_id={studentID_param}
+          congenitalDisease={congenital_disease}
           />
           )}
             <Header header="ระบบจัดการข้อมูลสุขภาพ" subhead="" />  

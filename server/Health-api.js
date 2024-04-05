@@ -292,27 +292,6 @@ module.exports = function(connection) {
         });
     });
 
-    
-
-    router.get('/get-congenital-disease-info/:studentId', (req, res) => {
-        const studentId = req.params.studentId;
-    // router.get('/get-congenital-disease-info', (req, res) => {
-    //     const { studentId } = req.query;
-        const sql = `
-            SELECT id, Date, Congenital_Disease
-            FROM congenital_disease
-            WHERE Student_ID = ?
-        `;
-    
-        connection.query(sql, studentId, (err, results) => {
-            if (err) {
-                console.error('Error fetching congenital disease information:', err);
-                return res.status(500).json({ error: 'Failed to fetch congenital disease information' });
-            }
-            return res.status(200).json(results);
-        });
-    });
-    
     router.get('/get-history-disease-info/:studentId', (req, res) => {
         const studentId = req.params.studentId;
     // router.get('/get-History-disease-info', (req, res) => {

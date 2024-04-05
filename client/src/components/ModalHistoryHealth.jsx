@@ -2,7 +2,9 @@ import React, { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { BsArrowLeftRight,BsFillTrashFill } from "react-icons/bs";
 import { Button, Modal,Spinner } from 'react-bootstrap';
-function ModalHistoryHealth({show,setShow,Student_id}) {
+import axios from 'axios';
+
+function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
 
     
     const handleClose = () => {
@@ -13,26 +15,99 @@ function ModalHistoryHealth({show,setShow,Student_id}) {
         textDecoration: 'none'
       };
 
+      const addCongenitalDiseaseInfo = async (studentId, date, congenitalDisease) => {
+        try {
+            const response = await axios.post('http://localhost:8080/add-congenital-disease-info', {
+                Student_ID: studentId,
+                Date: date,
+                Congenital_Disease: congenitalDisease
+            });
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.error('Error adding congenital disease information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+    
+    const deleteCongenitalDisease = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete-congenital-disease/${id}`);
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.error('Error deleting congenital disease information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+    const formatDate = (date) => {
+        if (date !== ''){
+          const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        let day = date.getDate();
+        day = day < 10 ? '0' + day : day;
+        // 
+        // console.log(`${year}-${month}-${day}`);
+        return `${year}-${month}-${day}`;
+        }
+        else{
+          return new Date();
+        }
+    };
+    
+
     const handleSaveButton = () => {
     //    if (CheckInput()){
         console.log('congenital_disease:', congenital_disease);
         console.log('ListNewcongenital_disease:', ListNewcongenital_disease);
+        console.log('ListNewcongenital_disease.name:', ListNewcongenital_disease.name);
+        
+        if (ListNewcongenital_disease.length >= 1){
+            // const fetchData = async () => {
+            //     try {
+            //         const addedData = await addCongenitalDiseaseInfo(Student_id, formatDate(new Date()), ListNewcongenital_disease.name);
+            //     } catch (error) {
+            //         console.error('Error fetching Data:', error);
+            //     }
+            // };
+            
+            // // เรียกใช้ฟังก์ชัน fetchData
+            // fetchData();
+            ListNewcongenital_disease.forEach(async (item) => {
+                try {
+                    const response = await addCongenitalDiseaseInfo(Student_id, formatDate(new Date()), item.name);
+                    console.log(response.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+                } catch (error) {
+                    console.error('Error adding congenital disease information:', error);
+                    // จัดการข้อผิดพลาดตามต้องการ
+                }
+            });
+        }
         
         alert("Save")
         setShow(false);
     //    }
-      
     }
-    const [congenital_disease,setcongenital_disease] = useState ([
-        {
-          id:1,
-          congenital_disease:"ภูมิแพ้อากาศ"
-        },
-        {
-          id:2,
-          congenital_disease:"โลหิตจาง"
-        }
-      ]);
+
+    useEffect(() => {
+        setcongenital_disease(congenitalDisease);
+        // console.log(congenital_disease,'congenitalDisease',congenitalDisease);
+      }, []);
+
+    const [congenital_disease,setcongenital_disease] = useState (
+        [
+        // {
+        //   id:1,
+        //   congenital_disease:"ภูมิแพ้อากาศ"
+        // },
+        // {
+        //   id:2,
+        //   congenital_disease:"โลหิตจาง"
+        // }
+      ]
+    );
       const [Diseases,setDiseases] = useState ([
         {
           id:1,
@@ -52,10 +127,25 @@ function ModalHistoryHealth({show,setShow,Student_id}) {
       }
       ]);
 
+    //   useEffect(() => {
+    //     setcongenital_disease(congenitalDisease);
+    //     console.log(congenital_disease,'congenitalDisease',congenitalDisease);
+    //   }, []);
+
     
 
     const handleDeleteRow = (id) => {
         setcongenital_disease(congenital_disease.filter((row) => row.id!== id));
+        // console.log('id',id);
+        deleteCongenitalDisease(id)
+            .then((data) => {
+                console.log('Congenital disease information deleted successfully:', data);
+                // ทำสิ่งที่ต้องการหลังจากลบข้อมูลสำเร็จ
+            })
+            .catch((error) => {
+                console.log('Failed to delete congenital disease information:', error, id);
+                // ทำสิ่งที่ต้องการหลังจากการลบข้อมูลล้มเหลว
+    });
       };
       const handleDeleteRowDisease = (id) => {
         setDiseases(Diseases.filter((row) => row.id!== id));
