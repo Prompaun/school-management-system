@@ -15,6 +15,9 @@ function ModalHistoryHealth({show,setShow,Student_id}) {
 
     const handleSaveButton = () => {
     //    if (CheckInput()){
+        console.log('congenital_disease:', congenital_disease);
+        console.log('ListNewcongenital_disease:', ListNewcongenital_disease);
+        
         alert("Save")
         setShow(false);
     //    }

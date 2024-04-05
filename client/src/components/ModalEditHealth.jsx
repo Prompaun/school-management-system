@@ -2,7 +2,9 @@ import React, { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 import { Button, Modal,Spinner } from 'react-bootstrap';
-function ModalEditHealth({show,setShow,Student_id}) {
+import axios from 'axios';
+
+function ModalEditHealth({show, setShow, Student_id, HealthCheckUp}) {
 
     const [Eyesight,setEyesight] = useState("");
     const [InputEyesight,setInputEyesight] = useState("");
@@ -18,6 +20,44 @@ function ModalEditHealth({show,setShow,Student_id}) {
         fontFamily: 'Kanit, sans-serif',
         textDecoration: 'none'
       };
+    
+    // ฟังก์ชันสำหรับเพิ่มข้อมูลใหม่ลงในฐานข้อมูล Health_Check
+    async function addHealthCheck(data) {
+        try {
+            const response = await axios.post('http://localhost:8080/add-health-check', data);
+            return response.data;
+        } catch (error) {
+            console.error('Error adding health check data:', error);
+            throw error;
+        }
+    }
+
+    // ฟังก์ชันสำหรับอัปเดตข้อมูลในฐานข้อมูล Health_Check ด้วย ID ที่ระบุ
+    async function updateHealthCheck(id, data) {
+        try {
+            const response = await axios.put(`http://localhost:8080/update-health-check/${id}`, data);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating health check data:', error);
+            throw error;
+        }
+    }
+
+    const formatDate = (date) => {
+        if (date !== ''){
+          const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        let day = date.getDate();
+        day = day < 10 ? '0' + day : day;
+        // 
+        // console.log(`${year}-${month}-${day}`);
+        return `${year}-${month}-${day}`;
+        }
+        else{
+          return new Date();
+        }
+    };
 
 
     const handleInputEyesightChange = (event) => {
@@ -47,7 +87,7 @@ function ModalEditHealth({show,setShow,Student_id}) {
     useEffect(() => {
         if (Eyesight){
             setEyesight(Eyesight)
-            console.log(Eyesight,"llll")
+            console.log(Eyesight,"Eyesight")
         }
     }, [Eyesight])
 
@@ -67,7 +107,7 @@ function ModalEditHealth({show,setShow,Student_id}) {
     useEffect(() => {
         if (Hearing){
             setHearing(Hearing)
-            console.log(Hearing,"llll")
+            console.log(Hearing,"Hearing")
         }
     }, [Hearing])
 
@@ -87,7 +127,7 @@ function ModalEditHealth({show,setShow,Student_id}) {
         useEffect(() => {
             if (Mouth){
                 setMouth(Mouth)
-                console.log(Mouth,"llll")
+                console.log(Mouth,"Mouth")
             }
         }, [Mouth])
 
@@ -105,10 +145,40 @@ function ModalEditHealth({show,setShow,Student_id}) {
 
         const handleSaveButton = () => {
                if (CheckInput()){
-                alert("Save")
-                setShow(false);
-               }
-              
+                    console.log('InputEyesight', InputEyesight);
+                    console.log('InputMouth',InputMouth);
+                    console.log('InputHearing',InputHearing);
+                    console.log('HealthCheckUp[0]',HealthCheckUp[0]);
+
+                    const EyeExamination = Eyesight === 'ปกติ' ? Eyesight : InputEyesight;
+                    const HearingExamination = Hearing === 'ปกติ' ? Hearing : InputHearing;
+                    const MouthExamination = Mouth === 'ปกติ' ? Mouth : InputMouth;
+                    console.log('MouthExamination',MouthExamination);
+                    const fetchData = async () => {
+                        try {
+                            const HealthCheckData = {
+                                Student_ID: Student_id,
+                                Date: formatDate(new Date()),
+                                EyeExamination: EyeExamination,
+                                Hearing: HearingExamination,
+                                OralHealth: MouthExamination
+                            };
+
+                            
+                            // if (HealthCheckUp[0].id) {
+                            //     const updatedData = await updateHealthCheck(HealthCheckUp[0].id, HealthCheckData);
+                            //     console.log(updatedData);
+                            // } else {
+                                const addedData = await addHealthCheck(HealthCheckData);
+                            // }
+                        } catch (error) {
+                            console.error('Error fetching Data:', error);
+                        }
+                    };
+                    fetchData();
+                    alert("Save")
+                    setShow(false);
+                }
             }
          const CheckInput = () => {
             if (Eyesight==="" || Mouth==="" || Hearing==="") {

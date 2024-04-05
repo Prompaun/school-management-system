@@ -52,11 +52,11 @@ const Health_info = () => {
       // }
     ]);
     const [Diseases,setDiseases] = useState ([
-      {
-        // id:1,
-        // DateCheck:"12/05/2024",
-        // Diseases:"โรคอีสุกอีใส"
-    }
+    //   {
+    //     id:1,
+    //     DateCheck:"12/05/2024",
+    //     Diseases:"โรคอีสุกอีใส"
+    // }
     ]);
     const [allergic,setallergic] = useState ([
     //   {
@@ -75,7 +75,7 @@ const Health_info = () => {
     
     
     const [HealthSummary,setHealthSummary] = useState([
-      {id:1,summary:"สุขภาพแข็งแรง"}
+      // {id:1,summary:"สุขภาพแข็งแรง"}
     ])
     //ยังไม่มีเงื่อนไขเช็คถ้าไม่เจอค่า
     const [BodyData,setBodyData] = useState([
@@ -107,7 +107,8 @@ const Health_info = () => {
   
     //ยังไม่มีเงื่อนไขเช็คถ้าไม่เจอค่า
     const [HealthCheckUp,setHealthCheckUp] = useState([
-      {id:1,DateCheck:"12/05/2024",Eyesight:"ปกติ",Hearing:"ปกติ",Mouth:"ปกติ"}
+      // {id:1,DateCheck:"12/05/2024",Eyesight:"ปกติ",Hearing:"ปกติ",Mouth:"ปกติ"},
+      {id:1,DateCheck:"",Eyesight:"",Hearing:"",Mouth:""}
     ])
   
     //วัคซีนพื้นฐาน จำเป็น 8 ชนิด
@@ -131,6 +132,29 @@ const Health_info = () => {
     ])
   // แสดง ui วัคซีนทางเลือก
     const [showOptionalVaccine,setshowOptionalVaccine] = useState(false);
+
+    const [ShowEditBMI,setShowEditBMI] = useState(false);
+
+    const handleClickShowEditBMI = () => {
+      setShowEditBMI(true);
+    };
+
+    const [ShowEditHealth,setShowEditHealth] = useState(false);
+
+    const handleClickShowEditHealth = () => {
+      setShowEditHealth(true);
+    };
+
+    const [ShowEditVaccine,setShowEditVaccine] = useState(false);
+
+    const handleClickShowEditVaccine = () => {
+      setShowEditVaccine(true);
+    };
+    const [ShowEditHistory,setShowEditHistory] = useState(false);
+
+    const handleClickShowEditHistory = () => {
+      setShowEditHistory(true);
+    };
   
     useEffect(() => {
       if (OptionalVaccine.length!==0) {
@@ -222,132 +246,145 @@ const Health_info = () => {
   }
 
     useEffect(() => {
-      const fetchData = async () => {
-          try {
-            const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
-            const mappedCongenitalDisease = CongenitalDisease.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                congenital_disease: item.Congenital_Disease
-              }));
+      // if (ShowEditBMI === false){
+          const fetchEditBMI = async () => {
+            try {
+              const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
+              const mappedCongenitalDisease = CongenitalDisease.map(item => ({
+                  id: item.id,
+                  DateCheck: formatDateThaiYear(item.Date),
+                  congenital_disease: item.Congenital_Disease
+                }));
+                
+              const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
+              const mappedHistoryDisease = HistoryDisease.map(item => ({
+                  id: item.id,
+                  DateCheck: formatDateThaiYear(item.Date),
+                  Diseases: item.History_Disease
+                }));
+                
+              const allergic = await getAllergiesInfo(studentID_param);
+              const mappedAllergic = allergic.map(item => ({
+                  id: item.id,
+                  DateCheck: formatDateThaiYear(item.Date),
+                  allergic: item.Allergies
+                }));
+
+              const accident = await getSurgeryAccidentInfo(studentID_param);
+              const mappedaccident = accident.map(item => ({
+                  id: item.id,
+                  DateCheck: formatDateThaiYear(item.Date),
+                  accident: item.Surgery_Accident
+                }));
               
-          // } catch (error) {
-          //   console.log('Error fetching Congenital Disease:', error);
-          // }
-
-          // try {
-            const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
-            const mappedHistoryDisease = HistoryDisease.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                Diseases: item.History_Disease
-              }));
+              const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
+              const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
+                  id: item.Alternative_Vaccine_ID,
+                  Vaccine: item.Vaccine_name
+                }));
               
-          // } catch (error) {
-          //   console.log('Error fetching History Disease:', error);
-          // }
+              // const GrowthNutrition = await getGrowthNutritionInfo(studentID_param);
+              // const mappedGrowthNutrition = GrowthNutrition.map(item => ({
+              //     id: item.id,
+              //     DateRecord: formatDateThaiYear(item.Health_Check_Date),
+              //     weight_kg: item.Weight,
+              //     height_cm: item.Height
+              //   }));
 
-          // try {
-            const allergic = await getAllergiesInfo(studentID_param);
-            const mappedAllergic = allergic.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                allergic: item.Allergies
-              }));
-              
-          // } catch (error) {
-          //   console.log('Error fetching allergic:', error);
-          // }
+              // const HealthCheck = await getHealthCheckInfo(studentID_param);
+              // const mappedHealthCheck = HealthCheck.map(item => ({
+              //     id: item.id,
+              //     DateCheck: formatDateThaiYear(item.Date),
+              //     Eyesight: item.EyeExamination,
+              //     Hearing: item.Hearing,
+              //     Mouth: item.OralHealth
+              //   }));
 
-          // try {
-            const accident = await getSurgeryAccidentInfo(studentID_param);
-            const mappedaccident = accident.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                accident: item.Surgery_Accident
-              }));
-            
-            const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
-            const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
-                id: item.Alternative_Vaccine_ID,
-                Vaccine: item.Vaccine_name
-              }));
-            
-            const GrowthNutrition = await getGrowthNutritionInfo(studentID_param);
-            const mappedGrowthNutrition = GrowthNutrition.map(item => ({
-                id: item.id,
-                DateRecord: formatDateThaiYear(item.Health_Check_Date),
-                weight_kg: item.Weight,
-                height_cm: item.Height
-              }));
+              const Basic_Vaccine  = await checkVaccine(studentID_param);
+              const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
+                  id: item.Basic_Vaccine_ID,
+                  Vaccine: item.BasicVaccine_name,
+                  value: item.value
+                }));
+                
 
-            const HealthCheck = await getHealthCheckInfo(studentID_param);
-            const mappedHealthCheck = HealthCheck.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                Eyesight: item.Eye_examination,
-                Hearing: item.Hearing,
-                Mouth: item.Oral_health
-              }));
+              setcongenital_disease(mappedCongenitalDisease);
+              setDiseases(mappedHistoryDisease);
+              setallergic(mappedAllergic);
+              setaccident(mappedaccident);
+              setOptionalVaccine(mappedInjectionAlternativeVaccine);
+              // setBodyData(mappedGrowthNutrition);
+              // setHealthCheckUp(mappedHealthCheck);
+              setEPI_program(mappedBasic_Vaccine);
+            } catch (error) {
+              console.log('Error fetching data:', error);
+            }
 
-            const Basic_Vaccine  = await checkVaccine(studentID_param);
-            const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
-                id: item.Basic_Vaccine_ID,
-                Vaccine: item.BasicVaccine_name,
-                value: item.value
-              }));
-            
-
-            setcongenital_disease(mappedCongenitalDisease);
-            setDiseases(mappedHistoryDisease);
-            setallergic(mappedAllergic);
-            setaccident(mappedaccident);
-            setOptionalVaccine(mappedInjectionAlternativeVaccine);
-            setBodyData(mappedGrowthNutrition);
-            setHealthCheckUp(mappedHealthCheck);
-            setEPI_program(mappedBasic_Vaccine);
-          } catch (error) {
-            console.log('Error fetching data:', error);
-          }
-
-      };
-      fetchData();
+        // };
+        
+      }
+      fetchEditBMI();
     }, []);
 
-    const [ShowEditBMI,setShowEditBMI] = useState(false);
+    useEffect(() => {
+      if (ShowEditBMI === false){
+          const fetchEditBMI = async () => {
+            try {          
+                  const GrowthNutrition = await getGrowthNutritionInfo(studentID_param);
+                  const mappedGrowthNutrition = GrowthNutrition.map(item => ({
+                      id: item.id,
+                      DateRecord: formatDateThaiYear(item.Health_Check_Date),
+                      weight_kg: item.Weight,
+                      height_cm: item.Height
+                    }));
+                  setBodyData(mappedGrowthNutrition);
+            } catch (error) {
+              console.log('Error fetching data:', error);
+            }
+        };
+        fetchEditBMI();
+      }
+    }, [ShowEditBMI]);
 
-    const handleClickShowEditBMI = () => {
-      setShowEditBMI(true);
-    };
+    useEffect(() => {
+      if (ShowEditHealth === false){
+          const fetchEditHealth = async () => {
+            try {          
+                  const HealthCheck = await getHealthCheckInfo(studentID_param);
+                  const mappedHealthCheck = HealthCheck.map(item => ({
+                      id: item.id,
+                      DateCheck: formatDateThaiYear(item.Date),
+                      Eyesight: item.EyeExamination,
+                      Hearing: item.Hearing,
+                      Mouth: item.OralHealth
+                    }));
+                    setHealthCheckUp(mappedHealthCheck);
+                    console.log('mappedHealthCheck:', mappedHealthCheck);
+            } catch (error) {
+              console.log('Error fetching data:', error);
+            }
+        };
+        fetchEditHealth();
+      }
+    }, [ShowEditHealth]);
 
-    const [ShowEditHealth,setShowEditHealth] = useState(false);
-
-    const handleClickShowEditHealth = () => {
-      setShowEditHealth(true);
-    };
-
-    const [ShowEditVaccine,setShowEditVaccine] = useState(false);
-
-    const handleClickShowEditVaccine = () => {
-      setShowEditVaccine(true);
-    };
-    const [ShowEditHistory,setShowEditHistory] = useState(false);
-
-    const handleClickShowEditHistory = () => {
-      setShowEditHistory(true);
-    };
+    
     return (
         <>
          {ShowEditBMI && (
           <ModalEditBMI
           show={ShowEditBMI}
           setShow ={setShowEditBMI}
+          Student_id={studentID_param}
+          BodyData={BodyData}
           />
           )}
           {ShowEditHealth && (
           <ModalEditHealth
           show={ShowEditHealth}
           setShow ={setShowEditHealth}
+          Student_id={studentID_param}
+          HealthCheckUp={HealthCheckUp}
           />
           )}
           {ShowEditVaccine && (

@@ -2,10 +2,13 @@ import React, { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 import { Button, Modal,Spinner } from 'react-bootstrap';
-function ModalEditBMI({show,setShow,Student_id}) {
+import axios from 'axios';
+
+function ModalEditBMI({show, setShow, Student_id, BodyData}) {
 
     const [Weight,setWeight] = useState("");
     const [Height,setHeight] = useState("");
+    // const [BodyData,setBodyData] = useState([{id:1,DateRecord:"",weight_kg:"",height_cm:""}]);
     const handleClose = () => {
         setShow(false);
       };
@@ -13,6 +16,70 @@ function ModalEditBMI({show,setShow,Student_id}) {
         fontFamily: 'Kanit, sans-serif',
         textDecoration: 'none'
       };
+    
+    // function checkDataValidity(dataArray) {
+    //     // ใช้ forEach เพื่อวนลูปทุกๆ อ็อบเจกต์ในอาร์เรย์
+    //     dataArray.forEach(data => {
+    //         // ตรวจสอบค่า DateRecord และ height_cm ในแต่ละอ็อบเจกต์
+    //         if (!data.DateRecord || !data.height_cm) {
+    //             // console.log("ข้อมูลไม่ถูกต้อง:", data);
+    //             return false;
+    //         } else {
+    //             // console.log("ข้อมูลถูกต้อง:", data);
+    //             return true;
+    //         }
+    //     });
+    // }
+    function formatDateThaiYear(dateString) {
+        const dob = new Date(dateString);
+        const day = dob.getDate();
+        const month = dob.getMonth() + 1;
+        const year = dob.getFullYear() + 543; // เพิ่มค่า 543 เข้าไปในปีเพื่อแปลงเป็น พ.ศ.
+        const formattedDOB = `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+        return formattedDOB;
+    }
+
+    const formatDate = (date) => {
+        if (date !== ''){
+          const year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        month = month < 10 ? '0' + month : month;
+        let day = date.getDate();
+        day = day < 10 ? '0' + day : day;
+        // 
+        // console.log(`${year}-${month}-${day}`);
+        return `${year}-${month}-${day}`;
+        }
+        else{
+          return new Date();
+        }
+    };
+    
+    const getYearFromDate = (date) => {
+        return date.getFullYear();
+    };
+
+    async function addGrowthNutrition(data) {
+        try {
+            // เรียกใช้ API เพื่อเพิ่มข้อมูลในตาราง Growth_Nutrition
+            const response = await axios.post('http://localhost:8080/add-growth-nutrition', data);
+            return response.data;
+        } catch (error) {
+            console.error('Error adding growth nutrition data:', error);
+            throw error;
+        }
+    }
+    
+    async function updateGrowthNutrition(id, data) {
+        try {
+            // เรียกใช้ API เพื่ออัปเดตข้อมูลในตาราง Growth_Nutrition ด้วย ID ที่กำหนด
+            const response = await axios.put(`http://localhost:8080/update-growth-nutrition/${id}`, data);
+            return response.data;
+        } catch (error) {
+            console.error('Error updating growth nutrition data:', error);
+            throw error;
+        }
+    }
 
 
     const handleInputWeightChange = (event) => {
@@ -25,11 +92,64 @@ function ModalEditBMI({show,setShow,Student_id}) {
 
     const handleSaveButton = () => {
        if (CheckInput()){
-        alert("Save")
-        setShow(false);
+            console.log('Weight', Weight);
+            console.log('Height',Height);
+            console.log('BodyData',BodyData);
+            // console.log('BodyData[0].height_cm',BodyData[0].height_cm);
+            // console.log('BodyData[0].DateRecord',BodyData[0].DateRecord);
+            
+            // const fetchData = async () => {
+                
+            //     try {
+            //         const GrowthNutrition = {
+            //             Student_ID: Student_id,
+            //             Year: getYearFromDate(new Date()),
+            //             Semester: '',
+            //             Health_Check_Date: formatDate(new Date()),
+            //             Student_Age: '',
+            //             Height: Height,
+            //             Weight: Weight
+            //         };
+            //         if(BodyData[0].height_cm && BodyData[0].DateRecord){
+            //             const updateGrowthNutrition = await updateGrowthNutrition(BodyData.id, GrowthNutrition);
+            //             // console.log('getYearFromDate(new Date())',getYearFromDate(new Date()));
+            //             // console.log('formatDate(new Date())',formatDate(new Date()));
+            //         }
+            //        else{
+            //             const addGrowthNutrition = await addGrowthNutrition(GrowthNutrition);
+            //             // console.log('1111111111111111111',getYearFromDate(new Date()));
+            //             // console.log('2222222222222222222',formatDate(new Date()));
+            //        }
+            //       } catch (error) {
+            //         console.error('Error fetching Data:', error);
+            //     }
+            // };
+            const fetchData = async () => {
+                try {
+                    const GrowthNutrition = {
+                        Student_ID: Student_id,
+                        Year: getYearFromDate(new Date()),
+                        // Semester: '',
+                        Health_Check_Date: formatDate(new Date()),
+                        // Student_Age: '',
+                        Height: Height,
+                        Weight: Weight
+                    };
+                    if (BodyData[0].height_cm && BodyData[0].DateRecord) {
+                        const updatedData = await updateGrowthNutrition(BodyData[0].id, GrowthNutrition);
+                    } else {
+                        const addedData = await addGrowthNutrition(GrowthNutrition);
+                    }
+                } catch (error) {
+                    console.error('Error fetching Data:', error);
+                }
+            };
+            fetchData();
+            alert("Save")
+            setShow(false);
        }
-      
     }
+
     const CheckInput = () => {
         if (Weight < 0 || Height < 0) {
             alert("กรุณากรอกเฉพาะค่าที่ไม่ติดลบ")
@@ -42,6 +162,32 @@ function ModalEditBMI({show,setShow,Student_id}) {
 
         return true;
      }
+
+    //  useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const GrowthNutrition = {
+    //                 Student_ID: "ABC123",
+    //                 Year: 2024,
+    //                 Semester: 2,
+    //                 Health_Check_Date: "2024-04-04",
+    //                 Student_Age: 10,
+    //                 Height: 150.5,
+    //                 Weight: 45.3
+    //             };
+    //             if(BodyData[0].height_cm && BodyData[0].DateRecord){
+    //                 const updateGrowthNutrition = await updateGrowthNutrition(BodyData.id, GrowthNutrition);
+    //             }
+    //            else{
+    //                 const addGrowthNutrition = await addGrowthNutrition(GrowthNutrition);
+    //            }
+    //           } catch (error) {
+    //             console.error('Error fetching Data:', error);
+    //         }
+    //     };
+    //     fetchData();
+    //     // checkDataValidity(bodyData);
+    // }, []);
   return (
     <Modal
         show={show}
