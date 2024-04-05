@@ -4,7 +4,7 @@ import { BsArrowLeftRight,BsFillTrashFill } from "react-icons/bs";
 import { Button, Modal,Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
-function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
+function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, HistoryDisease, allergicc, accidentt}) {
 
     
     const handleClose = () => {
@@ -41,7 +41,88 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
         }
     };
 
-    
+    const addHistoryDiseaseInfo = async (studentId, date, historyDisease) => {
+        try {
+            const response = await axios.post('http://localhost:8080/add-history-disease-info', {
+                Student_ID: studentId,
+                Date: date,
+                History_Disease: historyDisease
+            });
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.error('Error adding history disease information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+    const deleteHistoryDisease = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete-history-disease/${id}`);
+            console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+            return response.data; // ส่งข้อมูลที่ได้รับกลับ
+        } catch (error) {
+            console.error('Error deleting history disease information:', error);
+            throw error; // ส่ง error กลับเพื่อให้ UI จัดการต่อ
+        }
+    };
+
+    // Function to add allergies information
+    const addAllergiesInfo = async (studentId, date, allergies) => {
+        try {
+            const response = await axios.post('http://localhost:8080/add-allergies-info', {
+                Student_ID: studentId,
+                Date: date,
+                Allergies: allergies
+            });
+            console.log(response.data.message); // Display message received from server
+            return response.data; // Return received data
+        } catch (error) {
+            console.error('Error adding allergies information:', error);
+            throw error; // Throw error to handle in UI
+        }
+    };
+
+    // Function to delete allergies information
+    const deleteAllergies = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete-allergies/${id}`);
+            console.log(response.data.message); // Display message received from server
+            return response.data; // Return received data
+        } catch (error) {
+            console.error('Error deleting allergies information:', error);
+            throw error; // Throw error to handle in UI
+        }
+    };
+
+    // Function to add surgery/accident information
+    const addSurgeryAccidentInfo = async (studentId, date, surgeryAccident) => {
+        try {
+            const response = await axios.post('http://localhost:8080/add-surgery-accident-info', {
+                Student_ID: studentId,
+                Date: date,
+                Surgery_Accident: surgeryAccident
+            });
+            console.log(response.data.message); // Display message received from server
+            return response.data; // Return received data
+        } catch (error) {
+            console.error('Error adding surgery/accident information:', error);
+            throw error; // Throw error to handle in UI
+        }
+    };
+
+    // Function to delete surgery/accident information
+    const deleteSurgeryAccident = async (id) => {
+        try {
+            const response = await axios.delete(`http://localhost:8080/delete-surgery-accident/${id}`);
+            console.log(response.data.message); // Display message received from server
+            return response.data; // Return received data
+        } catch (error) {
+            console.error('Error deleting surgery/accident information:', error);
+            throw error; // Throw error to handle in UI
+        }
+    };
+
 
     const formatDate = (date) => {
         if (date !== ''){
@@ -68,22 +149,48 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
         setShowLoadingModal(true)
         
         if (ListNewcongenital_disease.length >= 1){
-            // const fetchData = async () => {
-            //     try {
-            //         const addedData = await addCongenitalDiseaseInfo(Student_id, formatDate(new Date()), ListNewcongenital_disease.name);
-            //     } catch (error) {
-            //         console.error('Error fetching Data:', error);
-            //     }
-            // };
-            
-            // // เรียกใช้ฟังก์ชัน fetchData
-            // fetchData();
             ListNewcongenital_disease.forEach(async (item) => {
                 try {
                     const response = await addCongenitalDiseaseInfo(Student_id, formatDate(new Date()), item.name);
                     console.log(response.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
                 } catch (error) {
-                    console.error('Error adding congenital disease information:', error);
+                    console.log('Error adding congenital disease information:', error);
+                    // จัดการข้อผิดพลาดตามต้องการ
+                }
+            });
+        }
+
+        if (ListNewDiseases.length >= 1){
+            ListNewDiseases.forEach(async (item) => {
+                try {
+                    const response = await addHistoryDiseaseInfo(Student_id, formatDate(new Date()), item.name);
+                    console.log(response.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+                } catch (error) {
+                    console.log('Error adding History disease information:', error);
+                    // จัดการข้อผิดพลาดตามต้องการ
+                }
+            });
+        }
+
+        if (ListNewallergic.length >= 1){
+            ListNewallergic.forEach(async (item) => {
+                try {
+                    const response = await addAllergiesInfo(Student_id, formatDate(new Date()), item.name);
+                    console.log(response.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+                } catch (error) {
+                    console.log('Error adding Allergies information:', error);
+                    // จัดการข้อผิดพลาดตามต้องการ
+                }
+            });
+        }
+
+        if (ListNewaccident.length >= 1){
+            ListNewaccident.forEach(async (item) => {
+                try {
+                    const response = await addSurgeryAccidentInfo(Student_id, formatDate(new Date()), item.name);
+                    console.log(response.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
+                } catch (error) {
+                    console.log('Error adding Surgery Acciden information:', error);
                     // จัดการข้อผิดพลาดตามต้องการ
                 }
             });
@@ -96,6 +203,9 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
 
     useEffect(() => {
         setcongenital_disease(congenitalDisease);
+        setDiseases(HistoryDisease);
+        setallergic(allergicc);
+        setaccident(accidentt);
         // console.log(congenital_disease,'congenitalDisease',congenitalDisease);
       }, []);
 
@@ -112,22 +222,22 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
       ]
     );
       const [Diseases,setDiseases] = useState ([
-        {
-          id:1,
-          Diseases:"โรคอีสุกอีใส"
-      }
+    //     {
+    //       id:1,
+    //       Diseases:"โรคอีสุกอีใส"
+    //   }
       ]);
       const [allergic,setallergic] = useState ([
-        {
-          id:1,
-          allergic:"แพ้อาหารทะเล"
-      }
+    //     {
+    //       id:1,
+    //       allergic:"แพ้อาหารทะเล"
+    //   }
       ]);
       const [accident,setaccident] = useState ([
-        {
-          id:1,
-          accident:"ผ่าตัด"
-      }
+    //     {
+    //       id:1,
+    //       accident:"ผ่าตัด"
+    //   }
       ]);
 
     //   useEffect(() => {
@@ -152,14 +262,44 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
       };
       const handleDeleteRowDisease = (id) => {
         setDiseases(Diseases.filter((row) => row.id!== id));
+        // สำหรับลบข้อมูลในตาราง history_disease
+        deleteHistoryDisease(id)
+            .then((data) => {
+                console.log('History disease information deleted successfully:', data);
+                // ทำสิ่งที่ต้องการหลังจากลบข้อมูลสำเร็จ
+            })
+            .catch((error) => {
+                console.log('Failed to delete history disease information:', error, id);
+                // ทำสิ่งที่ต้องการหลังจากการลบข้อมูลล้มเหลว
+            });
       };
 
       const handleDeleteRowallergic = (id) => {
         setallergic(allergic.filter((row) => row.id!== id));
+        // สำหรับลบข้อมูลในตาราง Allergies
+        deleteAllergies(id)
+            .then((data) => {
+                console.log('Allergies information deleted successfully:', data);
+                // ทำสิ่งที่ต้องการหลังจากลบข้อมูลสำเร็จ
+            })
+            .catch((error) => {
+                console.log('Failed to delete allergies information:', error, id);
+                // ทำสิ่งที่ต้องการหลังจากการลบข้อมูลล้มเหลว
+            });
       };
 
       const handleDeleteRowaccident = (id) => {
         setaccident(accident.filter((row) => row.id!== id));
+        // สำหรับลบข้อมูลในตาราง Surgery_accident
+        deleteSurgeryAccident(id)
+            .then((data) => {
+                console.log('Surgery/accident information deleted successfully:', data);
+                // ทำสิ่งที่ต้องการหลังจากลบข้อมูลสำเร็จ
+            })
+            .catch((error) => {
+                console.log('Failed to delete surgery/accident information:', error, id);
+                // ทำสิ่งที่ต้องการหลังจากการลบข้อมูลล้มเหลว
+            });
       };
     let nextId = 0;
     const [Addcongenital_disease, setAddcongenital_disease] = useState('');
