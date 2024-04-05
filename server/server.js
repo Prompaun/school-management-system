@@ -69,6 +69,10 @@ const googleUpload_api = require('./google-upload-api')(connection);
 const manageClass_api = require('./manage-student-class-api')(connection)
 
 const congenitalDisease_api = require('./congenital-disease-api')(connection)
+const historyDisease_api = require('./history-disease-api')(connection)
+const accident_api = require('./accident-api')(connection)
+const allergic_api = require('./allergic-api')(connection)
+
 const basicVaccine_api = require('./basic-vaccine-api')(connection)
 const alternativeVaccine_api = require('./alternative-vaccine-api')(connection)
 
@@ -89,6 +93,10 @@ app.use(googleUpload_api);
 app.use(manageClass_api)
 
 app.use(congenitalDisease_api);
+app.use(historyDisease_api);
+app.use(accident_api);
+app.use(allergic_api);
+
 app.use(basicVaccine_api);
 app.use(alternativeVaccine_api);
 // app.use(Personnel_api);

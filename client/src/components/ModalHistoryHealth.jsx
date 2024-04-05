@@ -41,6 +41,8 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
         }
     };
 
+    
+
     const formatDate = (date) => {
         if (date !== ''){
           const year = date.getFullYear();
