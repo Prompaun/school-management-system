@@ -46,17 +46,6 @@ function Card_menu_personnel({user, Role}) {
           path: "/Check_Certification_Request"
         },
         {
-          text: "ข่าวประชาสัมพันธ์",
-          imageUrl: Postnews, // แทนที่ด้วย URL รูปภาพจริง
-          path: "/PostNews"
-        },
-        {
-          text: "จัดการห้องเรียนของนักเรียน",
-          subtext: "ตามปีการศึกษา",
-          imageUrl: ClassRoom, // แทนที่ด้วย URL รูปภาพจริง
-          path: "/ManageStudentClass"
-        },
-        {
           text: "ระบบการรับสมัครนักเรียนใหม่",
           subtext: "จัดการข้อมูลนักเรียน",
           imageUrl: enrollment_icon,
@@ -72,6 +61,19 @@ function Card_menu_personnel({user, Role}) {
 
           ],
         },
+        {
+          text: "จัดการห้องเรียนของนักเรียน",
+          subtext: "ตามปีการศึกษา",
+          imageUrl: ClassRoom, // แทนที่ด้วย URL รูปภาพจริง
+          path: "/ManageStudentClass"
+        },
+        {
+          text: "ข่าวประชาสัมพันธ์",
+          imageUrl: Postnews, // แทนที่ด้วย URL รูปภาพจริง
+          path: "/PostNews"
+        },
+       
+        
        
       ]);
 

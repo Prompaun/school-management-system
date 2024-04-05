@@ -392,7 +392,7 @@ function Check_health_result({login_Email}) {
     {id:1,summary:"สุขภาพแข็งแรง"}
   ])
   const [BodyData,setBodyData] = useState([
-    {id:1,DateRecord:"",weight_kg:"",height_cm:""}
+    // {id:1,DateRecord:"",weight_kg:"",height_cm:""}
     // {id:1,DateRecord:"12/05/2024",weight_kg:"50",height_cm:"160"}
   ])
   const [BMI,setBMI] = useState(null);
@@ -575,10 +575,21 @@ function Check_health_result({login_Email}) {
         
           <div className="container d-flex align-items-center" style={{ flexWrap: "wrap"}}>
             <h2 className="card-heading" style={{ margin:"10px",fontSize: "25px", fontWeight: "bold" }}>
-              Summary
+              สุขภาพทั่วไป
             </h2>
           </div>
-             
+          {BodyData.length === 0 ? (
+                                <div className="card" style={{width:"auto",height:"auto",margin:"5px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'
+                                }}>
+                                  <div className="card-body"style={{width:"auto",height:"auto"}} >
+                                  <div className="text-center">
+                                          <span style={{fontSize:"22px",color: "#A0A0A0",fontWeight:"bold" }}>
+                                              ยังไม่มีการอัพเดทข้อมูล
+                                        </span>
+                                        </div>
+                                  </div>
+                                  </div>
+                   ) : (
               <div className="row">
                     
                          {/* ------------------------------------------------------------------------------------------ */}
@@ -671,6 +682,7 @@ function Check_health_result({login_Email}) {
                                       </div> 
                           
                           </div>
+                                       
                         <div className="col"> 
                         <div className="row"> 
 
@@ -721,6 +733,7 @@ function Check_health_result({login_Email}) {
                           </div>
                 
                 </div>
+              )}
                 
             {/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
            
@@ -737,6 +750,19 @@ function Check_health_result({login_Email}) {
                              (Latest)
                               </span>
                               </div>
+                              {BodyData.length === 0 ? (
+                                <div className="card" style={{width:"auto",height:"auto",margin:"5px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'
+                                }}>
+                                  <div className="card-body"style={{width:"auto",height:"auto"}} >
+                                  <div className="text-center">
+                                          <span style={{fontSize:"22px",color: "#A0A0A0",fontWeight:"bold" }}>
+                                              ยังไม่มีการอัพเดทข้อมูล
+                                        </span>
+                                        </div>
+                                  </div>
+                                  </div>
+
+                                ) : (
                               <div className="row">
                               
                               <div className="col">
@@ -830,8 +856,9 @@ function Check_health_result({login_Email}) {
                                         </div> 
 
                          </div>
-
+                                  )}
                          </div>
+                              
                          </div>
 
                         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
