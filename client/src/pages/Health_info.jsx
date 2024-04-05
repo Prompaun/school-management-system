@@ -73,7 +73,7 @@ const Health_info = () => {
     // }
     ]);
     
-    
+   
     const [HealthSummary,setHealthSummary] = useState([
       // {id:1,summary:"สุขภาพแข็งแรง"}
     ])
@@ -247,36 +247,36 @@ const Health_info = () => {
 
     useEffect(() => {
       // if (ShowEditBMI === false){
-          const fetchEditBMI = async () => {
-            try {
-              const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
-              const mappedCongenitalDisease = CongenitalDisease.map(item => ({
-                  id: item.id,
-                  DateCheck: formatDateThaiYear(item.Date),
-                  congenital_disease: item.Congenital_Disease
-                }));
-                
-              const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
-              const mappedHistoryDisease = HistoryDisease.map(item => ({
-                  id: item.id,
-                  DateCheck: formatDateThaiYear(item.Date),
-                  Diseases: item.History_Disease
-                }));
-                
-              const allergic = await getAllergiesInfo(studentID_param);
-              const mappedAllergic = allergic.map(item => ({
-                  id: item.id,
-                  DateCheck: formatDateThaiYear(item.Date),
-                  allergic: item.Allergies
-                }));
-
-              const accident = await getSurgeryAccidentInfo(studentID_param);
-              const mappedaccident = accident.map(item => ({
-                  id: item.id,
-                  DateCheck: formatDateThaiYear(item.Date),
-                  accident: item.Surgery_Accident
-                }));
+        const fetchEditBMI = async () => {
+          try {
+            const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
+            const mappedCongenitalDisease = CongenitalDisease.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                congenital_disease: item.Congenital_Disease
+              }));
               
+            const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
+            const mappedHistoryDisease = HistoryDisease.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                Diseases: item.History_Disease
+              }));
+              
+            const allergic = await getAllergiesInfo(studentID_param);
+            const mappedAllergic = allergic.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                allergic: item.Allergies
+              }));
+
+            const accident = await getSurgeryAccidentInfo(studentID_param);
+            const mappedaccident = accident.map(item => ({
+                id: item.id,
+                DateCheck: formatDateThaiYear(item.Date),
+                accident: item.Surgery_Accident
+              }));
+            
               const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
               const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
                   id: item.Alternative_Vaccine_ID,
@@ -391,12 +391,14 @@ const Health_info = () => {
           <ModalEditVaccine
           show={ShowEditVaccine}
           setShow ={setShowEditVaccine}
+          Student_id={studentID_param}
           />
           )}
           {ShowEditHistory && (
           <ModalHistoryHealth
           show={ShowEditHistory}
           setShow ={setShowEditHistory}
+          Student_id={studentID_param}
           />
           )}
             <Header header="ระบบจัดการข้อมูลสุขภาพ" subhead="" />  
