@@ -1429,23 +1429,24 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // setShowSuccessModal(false);
         } else {
             // หากไม่พบข้อมูลในฐานข้อมูล
-            // try {
-            //     // ส่งข้อมูลไปยัง API ด้วย Axios
-            //     const formData = {
-            //         Student_NID: Student_NID,
-            //         Enroll_Date: Enroll_Date,
-            //         Enroll_Year: Enroll_Year,
-            //         Enroll_Course: Enroll_Course,
-            //         Enroll_Status: "รอการสอบคัดเลือก"
-            //     };
-            //     console.log("formData",formData);
-            //     const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
+            try {
+                // ส่งข้อมูลไปยัง API ด้วย Axios
+                const formData = {
+                    Student_NID: Student_NID,
+                    Enroll_Date: Enroll_Date,
+                    Enroll_Year: Enroll_Year,
+                    Enroll_Course: Enroll_Course,
+                    Enroll_Status: "รอการสอบคัดเลือก"
+                };
+                console.log("formData",formData);
+                const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
                 // const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
-                // console.log('1439:',save_enrollment_response.data.message); 
+                console.log('1439:',save_enrollment_response.data.message); 
                 setEnroll_History(true);
-            // } catch (error) {
-            //     console.log('Error adding enrollment:', error);
-            // }
+                setShowSuccessModal(true);
+            } catch (error) {
+                console.log('Error adding enrollment:', error);
+            }
         }
     } catch (error) {
         console.error('เกิดข้อผิดพลาดในการเรียกใช้ API:', error);
@@ -1590,20 +1591,15 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             HouseReg_file
                         );
 
-                    await checkEnrollment(
-                      studentNID,
-                      Enroll_Date,
-                      Enroll_Year,
-                      Enroll_Course
-                    );
+                    
 
                     // if(Enroll_History === true){
-                        await addEnrollment(
-                            studentNID,
-                            Enroll_Date,
-                            Enroll_Year,
-                            Enroll_Course
-                          );
+                        // await addEnrollment(
+                        //     studentNID,
+                        //     Enroll_Date,
+                        //     Enroll_Year,
+                        //     Enroll_Course
+                        //   );
         
                         await addParentEmails(
                             studentNID,
@@ -1664,8 +1660,15 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             );
                         }
 
+                        await checkEnrollment(
+                            studentNID,
+                            Enroll_Date,
+                            Enroll_Year,
+                            Enroll_Course
+                            );
+
                         setShowLoadingModal(false);
-                        setShowSuccessModal(true);
+                        // setShowSuccessModal(true);
                         // setLoading(false)
                         // navigate("/NewUser_menu");
                     // }
