@@ -16,7 +16,9 @@ function ModalEditVaccine({show,setShow,Student_id}) {
 
     const handleSaveButton = () => {
     //    if (CheckInput()){
-        console.log("OptionalVac",OptionalVac)
+        console.log("OptionalVac",OptionalVac[0].name)
+
+        
         alert("Save")
         setShow(false);
     //    }
