@@ -73,7 +73,6 @@ const Health_info = () => {
     // }
     ]);
     
-   
     const [HealthSummary,setHealthSummary] = useState([
       // {id:1,summary:"สุขภาพแข็งแรง"}
     ])
@@ -245,10 +244,10 @@ const Health_info = () => {
       }
   }
 
-    useEffect(() => {
+    // useEffect(() => {
       // if (ShowEditBMI === false){
-        const fetchEditBMI = async () => {
-          try {
+        // const fetchEditBMI = async () => {
+        //   try {
             // const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
             // const mappedCongenitalDisease = CongenitalDisease.map(item => ({
             //     id: item.id,
@@ -256,32 +255,32 @@ const Health_info = () => {
             //     congenital_disease: item.Congenital_Disease
             //   }));
               
-            const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
-            const mappedHistoryDisease = HistoryDisease.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                Diseases: item.History_Disease
-              }));
+            // const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
+            // const mappedHistoryDisease = HistoryDisease.map(item => ({
+            //     id: item.id,
+            //     DateCheck: formatDateThaiYear(item.Date),
+            //     Diseases: item.History_Disease
+            //   }));
               
-            const allergic = await getAllergiesInfo(studentID_param);
-            const mappedAllergic = allergic.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                allergic: item.Allergies
-              }));
+            // const allergic = await getAllergiesInfo(studentID_param);
+            // const mappedAllergic = allergic.map(item => ({
+            //     id: item.id,
+            //     DateCheck: formatDateThaiYear(item.Date),
+            //     allergic: item.Allergies
+            //   }));
 
-            const accident = await getSurgeryAccidentInfo(studentID_param);
-            const mappedaccident = accident.map(item => ({
-                id: item.id,
-                DateCheck: formatDateThaiYear(item.Date),
-                accident: item.Surgery_Accident
-              }));
+            // const accident = await getSurgeryAccidentInfo(studentID_param);
+            // const mappedaccident = accident.map(item => ({
+            //     id: item.id,
+            //     DateCheck: formatDateThaiYear(item.Date),
+            //     accident: item.Surgery_Accident
+            //   }));
             
-              const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
-              const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
-                  id: item.Alternative_Vaccine_ID,
-                  Vaccine: item.Vaccine_name
-                }));
+              // const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
+              // const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
+              //     id: item.Alternative_Vaccine_ID,
+              //     Vaccine: item.Vaccine_name
+              //   }));
               
               // const GrowthNutrition = await getGrowthNutritionInfo(studentID_param);
               // const mappedGrowthNutrition = GrowthNutrition.map(item => ({
@@ -300,31 +299,31 @@ const Health_info = () => {
               //     Mouth: item.OralHealth
               //   }));
 
-              const Basic_Vaccine  = await checkVaccine(studentID_param);
-              const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
-                  id: item.Basic_Vaccine_ID,
-                  Vaccine: item.BasicVaccine_name,
-                  value: item.value
-                }));
+              // const Basic_Vaccine  = await checkVaccine(studentID_param);
+              // const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
+              //     id: item.Basic_Vaccine_ID,
+              //     Vaccine: item.BasicVaccine_name,
+              //     value: item.value
+              //   }));
                 
 
               // setcongenital_disease(mappedCongenitalDisease);
-              setDiseases(mappedHistoryDisease);
-              setallergic(mappedAllergic);
-              setaccident(mappedaccident);
-              setOptionalVaccine(mappedInjectionAlternativeVaccine);
+              // setDiseases(mappedHistoryDisease);
+              // setallergic(mappedAllergic);
+              // setaccident(mappedaccident);
+              // setOptionalVaccine(mappedInjectionAlternativeVaccine);
               // setBodyData(mappedGrowthNutrition);
               // setHealthCheckUp(mappedHealthCheck);
-              setEPI_program(mappedBasic_Vaccine);
-            } catch (error) {
-              console.log('Error fetching data:', error);
-            }
+              // setEPI_program(mappedBasic_Vaccine);
+            // } catch (error) {
+            //   console.log('Error fetching data:', error);
+            // }
 
         // };
         
-      }
-      fetchEditBMI();
-    }, []);
+    //   }
+    //   fetchEditBMI();
+    // }, []);
 
     useEffect(() => {
       if (ShowEditBMI === false){
@@ -370,7 +369,7 @@ const Health_info = () => {
 
     useEffect(() => {
       if (ShowEditHistory === false){
-          const fetchEditHealth = async () => {
+          const fetchEditHistory = async () => {
             try {          
                   const CongenitalDisease = await getCongenitalDiseaseInfo(studentID_param);
                   const mappedCongenitalDisease = CongenitalDisease.map(item => ({
@@ -380,13 +379,70 @@ const Health_info = () => {
                     }));
                     setcongenital_disease(mappedCongenitalDisease);
                     console.log('mappedCongenitalDisease:', mappedCongenitalDisease);
+
+                    const HistoryDisease = await getHistoryDiseaseInfo(studentID_param);
+                    const mappedHistoryDisease = HistoryDisease.map(item => ({
+                        id: item.id,
+                        DateCheck: formatDateThaiYear(item.Date),
+                        Diseases: item.History_Disease
+                      }));
+                      
+                    const allergic = await getAllergiesInfo(studentID_param);
+                    const mappedAllergic = allergic.map(item => ({
+                        id: item.id,
+                        DateCheck: formatDateThaiYear(item.Date),
+                        allergic: item.Allergies
+                      }));
+                      
+                    const accident = await getSurgeryAccidentInfo(studentID_param);
+                    const mappedaccident = accident.map(item => ({
+                        id: item.id,
+                        DateCheck: formatDateThaiYear(item.Date),
+                        accident: item.Surgery_Accident
+                      }));
+
+                      setDiseases(mappedHistoryDisease);
+                      setallergic(mappedAllergic);
+                      setaccident(mappedaccident);
             } catch (error) {
               console.log('Error fetching data:', error);
             }
         };
-        fetchEditHealth();
+        fetchEditHistory();
       }
     }, [ShowEditHistory]);
+
+    useEffect(() => {
+      if (ShowEditVaccine === false){
+          const fetchEditVaccine = async () => {
+            try {          
+                  const Basic_Vaccine  = await checkVaccine(studentID_param);
+                  console.log('Basic_Vaccine:', Basic_Vaccine);
+                  const mappedBasic_Vaccine  = Basic_Vaccine .map(item => ({
+                      // id: item.Basic_Vaccine_ID,
+                      id: item.Basic_Vaccine_ID,
+                      Vaccine_ID: item.Vaccine_ID,
+                      Vaccine: item.BasicVaccine_name,
+                      value: item.value
+                    }));
+
+                    const InjectionAlternativeVaccine = await getInjectionAlternativeVaccineInfo(studentID_param);
+                    const mappedInjectionAlternativeVaccine = InjectionAlternativeVaccine.map(item => ({
+                        id: item.Alternative_Vaccine_ID,
+                        Vaccine: item.Vaccine_name
+                      }));
+                    
+                  setEPI_program(mappedBasic_Vaccine);
+                  setOptionalVaccine(mappedInjectionAlternativeVaccine);
+                  console.log('mappedBasic_Vaccine:', mappedBasic_Vaccine);
+
+            } catch (error) {
+              console.log('Error fetching data:', error);
+            }
+        };
+        fetchEditVaccine();
+      }
+    }, [ShowEditVaccine]);
 
     
     return (
@@ -412,6 +468,7 @@ const Health_info = () => {
           show={ShowEditVaccine}
           setShow ={setShowEditVaccine}
           Student_id={studentID_param}
+          Optional_Vaccine={OptionalVaccine}
           />
           )}
           {ShowEditHistory && (
@@ -420,6 +477,10 @@ const Health_info = () => {
           setShow ={setShowEditHistory}
           Student_id={studentID_param}
           congenitalDisease={congenital_disease}
+          HistoryDisease={Diseases}
+          allergicc={allergic}
+          accidentt={accident}
+
           />
           )}
             <Header header="ระบบจัดการข้อมูลสุขภาพ" subhead="" />  

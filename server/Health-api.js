@@ -108,29 +108,7 @@ module.exports = function(connection) {
                 return res.status(200).json(results);
             });
         });
-    
-    router.get('/get-Surgery_accident-info', (req, res) => {
-        const { studentId } = req.query;
-    
-        // สร้างคำสั่ง SQL สำหรับดึงข้อมูล
-        const sql = `
-            SELECT Date, Surgery_accident
-            FROM Surgery_accident
-            WHERE Student_ID = ?
-        `;
-    
-        // ดำเนินการค้นหาในฐานข้อมูล
-        connection.query(sql, [studentId], (err, results) => {
-            if (err) {
-                    // กรณีเกิดข้อผิดพลาดในการค้นหา
-                    console.error('Error querying Surgery_accident information:', err);
-                    return res.status(500).json({ error: 'Failed to retrieve Surgery_accident information' });
-                }
-    
-                // ส่งข้อมูลที่ค้นพบกลับไปให้กับผู้ใช้
-                return res.status(200).json(results);
-            });
-        });
+
 
 
 
@@ -241,25 +219,6 @@ module.exports = function(connection) {
             if (err) {
                 console.error('Error fetching History Disease information:', err);
                 return res.status(500).json({ error: 'Failed to fetch History Disease information' });
-            }
-            return res.status(200).json(results);
-        });
-    });
-
-    router.get('/get-allergies-info/:studentId', (req, res) => {
-        const studentId = req.params.studentId;
-    // router.get('/get-Allergies-info', (req, res) => {
-    //     const { studentId } = req.query;
-        const sql = `
-            SELECT id, Date, Allergies
-            FROM allergies
-            WHERE Student_ID = ?
-        `;
-    
-        connection.query(sql, studentId, (err, results) => {
-            if (err) {
-                console.error('Error fetching allergies information:', err);
-                return res.status(500).json({ error: 'Failed to fetch allergies information' });
             }
             return res.status(200).json(results);
         });
