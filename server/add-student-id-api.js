@@ -9,10 +9,10 @@ module.exports = function(connection) {
             FROM
                 student
             WHERE
-				enroll_year = 2024
+				enroll_year = ?
         `;
     
-        connection.query(sql, (err, results) => {
+        connection.query(sql, [new Date().getFullYear()+543], (err, results) => {
             if (err) {
                 console.error('Error fetching student info id:', err);
                 return res.status(500).json({ error: 'Failed to fetch student info id', email });
