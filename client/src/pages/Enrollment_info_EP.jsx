@@ -1362,10 +1362,11 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         const [Parent_info, setParent_info] = useState(false); 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const navigate = useNavigate();
-  const handleSubmit = async (Student_picture_file, CopyofStudentIDCardFile, PreviousSchoolEducationalRecordsFile, studentNID, nameTitle, FirstName, LastName, Student_DateOfBirth, Transcript_type, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, HouseReg_file) => {
+  const handleSubmit = async (Student_picture_file, CopyofStudentIDCardFile, PreviousSchoolEducationalRecordsFile, studentNID, nameTitle, FirstName, LastName, Student_DateOfBirth, Transcript_type, CurrentLogin_Email, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, HouseReg_file) => {
     // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
     // if (confirmSubmit) {
         console.log("Student_DateOfBirth",Student_DateOfBirth);
+        console.log("CurrentLogin_Email", CurrentLogin_Email);
       try {
           // แสดงกล่องข้อความยืนยันและตรวจสอบผลลัพธ์
           const formData = new FormData();
@@ -1547,7 +1548,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         
         if (user && user.emails[0].value) {
             setCurrentLogin_Email(user.emails[0].value);
-            console.log("user", user.emails[0].value);
+            console.log("user.emails[0].value", user.emails[0].value);
             } else {
             console.log('User email is not available.');
             } 
@@ -1578,6 +1579,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             LastName,
                             formatDate(Student_DateOfBirth),
                             Transcript_type,
+                            user.emails[0].value,
                             HouseNumber,
                             Moo,
                             Soi,

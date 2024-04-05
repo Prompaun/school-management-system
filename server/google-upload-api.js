@@ -58,7 +58,7 @@ module.exports = function(connection) {
                 // ตรวจสอบว่ามี URL ของไฟล์ที่อัปโหลดพอสำหรับการเข้าถึงหรือไม่
                 if (transcriptFilesUrls.length >= 3) {
                     // เรียกใช้งานฟังก์ชันเพื่อเพิ่มข้อมูลลงในฐานข้อมูล
-                    await addApplicantToDatabase(Student_NID, NameTitle, FirstName, LastName, Student_DOB, transcriptFilesUrls[0], HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, Transcript_type, transcriptFilesUrls[1], transcriptFilesUrls[2], transcriptFilesUrls[3], ParentEmail);
+                    await addApplicantToDatabase(Student_NID, NameTitle, FirstName, LastName, Student_DOB, transcriptFilesUrls[0], HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, Transcript_type, 'transcriptFilesUrls[0]', transcriptFilesUrls[1], transcriptFilesUrls[2], ParentEmail);
                     res.status(200).send("Form Submitted");
                 } else {
                     // จัดการข้อผิดพลาดหาก URL ของไฟล์ไม่เพียงพอ
