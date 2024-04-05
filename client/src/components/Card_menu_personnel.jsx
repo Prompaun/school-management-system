@@ -76,7 +76,7 @@ function Card_menu_personnel({user, Role}) {
       ]);
 
       const filteredRole = obj.filter((item) => {
-       
+       console.log("Role",Role)
           if (Role === 'ClassTeacher'){
             return item.text === "ระบบจัดการสารสนเทศ" || item.text === "ระบบจัดการข้อมูลการศึกษา";
             }
@@ -93,6 +93,7 @@ function Card_menu_personnel({user, Role}) {
         return true;
             
         });
+      
     function handleClick() {
         console.log('Link clicked!');
       }

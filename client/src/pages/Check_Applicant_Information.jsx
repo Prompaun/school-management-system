@@ -86,9 +86,9 @@ const Check_Applicant_Information = () => {
 
     const filteredData = data.filter((item) => {
         
-        if (isEditing && item.Enroll_ID === editingId) {
-            return true;
-        }
+        // if (isEditing && item.Enroll_ID === editingId) {
+        //     return true;
+        // }
         
         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
             return true;
@@ -127,10 +127,13 @@ const Check_Applicant_Information = () => {
                 console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
                 const changeData = data.find(element => element.Enroll_ID === Enroll_ID)
                 updateApplicantInfo(changeData)
+                // setIsEditing(false);
                 if (changeData.ExamStatus === "ผ่าน") {
                     insertApplicanttoStudentInfo(changeData)
+                   
+
                 }
-                setIsEditing(false);
+                
         }
        getApplicantInfo()
     };
