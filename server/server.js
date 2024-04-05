@@ -53,7 +53,7 @@ if((err)) {
     console.log('MySQL successfully connected!');
   }
 })
-// const addStudentID_api = require('./add-student-id-api')(connection);
+const addStudentID_api = require('./add-student-id-api')(connection);
 const role_api = require('./role-api')(connection);
 const Student_api = require('./Student-api')(connection);
 const Parent_api = require('./Parent-api')(connection);
@@ -66,10 +66,10 @@ const Request_api = require('./Request-api')(connection);
 const Health_api = require('./Health-api')(connection);
 const googleLogin_api = require('./google-login-api')();
 const googleUpload_api = require('./google-upload-api')(connection);
+const manageClass_api = require('./manage-student-class-api')(connection)
 
 //use routes    
-
-// app.use(addStudentID_api);
+app.use(addStudentID_api);
 app.use(role_api);
 app.use(Student_api);
 app.use(Parent_api);
@@ -82,7 +82,7 @@ app.use(Request_api);
 app.use(Health_api);
 app.use(googleLogin_api);
 app.use(googleUpload_api);
-
+app.use(manageClass_api)
 // app.use(Personnel_api);
 // app.use(Student_api);
 

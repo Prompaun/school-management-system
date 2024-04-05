@@ -99,7 +99,7 @@ module.exports = function(connection) {
         WHERE
             enrollment.Enroll_No = ?;
         `;
-        connection.query(sql, [new Date().getFullYear(), Enroll_ID], (err, results) => {
+        connection.query(sql, [new Date().getFullYear()+543, Enroll_ID], (err, results) => {
             if (err) {
                 console.error('Error querying get applitcant info:', err);
                 if (err.sqlMessage !== "Duplicate entry '' for key 'student.Student_ID'" ){
