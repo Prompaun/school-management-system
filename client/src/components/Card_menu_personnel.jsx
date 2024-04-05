@@ -12,15 +12,15 @@ import ClassRoom from "../images/ClassRoom.jpg"
 // import enrollment_icon from "../images/enrollment_icon.png"
 // import check_status_enroll from "../images/check_status_enroll.png"
 
-function Card_menu_personnel() {
+function Card_menu_personnel({user, Role}) {
 
-    const [ClassifyRole,setClassifyRole] = useState([
-      // {Email:"ClassTeacher@gmail.com",Role:"ClassTeacher"},
-      // {Email:"SubjectTeacher@gmail.com",Role:"SubjectTeacher"},
-      // {Email:"DepartTeacher@gmail.com",Role:"Administrative"},
-      {Email:"AdminTeacher@gmail.com",Role:"Administrator"},
+    // const [ClassifyRole,setClassifyRole] = useState([
+    //   // {Email:"ClassTeacher@gmail.com",Role:"ClassTeacher"},
+    //   // {Email:"SubjectTeacher@gmail.com",Role:"SubjectTeacher"},
+    //   // {Email:"DepartTeacher@gmail.com",Role:"Administrative"},
+    //   {Email:"AdminTeacher@gmail.com",Role:"Administrator"},
 
-    ])
+    // ])
     const [obj, setObj] = useState([
         {
           text: "ระบบจัดการสารสนเทศ",
@@ -77,16 +77,16 @@ function Card_menu_personnel() {
 
       const filteredRole = obj.filter((item) => {
        
-          if (ClassifyRole[0].Role === 'ClassTeacher'){
+          if (Role === 'ClassTeacher'){
             return item.text === "ระบบจัดการสารสนเทศ" || item.text === "ระบบจัดการข้อมูลการศึกษา";
             }
-          if (ClassifyRole[0].Role === 'SubjectTeacher'){
+          if (Role === 'SubjectTeacher'){
             return item.text === "ระบบจัดการข้อมูลการศึกษา";
             }
-          if (ClassifyRole[0].Role === 'Administrative'){
+          if (Role === 'Administrative'){
             return item.text === "ระบบจัดการออกใบรับรอง" || item.text === "ข่าวประชาสัมพันธ์" || item.text === "ระบบการรับสมัครนักเรียนใหม่";
             }
-          if (ClassifyRole[0].Role === 'Administrator'){
+          if (Role === 'Administrator'){
             return item.text;
             }
        

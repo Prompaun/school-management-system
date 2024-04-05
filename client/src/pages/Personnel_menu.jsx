@@ -5,7 +5,7 @@ import logoImage from '../images/IMG_5416.png';
 import Header from '../components/Header';
 import Card_menu_personnel from '../components/Card_menu_personnel'
 
-function Personnel_menu() {
+function Personnel_menu({Role}) {
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -42,7 +42,7 @@ function Personnel_menu() {
           </div>
           <br></br>
           <br></br>
-          <Card_menu_personnel /> 
+          <Card_menu_personnel Role={Role}/> 
           </div>
           </>
           )
