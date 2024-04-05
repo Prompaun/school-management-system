@@ -63,6 +63,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
         console.log('congenital_disease:', congenital_disease);
         console.log('ListNewcongenital_disease:', ListNewcongenital_disease);
         console.log('ListNewcongenital_disease.name:', ListNewcongenital_disease.name);
+        setShowLoadingModal(true)
         
         if (ListNewcongenital_disease.length >= 1){
             // const fetchData = async () => {
@@ -86,8 +87,8 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
             });
         }
         
-        alert("Save")
-        setShow(false);
+        setShowLoadingModal(false)
+        setShowSuccessModal(true)
     //    }
     }
 
@@ -161,16 +162,178 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
     let nextId = 0;
     const [Addcongenital_disease, setAddcongenital_disease] = useState('');
     const [ListNewcongenital_disease, setListNewcongenital_disease] = useState([]);
-   
+    const handleListNewcongenital_disease = () => {
+        if (Addcongenital_disease.trim().length > 0) {
+            if (ListNewcongenital_disease.length>0){
+                const lastId = ListNewcongenital_disease.length > 0? ListNewcongenital_disease[ListNewcongenital_disease.length - 1].id : null;
+                setListNewcongenital_disease([
+                ...ListNewcongenital_disease,
+                { id: lastId+1, name: Addcongenital_disease }
+                ]);
+        }
+        else {
+            setListNewcongenital_disease([
+                ...ListNewcongenital_disease,
+                { id: nextId, name: Addcongenital_disease }
+                ]);
+        }
+           
+        setAddcongenital_disease('');
+        }
+    };
+
+
     const [AddDiseases, setAddDiseases] = useState('');
     const [ListNewDiseases, setListNewDiseases] = useState([]);
-
+    const handleListNewDiseasese = () => {
+        if (AddDiseases.trim().length > 0) {
+            if (ListNewDiseases.length>0){
+                const lastId = ListNewDiseases.length > 0? ListNewDiseases[ListNewDiseases.length - 1].id : null;
+                setListNewDiseases([
+                ...ListNewDiseases,
+                { id: lastId+1, name: AddDiseases }
+                ]);
+        }
+        else {
+            setListNewDiseases([
+                ...ListNewDiseases,
+                { id: nextId, name: AddDiseases }
+                ]);
+        }
+           
+        setAddDiseases('');
+        }
+    };
     const [Addallergic, setAddallergic] = useState('');
     const [ListNewallergic, setListNewallergic] = useState([]);
+    const handleListNewallergic = () => {
+        if (Addallergic.trim().length > 0) {
+            if (ListNewallergic.length>0){
+                const lastId = ListNewallergic.length > 0? ListNewallergic[ListNewallergic.length - 1].id : null;
+                setListNewallergic([
+                ...ListNewallergic,
+                { id: lastId+1, name: Addallergic }
+                ]);
+        }
+        else {
+            setListNewallergic([
+                ...ListNewallergic,
+                { id: nextId, name: Addallergic }
+                ]);
+        }
+           
+        setAddallergic('');
+        }
+    };
 
     const [Addaccident, setAddaccident] = useState('');
     const [ListNewaccident, setListNewaccident] = useState([]);
+    const handleListNewaccident = () => {
+        if (Addaccident.trim().length > 0) {
+            if (ListNewaccident.length>0){
+                const lastId = ListNewaccident.length > 0? ListNewaccident[ListNewaccident.length - 1].id : null;
+                setListNewaccident([
+                ...ListNewaccident,
+                { id: lastId+1, name: Addaccident }
+                ]);
+        }
+        else {
+            setListNewaccident([
+                ...ListNewaccident,
+                { id: nextId, name: Addaccident }
+                ]);
+        }
+           
+        setAddaccident('');
+        }
+    };
+    
+    const [showConfirmModal, setshowConfirmModal] = useState(false);
+    const [showLoadingModal, setShowLoadingModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    
+    const handleCloseModal = () => {
+        setshowConfirmModal(false);
+        }
+
+    const handleCloseSuccess = () => {
+        setShowSuccessModal(false);
+        };
+
+    const handleClick = () => {
+        handleCloseSuccess();
+        setShow(false);
+        };
   return (
+    <>
+    {showConfirmModal && (
+          
+        <Modal
+            show={showConfirmModal}
+            onHide={handleCloseModal}
+            backdrop="static"
+            keyboard={false}
+            size="sm"
+            centered
+            style={{ fontFamily: 'Kanit, sans-serif' }}
+            >
+            <Modal.Body className="text-center p-lg-4" >
+                
+              
+                <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะบันทึกข้อมูลใช่หรือไม่</p>
+           
+                <Button
+                  variant="sm"
+                  style={{ fontSize: "20px" }}
+                  className="btn-success btn-same-size"
+                  onClick={() => {
+                    handleSaveButton();
+                    handleCloseModal();
+                  }}
+                >
+                  OK
+                </Button>
+                <br />
+                <Button
+                  variant="sm"
+                  style={{ fontSize: "20px",marginTop:"10px"}}
+                  className="btn-secondary btn-same-size"
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </Button>
+
+                {/* </Link> */}
+            </Modal.Body>
+            </Modal>
+
+      )}  
+      {showLoadingModal && (
+          <Modal_loading show={showLoadingModal} setShow={setShowLoadingModal} />
+    )}
+    {showSuccessModal && (
+          <Modal
+          show={showSuccessModal}
+          onHide={handleCloseSuccess}
+          backdrop="static"
+          keyboard={false}
+          size="sm"
+          centered
+          style={{ fontFamily: 'Kanit, sans-serif' }}
+      >
+      <Modal.Body className="text-center p-lg-4">
+          <h4 className="text-success mt-3" style={{ fontSize: '30px'}}>
+              COMPLETE
+          </h4>
+          {/* ระบบได้รับข้อมูลการสมัครของท่านแล้ว */}
+          <p className="mt-3"style={{ fontSize: '22px' }}>ระบบได้บันทึกข้อมูลแล้ว</p>
+         
+          <Button variant="sm"style={{ fontSize: '20px' }} className="btn-success btn-same-size" onClick={handleClick}>
+          OK
+          </Button>
+      </Modal.Body>
+      </Modal>
+        )}  
     <Modal
         show={show}
         onHide={handleClose}
@@ -260,14 +423,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
                                 />
                             </div>
                             <div className="col-2">
-                            <button className="btn btn-primary" onClick={() => {
-                                if (Addcongenital_disease.trim().length > 0) {
-                                    setListNewcongenital_disease([
-                                    ...ListNewcongenital_disease,
-                                    { id: nextId++, name: Addcongenital_disease }
-                                    ]);
-                                }
-                                }}>Add</button>
+                            <button className="btn btn-primary" onClick={handleListNewcongenital_disease}>Add</button>
                             </div>
                             </div>
                         <ul>
@@ -344,14 +500,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
                                 />
                             </div>
                             <div className="col-2">
-                            <button className="btn btn-primary" onClick={() => {
-                                if (AddDiseases.trim().length > 0) {
-                                    setListNewDiseases([
-                                    ...ListNewDiseases,
-                                    { id: nextId++, name: AddDiseases }
-                                    ]);
-                                }
-                                }}>Add</button>
+                            <button className="btn btn-primary" onClick={handleListNewDiseasese}>Add</button>
                             </div>
                             </div>
                         <ul>
@@ -428,14 +577,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
                                 />
                             </div>
                             <div className="col-2">
-                            <button className="btn btn-primary" onClick={() => {
-                                if (Addallergic.trim().length > 0) {
-                                    setListNewallergic([
-                                    ...ListNewallergic,
-                                    { id: nextId++, name: Addallergic }
-                                    ]);
-                                }
-                                }}>Add</button>
+                            <button className="btn btn-primary" onClick={handleListNewallergic}>Add</button>
                             </div>
                             </div>
                         <ul>
@@ -512,14 +654,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
                                 />
                             </div>
                             <div className="col-2">
-                            <button className="btn btn-primary" onClick={() => {
-                                if (Addaccident.trim().length > 0) {
-                                    setListNewaccident([
-                                    ...ListNewaccident,
-                                    { id: nextId++, name: Addaccident }
-                                    ]);
-                                }
-                                }}>Add</button>
+                            <button className="btn btn-primary" onClick={handleListNewaccident}>Add</button>
                             </div>
                             </div>
                         <ul>
@@ -532,11 +667,12 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease}) {
                         </Modal.Body>
       <Modal.Footer>
        
-        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={handleSaveButton}>
+        <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => setshowConfirmModal(true)}>
             Save
         </button>
       </Modal.Footer>
     </Modal>
+    </>
   )
 }
 
