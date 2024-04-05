@@ -2,15 +2,18 @@ import React, { useState, useEffect,useRef } from 'react';
 import Header from '../components/Header';
 import { BsFillTrashFill, BsFillPencilFill,BsFillFloppy2Fill } from "react-icons/bs";
 import Modal_success from '../components/Modal_success';
+import axios from 'axios';
+import { kMaxLength } from 'buffer';
 
 function ManageStudentClass() {
     const [StudentData,setStudentData] = useState([
-        {StudentID:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Year:"",Room:""},
-        {StudentID:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Year:"5",Room:"6"},
-        {StudentID:3,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"5",Room:"9"},
-        {StudentID:4,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"4",Room:"7"},
-        {StudentID:5,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"6",Room:"9"}
+        // {StudentID:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Year:"",Room:""},
+        // {StudentID:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Year:"5",Room:"6"},
+        // {StudentID:3,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"5",Room:"9"},
+        // {StudentID:4,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"4",Room:"7"},
+        // {StudentID:5,nameTitle:"เด็กหญิง",FirstName:"ณภรกาน",LastName:"ใจดี",Year:"6",Room:"9"}
     ])
+    const [oldStudentData,setOldStudentData] = useState([])
    
 
     const [ClassYear, setClassYear] = useState([
@@ -57,19 +60,36 @@ function ManageStudentClass() {
             
     );
     
-
-    const handleEditRow = async (StudentID) => {
-        setEditingId(StudentID === editingId ? null : StudentID);
-        if (editingId!== null) {
+    const handleEditRow = async (id) => {
+        setEditingId(id === editingId ? null : id);
+        if (editingId === id) {
+            if (StudentData[id].StudentID === null) {
+                alert("ไม่สามารถแก้ไขข้อมูลของนักเรียนที่ยังไม่มีเลขประจำตัวได้")
+                setStudentData(oldStudentData)
+            } else if (StudentData[id].Year === "" || StudentData[id].Room === "") {
+                alert("กรุณากรอกข้อมูลให้ครบ")
+                setStudentData(oldStudentData)
+            }  else {
+                let mode = ""
+                if (StudentData[id].saved) {
+                    mode = "update"
+                } else {
+                    mode = "insert"
+                }
+                updateStidentInfo(mode,id)
+                setOldStudentData(StudentData)
+            }
             // handleSave(editingId);
-            // setShowModalSuccess(true);
-        };
+            // setShowModalSuccess(true); 
+        } else {
+            setStudentData(oldStudentData)
+        }
     };
     
-    const handleChange = (StudentID, field, value) => {
+    const handleChange = (id, field, value) => {
         setStudentData(
             StudentData.map((item) =>
-            item.StudentID === StudentID ? {...item, [field]: value } : item
+                item.id === id ? {...item, [field]: value } : item,
             )
         );
          
@@ -95,6 +115,48 @@ function ManageStudentClass() {
     //   };
 
       const [ShowModalSuccess,setShowModalSuccess] = useState(false);
+
+      //=============================api=============================
+      async function getStidentInfo() {
+        try {
+            const response = await axios.get('http://localhost:8080/manageClass-get-student-info', {});
+            const newData = response.data.results.map((item,index) => ({
+                id: index,
+                StudentID: item.Student_ID,
+                nameTitle: item.NameTitle,
+                FirstName: item.FirstName,
+                LastName: item.LastName,
+                Year: response.data.outcome.find(data => data.Student_ID === item.Student_ID)?.Level.toString() ?? "",
+                Room: response.data.outcome.find(data => data.Student_ID === item.Student_ID)?.Room.toString() ?? "",
+                saved: response.data.outcome.find(data => data.Student_ID === item.Student_ID) === undefined ? false : true
+            }))
+            setStudentData(newData)
+            setOldStudentData(newData)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching student class and info:', error);
+            throw error;
+        }
+      };
+
+      async function updateStidentInfo(mode,id) {
+        try {
+            const response = await axios.post('http://localhost:8080/manageClass-update-student-info', {
+                mode: mode, 
+                level: StudentData[id].Year, 
+                room: StudentData[id].Room, 
+                student: StudentData[id].StudentID
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error updating student class and info:', error);
+            throw error;
+        }
+      };
+
+      useState(() => {
+        getStidentInfo()
+      })
 
   return (
     <>
@@ -195,11 +257,11 @@ function ManageStudentClass() {
                             <tbody>
                                 {filteredStudent.map((item,index) => (
                                     <tr key={index} style={{ height: 'auto' }}>
-                                        <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{index+1}</td>
+                                        <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.StudentID}</td>
                                         <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.nameTitle}{item.FirstName} {item.LastName}</td>
                                        
                                         <td style={{ backgroundColor: "#FFFFFF", fontSize: "16px" }}>
-                                        {editingId === item.StudentID? (
+                                        {editingId === item.id? (
                                             <input
                                                 type="text"
                                                 value={item.Year}
@@ -207,7 +269,8 @@ function ManageStudentClass() {
                                                 const inputValue = e.target.value;
                                                 const isInteger = Number.isInteger(parseInt(inputValue, 10));
                                                 if ((isInteger && inputValue >= 1 && inputValue <= 6) || inputValue === "") {
-                                                    handleChange(item.StudentID, "Year", inputValue);
+                                                    handleChange(item.id, "Year", inputValue);
+                                                    // handleChange(item.StudentID, "Year", inputValue);
                                                 }
                                                
                                                 }}
@@ -217,7 +280,8 @@ function ManageStudentClass() {
                                             )}
                                         </td>
                                         <td style={{ backgroundColor: "#FFFFFF", fontSize: "16px" }}>
-                                            {editingId === item.StudentID? (
+                                            {/* {editingId === item.StudentID? ( */}
+                                            {editingId === item.id? (
                                             <input
                                                 type="text"
                                                 value={item.Room}
@@ -225,7 +289,8 @@ function ManageStudentClass() {
                                                 const inputValue = e.target.value;
                                                 const isInteger = Number.isInteger(parseInt(inputValue, 10));
                                                 if ((isInteger && inputValue >= 1 && inputValue <= 20) || inputValue === "") {
-                                                    handleChange(item.StudentID, "Room", inputValue);
+                                                    handleChange(item.id, "Room", inputValue);
+                                                    // handleChange(item.StudentID, "Room", inputValue);
                                                 }
                                                 }}
                                             />
@@ -241,9 +306,11 @@ function ManageStudentClass() {
                                                 alignItems: "center",
                                                 justifyContent: "center",
                                             }}
-                                            onClick={() => handleEditRow(item.StudentID)}
+                                            onClick={() => handleEditRow(item.id)}
+                                            // onClick={() => handleEditRow(item.StudentID)}
                                             >
-                                            {editingId === item.StudentID? <BsFillFloppy2Fill /> : <BsFillPencilFill />}
+                                            {editingId === item.id? <BsFillFloppy2Fill /> : <BsFillPencilFill />}
+                                            {/* {editingId === item.StudentID? <BsFillFloppy2Fill /> : <BsFillPencilFill />} */}
                                             </span>
                                         </td>
                                         </tr>
