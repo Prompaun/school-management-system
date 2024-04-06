@@ -401,7 +401,7 @@ const Check_Applicant_Information = () => {
                     </thead>
                     <tbody>
                       {currentItems.map((item, index) => (
-                        <tr key={item.Enroll_ID} style={{ height: '100px' }}>
+                        <tr key={item.Enroll_ID} style={{ height: '50px' }}>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Registration_Number}</td>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Registration_Date}</td>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Applicant_name_title + item.Applicants_first_name + "  " + item.Applicants_last_name}
@@ -537,6 +537,7 @@ const Check_Applicant_Information = () => {
               currentPage={currentPage}
             />
             </div>
+            <br />
           </div>
         </div>
       </div>
