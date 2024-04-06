@@ -78,7 +78,7 @@ const Login_parent = () => {
 // };
 const google = () => {
     // window.open(apiUrl + "/auth/google", "_self");
-    window.open("https://school-management-system.azurewebsites.net/auth/google", "_self");
+    window.open("https://school-management-system.azurewebsites.net/auth/google/callback", "_self");
     // apiUrl('apiUrl',apiUrl);
 };
 
