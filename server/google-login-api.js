@@ -38,6 +38,12 @@ module.exports = function() {
 
     router.use("/auth", authRoute);
 
+    app.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
+
     router.get('/auth/login/success', (req, res) => {
     // ตรวจสอบว่าผู้ใช้ล็อกอินเข้ามาด้วย Google OAuth หรือไม่
     if (req.user && req.user.email) {
