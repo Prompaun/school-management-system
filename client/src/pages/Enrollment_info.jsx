@@ -1457,7 +1457,9 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                     Enroll_Date: Enroll_Date,
                     Enroll_Year: Enroll_Year,
                     Enroll_Course: Enroll_Course,
-                    Enroll_Status: "รอการสอบคัดเลือก"
+                    Enroll_Status: "รอการสอบคัดเลือก",
+                    Admission_Scores: '0',
+                    Admission_Status: '',
                 };
                 console.log("formData",formData);
                 const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);

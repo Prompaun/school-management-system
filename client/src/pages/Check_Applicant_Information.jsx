@@ -260,7 +260,8 @@ const Check_Applicant_Information = () => {
     async function insertApplicanttoStudentInfo(changeData) {
         try {
             const response = await axios.post('http://localhost:8080/insert-applicant-to-student-info', {
-                Enroll_ID: changeData.Registration_Number
+                // Enroll_ID: changeData.Registration_Number
+                Enroll_ID: changeData.Enroll_No
             });
             return response.data;
         } catch (error) {
