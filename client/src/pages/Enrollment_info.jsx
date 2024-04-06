@@ -1362,10 +1362,11 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         const [Parent_info, setParent_info] = useState(false); 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const navigate = useNavigate();
-  const handleSubmit = async (Student_picture_file, CopyofStudentIDCardFile, PreviousSchoolEducationalRecordsFile, studentNID, nameTitle, FirstName, LastName, Student_DateOfBirth, Transcript_type, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, HouseReg_file) => {
+  const handleSubmit = async (Student_picture_file, CopyofStudentIDCardFile, PreviousSchoolEducationalRecordsFile, studentNID, nameTitle, FirstName, LastName, Student_DateOfBirth, Transcript_type, CurrentLogin_Email, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, HouseReg_file) => {
     // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
     // if (confirmSubmit) {
         console.log("Student_DateOfBirth",Student_DateOfBirth);
+        // console.log("CurrentLogin_Email", CurrentLogin_Email);
       try {
           // แสดงกล่องข้อความยืนยันและตรวจสอบผลลัพธ์
           const formData = new FormData();
@@ -1428,23 +1429,24 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // setShowSuccessModal(false);
         } else {
             // หากไม่พบข้อมูลในฐานข้อมูล
-            // try {
-            //     // ส่งข้อมูลไปยัง API ด้วย Axios
-            //     const formData = {
-            //         Student_NID: Student_NID,
-            //         Enroll_Date: Enroll_Date,
-            //         Enroll_Year: Enroll_Year,
-            //         Enroll_Course: Enroll_Course,
-            //         Enroll_Status: "รอการสอบคัดเลือก"
-            //     };
-            //     console.log("formData",formData);
-            //     const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
+            try {
+                // ส่งข้อมูลไปยัง API ด้วย Axios
+                const formData = {
+                    Student_NID: Student_NID,
+                    Enroll_Date: Enroll_Date,
+                    Enroll_Year: Enroll_Year,
+                    Enroll_Course: Enroll_Course,
+                    Enroll_Status: "รอการสอบคัดเลือก"
+                };
+                console.log("formData",formData);
+                const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
                 // const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
-                // console.log('1439:',save_enrollment_response.data.message); 
+                console.log('1439:',save_enrollment_response.data.message); 
                 setEnroll_History(true);
-            // } catch (error) {
-            //     console.log('Error adding enrollment:', error);
-            // }
+                setShowSuccessModal(true);
+            } catch (error) {
+                console.log('Error adding enrollment:', error);
+            }
         }
     } catch (error) {
         console.error('เกิดข้อผิดพลาดในการเรียกใช้ API:', error);
@@ -1547,7 +1549,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         
         if (user && user.emails[0].value) {
             setCurrentLogin_Email(user.emails[0].value);
-            console.log("user", user.emails[0].value);
+            console.log("user.emails[0].value", user.emails[0].value);
             } else {
             console.log('User email is not available.');
             } 
@@ -1578,6 +1580,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             LastName,
                             formatDate(Student_DateOfBirth),
                             Transcript_type,
+                            user.emails[0].value,
                             HouseNumber,
                             Moo,
                             Soi,
@@ -1588,20 +1591,15 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             HouseReg_file
                         );
 
-                    await checkEnrollment(
-                      studentNID,
-                      Enroll_Date,
-                      Enroll_Year,
-                      Enroll_Course
-                    );
+                    
 
                     // if(Enroll_History === true){
-                        await addEnrollment(
-                            studentNID,
-                            Enroll_Date,
-                            Enroll_Year,
-                            Enroll_Course
-                          );
+                        // await addEnrollment(
+                        //     studentNID,
+                        //     Enroll_Date,
+                        //     Enroll_Year,
+                        //     Enroll_Course
+                        //   );
         
                         await addParentEmails(
                             studentNID,
@@ -1662,8 +1660,15 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             );
                         }
 
+                        await checkEnrollment(
+                            studentNID,
+                            Enroll_Date,
+                            Enroll_Year,
+                            Enroll_Course
+                            );
+
                         setShowLoadingModal(false);
-                        setShowSuccessModal(true);
+                        // setShowSuccessModal(true);
                         // setLoading(false)
                         // navigate("/NewUser_menu");
                     // }
@@ -1702,7 +1707,7 @@ return (
               <Modal.Body className="text-center p-lg-4" >
                   
                 
-                  <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะสมัครหลักสูตรทั่วไปใช่หรือไม่</p>
+              <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะสมัครหลักสูตรทั่วไปใช่หรือไม่</p>
              
                   <Button
                     variant="sm"
@@ -1890,7 +1895,7 @@ return (
 
         {/* <div className="row" style={{ fontFamily: 'Kanit, sans-serif',fontWeight: 'bold', fontSize: '20px', marginRight: '5px', gap: '0'}}>
             <div className="col-sm d-flex align-items-center">
-                <label htmlFor="Education_data" className="col-form-label">ข้อมูลการศึกษา (ถ้ามี)</label>
+                <label htmlFor="Education_data" className="col-form-label">ข้อมูลการศึกษา</label>
             </div>
         </div>
 
