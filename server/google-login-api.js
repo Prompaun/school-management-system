@@ -37,8 +37,7 @@ module.exports = function() {
     // );
     router.use(
       cors({
-        // origin: process.env.CLIENT_URL,
-        origin: "https://school-management-system.azurewebsites.net",
+        origin: process.env.CLIENT_URL,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
         allowedHeaders: "Content-Type",
