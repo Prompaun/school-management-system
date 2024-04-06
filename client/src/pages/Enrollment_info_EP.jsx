@@ -17,7 +17,7 @@ const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 const apiUrl = "http://localhost:8080";
 // const apiUrl = process.env.API_URL
 // console.log("process.env.api",process.env.api);
-console.log("apiUrl",apiUrl);
+// console.log("apiUrl",apiUrl);
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
