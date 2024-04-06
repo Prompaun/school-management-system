@@ -1142,7 +1142,7 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
                     WHERE 
                         app.Student_NID IN (?)
                     ORDER BY 
-                        enroll.Enroll_ID ASC;
+                        enroll.Enroll_ID DESC;                
                     `,
 //app.FirstName, app.LastName, enroll.Enroll_ID, enroll.Student_NID, enroll.Enroll_Year, enroll.Enroll_Course FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID 
                     [studentNIDs],
