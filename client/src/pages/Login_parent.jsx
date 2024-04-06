@@ -76,7 +76,8 @@ const Login_parent = () => {
 //     );
 // };
 const google = () => {
-    window.open(apiUrl + "/auth/google", "_self");
+    window.open(apiUrl + "/auth/google/callback", "_self");
+    apiUrl('apiUrl',apiUrl);
 };
 
     return (
