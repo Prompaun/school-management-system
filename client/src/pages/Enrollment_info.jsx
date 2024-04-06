@@ -57,7 +57,7 @@ const apiUrl = "http://localhost:8080";
     };
     
     const [Enroll_Date, setEnroll_Date] = useState(formatDate(new Date()));  // สร้าง state เพื่อเก็บวันที่ปัจจุบัน
-    const [Enroll_Course, setEnroll_Course] = useState("หลักสูตรทั่วไป");
+    const [Enroll_Course, setEnroll_Course] = useState("English Program (EP)");
     
     
     // สร้างฟังก์ชันสำหรับการแปลงค่าวันที่เป็นปี
@@ -555,6 +555,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
   
       const handleParentRoleChange = (event) => {
           setParentRole(event.target.value);
+        //   console.log('setParentRole',event.target.value);
       }
       
       const handlewhoAreParent = (event) => {
@@ -563,6 +564,16 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
           if (event.target.id === "FatherIsParent" || event.target.id === "MotherIsParent" || event.target.id === "FatherAndMotherAreParent"){
               setIsParentRecordData(true);
               console.log('okokokokok',event.target.id);
+              if(event.target.id === "FatherIsParent"){
+                setParentRole('บิดา');
+              }
+              if(event.target.id === "MotherIsParent"){
+                setParentRole('มารดา');
+              }
+              if(event.target.id === "FatherAndMotherAreParent"){
+                setParentRole('บิดาและมารดา')
+              }
+              
           }
       };
 
@@ -1366,7 +1377,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
     // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
     // if (confirmSubmit) {
         console.log("Student_DateOfBirth",Student_DateOfBirth);
-        // console.log("CurrentLogin_Email", CurrentLogin_Email);
+        console.log("handleSubmitParentRole", ParentRole);
       try {
           // แสดงกล่องข้อความยืนยันและตรวจสอบผลลัพธ์
           const formData = new FormData();
@@ -1569,7 +1580,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
             setShowLoadingModal(true);
             // if (confirmSubmit) {
-                
+                console.log('ParentRolehandleSubmit',ParentRole);
                 try {
                     await handleSubmit(
                             Student_picture_file, 
