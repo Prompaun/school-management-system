@@ -83,8 +83,8 @@ const Check_Applicant_Information = () => {
     const [editedData, setEditedData] = useState(data);
     const [isEditing, setIsEditing] = useState(false);
 
-    const filteredData = data.filter((item) => {
-        
+    // const filteredData = data.filter((item) => {
+      const filteredData  = editingId !== null ? data : data.filter((item) => {
         // if (isEditing && item.Enroll_ID === editingId) {
         //     return true;
         // }
@@ -381,7 +381,7 @@ const Check_Applicant_Information = () => {
               // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
               if (Array.isArray(Applicantdata.results)) {
                   const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                      Enroll_No: Enroll_No,
+                      Enroll_No: item.Enroll_No,
                       Enroll_ID: item.Enroll_ID, 
                       Registration_Number: item.Registration_Number,
                       Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -428,7 +428,7 @@ const Check_Applicant_Information = () => {
                   // ตรวจสอบว่า Applicantdata.results เป็น array หรือไม่
                   if (Array.isArray(Applicantdata.results)) {
                       const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                          Enroll_No: Enroll_No,
+                          Enroll_No: item.Enroll_No,
                           Enroll_ID: item.Enroll_ID, 
                           Registration_Number: item.Registration_Number,
                           Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -465,7 +465,7 @@ const Check_Applicant_Information = () => {
               // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
               if (Array.isArray(Applicantdata.results)) {
                   const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                      Enroll_No: Enroll_No,
+                      Enroll_No: item.Enroll_No,
                       Enroll_ID: item.Enroll_ID, 
                       Registration_Number: item.Registration_Number,
                       Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -500,7 +500,7 @@ const Check_Applicant_Information = () => {
               // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
               if (Array.isArray(Applicantdata.results)) {
                   const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                      Enroll_No: Enroll_No,
+                      Enroll_No: item.Enroll_No,
                       Enroll_ID: item.Enroll_ID, 
                       Registration_Number: item.Registration_Number,
                       Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -545,7 +545,7 @@ useEffect(() => {
                 // ตรวจสอบว่า Applicantdata.results เป็น array หรือไม่
                 if (Array.isArray(Applicantdata.results)) {
                     const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                        Enroll_No: Enroll_No,
+                        Enroll_No: item.Enroll_No,
                         Enroll_ID: item.Enroll_ID, 
                         Registration_Number: item.Registration_Number,
                         Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -582,7 +582,7 @@ useEffect(() => {
             // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
             if (Array.isArray(Applicantdata.results)) {
                 const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                    Enroll_No: Enroll_No,
+                    Enroll_No: item.Enroll_No,
                     Enroll_ID: item.Enroll_ID, 
                     Registration_Number: item.Registration_Number,
                     Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -617,7 +617,7 @@ useEffect(() => {
               // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
               if (Array.isArray(Applicantdata.results)) {
                   const mappedApplicantdata = Applicantdata.results.map(item => ({ 
-                      Enroll_No: Enroll_No,
+                      Enroll_No: item.Enroll_No,
                       Enroll_ID: item.Enroll_ID, 
                       Registration_Number: item.Registration_Number,
                       Registration_Date: formatDateThaiYear(item.Registration_Date),
@@ -677,7 +677,8 @@ useEffect(() => {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    // const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
 
     return (
@@ -756,7 +757,7 @@ useEffect(() => {
               </div>
             </div>
             <br />
-            {filteredData.length === 0 ? (
+            {data.length === 0 ? (
               <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px', fontSize: '20px', justifyContent: 'center', alignItems: 'center' }}>
                 
                 <span style={{ color: 'gray', textAlign: 'center' }}>ไม่พบข้อมูลผู้สมัคร</span>
@@ -782,7 +783,7 @@ useEffect(() => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.map((item, index) => (
+                      {currentItems.map((item, index) => (
                         <tr key={item.Enroll_ID} style={{ height: '50px' }}>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Registration_Number}</td>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Registration_Date}</td>
