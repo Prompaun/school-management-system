@@ -10,7 +10,7 @@ function Personnel_menu({Role}) {
         color: 'gray',
         textDecoration: 'none'
       };
-     
+      console.log("Role",Role)
           return (
             <>
             {/* <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">

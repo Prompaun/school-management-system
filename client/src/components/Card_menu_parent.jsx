@@ -7,7 +7,7 @@ import health_icon from "../images/health_icon.png"
 import enrollment_icon from "../images/enrollment_icon.png"
 import check_status_enroll from "../images/check_status_enroll.png"
 
-function Card_menu_parent() {
+function Card_menu_parent({Role}) {
   const [ClassifyRole,setClassifyRole] = useState([
     // {Email:"NewParent@gmail.com",Role:"NewParent"},
     {Email:"Parent@gmail.com",Role:"Parent"},
@@ -49,10 +49,17 @@ function Card_menu_parent() {
 
       const filteredRole = obj.filter((item) => {
        
-        if (ClassifyRole[0].Role === 'NewParent'){
+        // if (ClassifyRole[0].Role === 'NewParent'){
+        //   return item.text === "สมัครเข้าเรียน" || item.text === "ตรวจสอบสถานะผู้สมัคร";
+        //   }
+        // if (ClassifyRole[0].Role === 'Parent'){
+        //   return item.text;
+        //   }
+        console.log("Role",Role)
+        if (Role === 'NewParent'){
           return item.text === "สมัครเข้าเรียน" || item.text === "ตรวจสอบสถานะผู้สมัคร";
           }
-        if (ClassifyRole[0].Role === 'Parent'){
+        if (Role === 'Parent'){
           return item.text;
           }
      

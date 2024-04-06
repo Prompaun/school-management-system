@@ -4,12 +4,12 @@ import logoImage from '../images/IMG_5416.png';
 import Header from '../components/Header';
 import Card_menu_parent from '../components/Card_menu_parent';
 
-function Parent_menu() {
+function Parent_menu({Role}) {
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
   };
-  
+  console.log("Role",Role)
       return (
         <>
         
@@ -23,7 +23,7 @@ function Parent_menu() {
         </div>
       <br></br>
       <br></br>
-      <Card_menu_parent  /> 
+      <Card_menu_parent Role={Role}/> 
       </div>
       </>
       )

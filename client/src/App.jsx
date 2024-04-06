@@ -166,7 +166,7 @@ function App() {
         {user ? (
           <>
           
-            <Route path="/Parent_menu" element={<Parent_menu />} />
+            {/* <Route path="/Parent_menu" element={<Parent_menu />} /> */}
         
             <Route path="/Register_info" element={<Register_info />} />
             <Route
@@ -188,7 +188,7 @@ function App() {
             <Route path="/Student_menu" element={<Student_menu />} />
             <Route path="/Checkgrade_info" element={<Checkgrade_info login_Email={login_Email}/>} />
 
-            <Route path="/Parent_menu" element={<Parent_menu />} />
+            <Route path="/Parent_menu" element={<Parent_menu Role={Role}/>} />
             <Route path="/Checkgrade" element={<Checkgrade user={user} Role={Role}/>} />
             <Route path="/Request_cert" element={<Request_cert login_Email={login_Email}/>} />
             <Route path="/History_request" element={<History_request login_Email={login_Email}/>} />
