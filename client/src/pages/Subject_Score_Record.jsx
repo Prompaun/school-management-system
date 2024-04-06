@@ -366,86 +366,197 @@ const Subject_Score_Record = ({Role, Email}) => {
         }
     };
 
+    // async function getStudentInfo() {
+    //     if (selectedRoom !== "เลือกห้อง"){
+    //         try {
+    //             const response = await axios.post(apiUrl + '/get-student-info-by-teacher', {
+    //                 year: selectedYear,
+    //                 level: selectedClassYear,
+    //                 room: selectedRoom
+    //             });
+
+    //             const assessmentNameResponse = await axios.post(apiUrl + '/get-assessment-name-by-teacher', {
+    //                 year: selectedYear,
+    //                 semester: selectedSemester,
+    //                 subject: selectedSubject
+    //             });
+
+    //             const student = response.data.map(item => item.Student_ID);
+    //             const scoreResponse = await axios.post(apiUrl + '/get-student-assessment-score-by-teacher', {
+    //                 student: student
+    //             });
+
+    //             const gradeResponse = await axios.post(apiUrl + '/assessment-get-grade', {
+    //                 year: selectedYear, 
+    //                 semester: selectedSemester, 
+    //                 subject: selectedSubject,
+    //                 student: student
+    //             });
+
+    //             console.log(response.data, assessmentNameResponse.data, scoreResponse.data, gradeResponse.data)
+
+    //             const newAssessmentName = [
+    //                 {Assessment_Name: "คะแนนสอบกลางภาค", Score: ""},
+    //                 {Assessment_Name: "คะแนนสอบปลายภาค", Score: ""}, 
+    //                 ...assessmentNameResponse.data
+    //             ]
+    //             let scores = [];
+    //             const mapStudent = response.data.forEach((element,index) => {
+    //                 const scoreObj = {}
+    //                 newAssessmentName.map((assName,nameIndex) => {
+    //                     scoreObj[assName.Assessment_Name] = "";
+    //                 })
+    //                 console.log('sss',scoreObj,element.Student_ID)
+    //                 scoreResponse.data.forEach((score,ind) => {
+    //                     if (element.Student_ID === score.student_id) {
+
+    //                         newAssessmentName.map((assName,nameIndex) => {
+    //                             if (assName.Assessment_Name === score.Assessment_Name){
+    //                                 scoreObj[assName.Assessment_Name] = score.Score;
+    //                                 scores[index] = {...scores[index], ...scoreObj}
+    //                             }     
+    //                         })
+    //                     }
+    //                 });
+    //                 gradeResponse.data.forEach((score,ind) => {
+    //                     if (element.Student_ID === score.Student_ID) {
+    //                         scoreObj["คะแนนสอบกลางภาค"] = score.Score_mid;
+    //                         scoreObj["คะแนนสอบปลายภาค"] = score.Score_final;
+    //                         scores[index] = {...scores[index], ...scoreObj}
+    //                     }
+    //                 });
+                    
+    //             })
+
+    //             const newInfo = response.data.map((item, index) => ({
+    //                 id: index,
+    //                 StudentID: response.data[index].Student_ID,
+    //                 nameTitle: response.data[index].NameTitle, 
+    //                 FirstName: response.data[index].FirstName                    , 
+    //                 // Lastname: response.data[index].LastName, 
+    //                 // TotalScore: gradeResponse.data[index].Total_score,
+    //                 SubjectScore: gradeResponse.data[index].Subject_grade,
+    //                 scores: scores[index]
+    //             }));
+    //             console.log('new',newInfo)
+    //             setStudentScore(newInfo);
+    //             return response.data;
+    //         } catch (error) {
+    //             setStudentScore([]);
+    //             if (error.response.request.status == 404) {
+    //                 alert('ไม่พบข้อมูล')
+    //             } else {
+    //                 console.error('Error fetching class year and room dropdown:', error);
+    //                 throw error;
+    //             }
+    //         }
+    //     }
+    // };
     async function getStudentInfo() {
         if (selectedRoom !== "เลือกห้อง"){
+            // let response, assessmentNameResponse, scoreResponse, student,gradeResponse
             try {
-                const response = await axios.post(apiUrl + '/get-student-info-by-teacher', {
+                const response = await axios.post('http://localhost:8080/get-student-info-by-teacher', {
                     year: selectedYear,
                     level: selectedClassYear,
                     room: selectedRoom
                 });
 
-                const assessmentNameResponse = await axios.post(apiUrl + '/get-assessment-name-by-teacher', {
-                    year: selectedYear,
-                    semester: selectedSemester,
-                    subject: selectedSubject
-                });
+                try {
+                    const assessmentNameResponse = await axios.post('http://localhost:8080/get-assessment-name-by-teacher', {
+                        year: selectedYear,
+                        semester: selectedSemester,
+                        subject: selectedSubject
+                    });
 
-                const student = response.data.map(item => item.Student_ID);
-                const scoreResponse = await axios.post(apiUrl + '/get-student-assessment-score-by-teacher', {
-                    student: student
-                });
+                    try {
+                        const student = response.data.map(item => item.Student_ID);
+                        const scoreResponse = await axios.post('http://localhost:8080/get-student-assessment-score-by-teacher', {
+                            student: student
+                        });
+                        console.log('score',scoreResponse,student)
+                        try {
+                            const gradeResponse = await axios.post('http://localhost:8080/assessment-get-grade', {
+                                year: selectedYear, 
+                                semester: selectedSemester, 
+                                subject: selectedSubject,
+                                student: student
+                            }); console.log('grade',gradeResponse)
 
-                const gradeResponse = await axios.post(apiUrl + '/assessment-get-grade', {
-                    year: selectedYear, 
-                    semester: selectedSemester, 
-                    subject: selectedSubject,
-                    student: student
-                });
+                            // if scoreResponse
 
-                const newAssessmentName = [
-                    {Assessment_Name: "คะแนนสอบกลางภาค"},
-                    {Assessment_Name: "คะแนนสอบปลายภาค"}, 
-                    ...assessmentNameResponse.data
-                ]
-                let scores = [];
-                const mapStudent = response.data.forEach((element,index) => {
-                    const scoreObj = {}
-                    newAssessmentName.map((assName,nameIndex) => {
-                        scoreObj[assName.Assessment_Name] = "";
-                    })
-                    scoreResponse.data.forEach((score,ind) => {
-                        if (element.Student_ID === score.student_id) {
-
-                            newAssessmentName.map((assName,nameIndex) => {
-                                if (assName.Assessment_Name === score.Assessment_Name){
-                                    scoreObj[assName.Assessment_Name] = score.Score;
-                                    scores[index] = {...scores[index], ...scoreObj}
-                                }     
+                            const newAssessmentName = [
+                                {Assessment_Name: "คะแนนสอบกลางภาค"},
+                                {Assessment_Name: "คะแนนสอบปลายภาค"}, 
+                                ...assessmentNameResponse.data
+                            ]
+                            console.log('new',newAssessmentName)
+                            let scores = [];
+                            const mapStudent = response.data.forEach((element,index) => {
+                                const scoreObj = {}
+                                newAssessmentName.map((assName,nameIndex) => {
+                                    scoreObj[assName.Assessment_Name] = "";
+                                })
+                                console.log('scorobj',scoreObj,element)
+                                scores[index] = {...scores[index], ...scoreObj}
+                                scoreResponse.data.forEach((score,ind) => {
+                                    if (element.Student_ID === score.student_id) {
+                                        newAssessmentName.map((assName,nameIndex) => {
+                                            if (assName.Assessment_Name === score.Assessment_Name){
+                                                scoreObj[assName.Assessment_Name] = score.Score;
+                                                scores[index] = {...scores[index], ...scoreObj}
+                                            }     
+                                        })
+                                    }
+                                });
+                                gradeResponse.data.forEach((score,ind) => {
+                                    if (element.Student_ID === score.Student_ID) {
+                                        scoreObj["คะแนนสอบกลางภาค"] = score.Score_mid;
+                                        scoreObj["คะแนนสอบปลายภาค"] = score.Score_final;
+                                        scores[index] = {...scores[index], ...scoreObj}
+                                    }
+                                });
                             })
-                        }
-                    });
-                    gradeResponse.data.forEach((score,ind) => {
-                        if (element.Student_ID === score.Student_ID) {
-                            scoreObj["คะแนนสอบกลางภาค"] = score.Score_mid;
-                            scoreObj["คะแนนสอบปลายภาค"] = score.Score_final;
-                            scores[index] = {...scores[index], ...scoreObj}
-                        }
-                    });
-                    
-                })
 
-                const newInfo = response.data.map((item, index) => ({
-                    id: index,
-                    StudentID: response.data[index].Student_ID,
-                    nameTitle: response.data[index].NameTitle, 
-                    FirstName: response.data[index].FirstName                    , 
-                    // Lastname: response.data[index].LastName, 
-                    // TotalScore: gradeResponse.data[index].Total_score,
-                    SubjectScore: gradeResponse.data[index].Subject_grade,
-                    scores: scores[index]
-                }));
-                setStudentScore(newInfo);
-                return response.data;
-            } catch (error) {
-                setStudentScore([]);
-                if (error.response.request.status == 404) {
-                    alert('ไม่พบข้อมูล')
-                } else {
-                    console.error('Error fetching class year and room dropdown:', error);
-                    throw error;
+                            console.log('n',scores)
+            
+                            const newInfo = response.data.map((item, index) => ({
+                                id: index,
+                                StudentID: response.data[index].Student_ID,
+                                nameTitle: response.data[index].NameTitle, 
+                                FirstName: response.data[index].FirstName, 
+                                Lastname: response.data[index].LastName, 
+                                scores: scores[index]
+                            }));
+                            setStudentScore(newInfo);
+                            return response.data;
+                        } catch (error) {
+                            console.error('Error fetching grades:', error);
+                                throw error;
+                        }
+
+                    } catch (error) {
+                        console.error('Error fetching scores:', error);
+                            throw error;
+                    }
+                } catch (error) {
+                    console.error('Error fetching assessment name:', error);
+                        throw error;
                 }
-            }
+            } catch (error) {
+                console.error('Error fetching student of this teacher:', error);
+                    throw error;
+            }  
+                
+            // } catch (error) {
+            //     setStudentScore([]);
+            //     if (error.response.request.status == 404) {
+            //         alert('ไม่พบข้อมูล')
+            //     } else {
+            //         console.error('Error fetching class year and room dropdown:', error);
+            //         throw error;
+            //     }
+            // }
         }
     };
     

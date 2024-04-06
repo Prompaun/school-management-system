@@ -358,7 +358,7 @@ module.exports = function(connection) {
                         INSERT INTO 
                             student_assessment (Students_ID,Assessment_id,Score)
                         VALUES 
-                            (?, (SELECT id FROM assessment WHERE Assessment_Name = '${assessment}'), ?)
+                            (?, (SELECT id FROM assessment WHERE Assessment_Name = '${assessment}' LIMIT 1), ?)
                     `;
                 } else {
                     if (assessment === "คะแนนสอบกลางภาค") {
@@ -371,11 +371,12 @@ module.exports = function(connection) {
                             grade (Subject_ID, Year, Semester, Student_ID, Full_score_mid, 
                             Full_score_final, ${midFinal})
                         VALUES 
-                            ((SELECT Subject_ID FROM subject WHERE Subject_Name = '${subject}'),
+                            ((SELECT Subject_ID FROM subject WHERE Subject_Name = '${subject}' LIMIT 1),
                             ${year},${semester},?,${full_score_mid},${full_score_final},?);
                     `;
 
                 }
+                console.log('sql',sql,score,assessment,year,semester,subject,student,full_score_final,full_score_mid );
                 connection.query(sql,[student,score], (err, results) => {
                     if (err) {
                         console.error('Error querying assignment information:', err);
@@ -717,7 +718,7 @@ module.exports = function(connection) {
             }
 
             if (results.length === 0) {
-                return res.status(404).json({ error: 'student information not found' });
+                return res.status(200).json({ message: 'not found' });
             }
 
             res.status(200).json(results);
@@ -753,7 +754,7 @@ module.exports = function(connection) {
 
             // Check if student information is found
             if (results.length === 0) {
-                return res.status(404).json({ error: 'full score midterm final information not found' });
+                return res.status(200).json({ message: 'not found' });
             }
 
             // Return the student information
