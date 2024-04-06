@@ -7,7 +7,7 @@ import { Popover } from "react-bootstrap";
 import axios from 'axios';
 
 function Check_health_result({login_Email}) {
-   
+  const apiUrl = process.env.API_URL
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -63,7 +63,7 @@ function Check_health_result({login_Email}) {
 
   async function getStudentIdByParentEmail(email) {
     try {
-        const response = await axios.get('http://localhost:8080/get-student-id-by-parent-email', {
+        const response = await axios.get(apiUrl + '/get-student-id-by-parent-email', {
             params: {
                 email: email
             }
@@ -455,7 +455,7 @@ function Check_health_result({login_Email}) {
 
   async function getCongenitalDiseaseInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-congenital-disease-info/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-congenital-disease-info/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching congenital disease information:', error);
@@ -465,7 +465,7 @@ function Check_health_result({login_Email}) {
 
   async function getHistoryDiseaseInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-history-disease-info/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-history-disease-info/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching congenital disease information:', error);
@@ -475,7 +475,7 @@ function Check_health_result({login_Email}) {
 
   async function getAllergiesInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-allergies-info/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-allergies-info/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching allergies information:', error);
@@ -485,7 +485,7 @@ function Check_health_result({login_Email}) {
 
   async function getSurgeryAccidentInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-surgery-accident-info/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-surgery-accident-info/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching surgery_accident information:', error);
@@ -495,7 +495,7 @@ function Check_health_result({login_Email}) {
 
   async function getInjectionAlternativeVaccineInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-injection-alternative-vaccine-info/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-injection-alternative-vaccine-info/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching injection_alternative_vaccine information:', error);
@@ -505,7 +505,7 @@ function Check_health_result({login_Email}) {
 
   async function getGrowthNutritionInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-growth-nutrition-info/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-growth-nutrition-info/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching growth_nutrition information:', error);
@@ -515,7 +515,7 @@ function Check_health_result({login_Email}) {
 
   async function getHealthCheckInfo(studentId) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-health_check/${studentId}`);
+        const response = await axios.get(apiUrl + `/get-health_check/${studentId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching health_check information:', error);
@@ -526,7 +526,7 @@ function Check_health_result({login_Email}) {
   async function checkVaccine(studentId) {
     try {
         // เรียกใช้ API ด้วย Axios
-        const response = await axios.get(`http://localhost:8080/check-vaccine/${studentId}`);
+        const response = await axios.get(apiUrl + `/check-vaccine/${studentId}`);
         // return ข้อมูลที่ได้รับกลับมา
         return response.data;
     } catch (error) {

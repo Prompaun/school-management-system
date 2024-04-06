@@ -3,9 +3,11 @@ import axios from 'axios';
 import Pagination from './Pagination';
 
 const Card = () => {
+  const apiUrl = process.env.API_URL
+
   async function News() {
     try {
-        const response = await axios.get('http://localhost:8080/get-news');
+        const response = await axios.get(apiUrl + '/get-news');
         return response.data;
     } catch (error) {
         console.error('Error fetching news:', error);

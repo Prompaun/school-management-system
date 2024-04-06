@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function Parent_Information(props) {
   
-
+    const apiUrl = process.env.API_URL
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
@@ -12,7 +12,7 @@ function Parent_Information(props) {
 
   async function getStudentInfoByID(Student_ID) {
     try {
-            const response = await axios.get('http://localhost:8080/personnel-get-student-info-by-student-id', {
+            const response = await axios.get(apiUrl + '/personnel-get-student-info-by-student-id', {
                 params: {
                     Student_ID: Student_ID
                 }
@@ -26,7 +26,7 @@ function Parent_Information(props) {
 
   async function getParentInfoByStudentID(Student_ID) {
     try {
-            const response = await axios.get('http://localhost:8080/personnel-get-parent-info-from-student-id', {
+            const response = await axios.get(apiUrl + '/personnel-get-parent-info-from-student-id', {
                 params: {
                     Student_ID: Student_ID
                 }

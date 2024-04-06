@@ -5,7 +5,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, HistoryDisease, allergicc, accidentt}) {
-
+    const apiUrl = process.env.API_URL
     
     const handleClose = () => {
         setShow(false);
@@ -17,7 +17,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
 
       const addCongenitalDiseaseInfo = async (studentId, date, congenitalDisease) => {
         try {
-            const response = await axios.post('http://localhost:8080/add-congenital-disease-info', {
+            const response = await axios.post(apiUrl + '/add-congenital-disease-info', {
                 Student_ID: studentId,
                 Date: date,
                 Congenital_Disease: congenitalDisease
@@ -32,7 +32,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
     
     const deleteCongenitalDisease = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/delete-congenital-disease/${id}`);
+            const response = await axios.delete(apiUrl + `/delete-congenital-disease/${id}`);
             console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
             return response.data; // ส่งข้อมูลที่ได้รับกลับ
         } catch (error) {
@@ -43,7 +43,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
 
     const addHistoryDiseaseInfo = async (studentId, date, historyDisease) => {
         try {
-            const response = await axios.post('http://localhost:8080/add-history-disease-info', {
+            const response = await axios.post(apiUrl + '/add-history-disease-info', {
                 Student_ID: studentId,
                 Date: date,
                 History_Disease: historyDisease
@@ -58,7 +58,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
 
     const deleteHistoryDisease = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/delete-history-disease/${id}`);
+            const response = await axios.delete(apiUrl + `/delete-history-disease/${id}`);
             console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
             return response.data; // ส่งข้อมูลที่ได้รับกลับ
         } catch (error) {
@@ -70,7 +70,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
     // Function to add allergies information
     const addAllergiesInfo = async (studentId, date, allergies) => {
         try {
-            const response = await axios.post('http://localhost:8080/add-allergies-info', {
+            const response = await axios.post(apiUrl + '/add-allergies-info', {
                 Student_ID: studentId,
                 Date: date,
                 Allergies: allergies
@@ -86,7 +86,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
     // Function to delete allergies information
     const deleteAllergies = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/delete-allergies/${id}`);
+            const response = await axios.delete(apiUrl + `/delete-allergies/${id}`);
             console.log(response.data.message); // Display message received from server
             return response.data; // Return received data
         } catch (error) {
@@ -98,7 +98,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
     // Function to add surgery/accident information
     const addSurgeryAccidentInfo = async (studentId, date, surgeryAccident) => {
         try {
-            const response = await axios.post('http://localhost:8080/add-surgery-accident-info', {
+            const response = await axios.post(apiUrl + '/add-surgery-accident-info', {
                 Student_ID: studentId,
                 Date: date,
                 Surgery_Accident: surgeryAccident
@@ -114,7 +114,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
     // Function to delete surgery/accident information
     const deleteSurgeryAccident = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/delete-surgery-accident/${id}`);
+            const response = await axios.delete(apiUrl + `/delete-surgery-accident/${id}`);
             console.log(response.data.message); // Display message received from server
             return response.data; // Return received data
         } catch (error) {

@@ -10,6 +10,7 @@ import Modal_confirm from '../components/Modal_confirm';
 import { Button, Modal,Spinner } from 'react-bootstrap';
 
 function OpenCourse_period() {
+  const apiUrl = process.env.API_URL
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
@@ -154,7 +155,7 @@ function OpenCourse_period() {
     
       async function getRecruitmentPeriod() {
         try {
-            const response = await axios.get('http://localhost:8080/get-recruitment-period');
+            const response = await axios.get(apiUrl + '/get-recruitment-period');
             return response.data;
           } catch (error) {
               console.error('Error fetching Recruitment Period:', error);
@@ -164,7 +165,7 @@ function OpenCourse_period() {
 
       async function updateRecruitmentPeriod (id, updatedData) {
         try {
-            const response = await axios.put(`http://localhost:8080/update-recruitment-period/${id}`, updatedData);
+            const response = await axios.put(apiUrl + `/update-recruitment-period/${id}`, updatedData);
             console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
         } catch (error) {
             console.error('Error updating recruitment period:', error);

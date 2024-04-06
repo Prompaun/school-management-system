@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import personCircle from '../assets/person-circle.svg';
 
 const Navbar = ({user, Role}) => {
+  const apiUrl = process.env.API_URL
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
@@ -35,7 +36,7 @@ const Navbar = ({user, Role}) => {
     filter: 'brightness(25%)',
   };
   const logout = () => {
-    window.open("http://localhost:8080/auth/logout", "_self");
+    window.open(apiUrl + "/auth/logout", "_self");
   };
 
   const [Pathmenu,setPathmenu] = useState([

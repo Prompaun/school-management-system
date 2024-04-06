@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 
 const Checkgrade = ({user, Role}) => {
+  const apiUrl = process.env.API_URL
   const handleGoBack = () => {
     window.history.back();
   };
@@ -21,7 +22,7 @@ const Checkgrade = ({user, Role}) => {
   
   async function getYearSemestersByStudentId(studentId) {
     try {
-        const response = await axios.get('http://localhost:8080/get-year-semesters-by-student-id', {
+        const response = await axios.get(apiUrl + '/get-year-semesters-by-student-id', {
             params: {
                 studentId: studentId
             }
@@ -35,7 +36,7 @@ const Checkgrade = ({user, Role}) => {
 
   async function getYearByStudentId(studentId) {
     try {
-        const response = await axios.get('http://localhost:8080/get-years-by-student-id', {
+        const response = await axios.get(apiUrl + '/get-years-by-student-id', {
             params: {
                 studentId: studentId
             }
@@ -49,7 +50,7 @@ const Checkgrade = ({user, Role}) => {
 
   async function getSemesterByStudentId(selectedStudent_ID, selectedYear) {
     try {
-        const response = await axios.get('http://localhost:8080/get-semesters-by-student-id', {
+        const response = await axios.get(apiUrl + '/get-semesters-by-student-id', {
             params: {
                 studentId: selectedStudent_ID,
                 Year: selectedYear
@@ -64,7 +65,7 @@ const Checkgrade = ({user, Role}) => {
 
   async function getGradeInfo(selectedStudent_ID, selectedYear, Semesters) {
     try {
-        const response = await axios.get('http://localhost:8080/get-grade-info', {
+        const response = await axios.get(apiUrl + '/get-grade-info', {
             params: {
                 studentId: selectedStudent_ID,
                 year: selectedYear,

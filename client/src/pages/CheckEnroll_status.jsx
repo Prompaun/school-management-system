@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Axios from 'axios';
 
 function CheckEnroll_status({Email}) {
+  const apiUrl = process.env.API_URL
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -35,7 +36,7 @@ function CheckEnroll_status({Email}) {
 
         
         // เรียก API เมื่อหน้าเว็บโหลดขึ้นมา
-        // Axios.get('http://localhost:8080/dropdownArray_EnrollStatus/'+Email)
+        // Axios.get(apiUrl + '/dropdownArray_EnrollStatus/'+Email)
         //   .then((response) => {
         //     console.log("so sad cannot connect to http://localhost:8080/dropdownArray_EnrollStatus",response.data);
         //     setEnroll_ArrayDropdownList(response.data);
@@ -44,7 +45,7 @@ function CheckEnroll_status({Email}) {
         //     console.log(err)
         //   });
 
-          Axios.get('http://localhost:8080/dropdownData_EnrollStatus/'+Email)
+          Axios.get(apiUrl + '/dropdownData_EnrollStatus/'+Email)
           .then((response) => {
             // console.log("so sad cannot connect to http://localhost:8080/dropdownArray_EnrollStatus",response.data);
             setEnroll_dataDropdownList(response.data);
@@ -54,8 +55,8 @@ function CheckEnroll_status({Email}) {
           });
           console.log('Email',Email);
 
-        Axios.get('http://localhost:8080/defaultData_EnrollStatus/'+Email)
-        // Axios.get('http://localhost:8080/CheckEnroll_status/1')
+        Axios.get(apiUrl + '/defaultData_EnrollStatus/'+Email)
+        // Axios.get(apiUrl + '/CheckEnroll_status/1')
             .then((response) => {
               // console.log("so sad cannot connect to http://localhost:8080/defaultData_EnrollStatus/"+Email,response.data);
               console.log('ok')
@@ -86,7 +87,7 @@ function CheckEnroll_status({Email}) {
                 // const nameIndex = Enroll_ArrayDropdownList[0].Name.indexOf(selectedName);
                 // if (nameIndex !== -1) {
                   // const nidValue = Enroll_ArrayDropdownList[0].array[nameIndex];
-                  Axios.get(`http://localhost:8080/CheckEnroll_status?Enroll_ID=${studentNID}&Enroll_Year=${selectedYear}&Enroll_Course=${selectedCourse}`)
+                  Axios.get(apiUrl + `/CheckEnroll_status?Enroll_ID=${studentNID}&Enroll_Year=${selectedYear}&Enroll_Course=${selectedCourse}`)
                     .then((response) => {
                       console.log("Data from http://localhost:8080/CheckEnroll_status", response.data);
                       setEnroll_statusList(response.data);
