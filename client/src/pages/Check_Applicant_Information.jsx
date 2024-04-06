@@ -537,6 +537,7 @@ const Check_Applicant_Information = () => {
               currentPage={currentPage}
             />
             </div>
+            <br />
           </div>
         </div>
       </div>
