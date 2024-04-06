@@ -23,6 +23,7 @@ module.exports = function(connection) {
         const sql = `
             SELECT id, topic, content, link 
             FROM Information_data
+            ORDER BY date DESC
         `;
 
         connection.query(sql, (err, results) => {
