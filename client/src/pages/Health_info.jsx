@@ -107,7 +107,7 @@ const Health_info = () => {
     //ยังไม่มีเงื่อนไขเช็คถ้าไม่เจอค่า
     const [HealthCheckUp,setHealthCheckUp] = useState([
       // {id:1,DateCheck:"12/05/2024",Eyesight:"ปกติ",Hearing:"ปกติ",Mouth:"ปกติ"},
-      {id:1,DateCheck:"",Eyesight:"",Hearing:"",Mouth:""}
+      // {id:1,DateCheck:"",Eyesight:"",Hearing:"",Mouth:""}
     ])
   
     //วัคซีนพื้นฐาน จำเป็น 8 ชนิด
@@ -557,7 +557,18 @@ const Health_info = () => {
                   แก้ไข
                 </button>
               </div>
-             
+              {BodyData.length === 0 ? (
+                                <div className="card" style={{width:"auto",height:"auto",margin:"5px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'
+                                }}>
+                                  <div className="card-body"style={{width:"auto",height:"auto"}} >
+                                  <div className="text-center">
+                                          <span style={{fontSize:"22px",color: "#A0A0A0",fontWeight:"bold" }}>
+                                              ยังไม่มีการอัพเดทข้อมูล
+                                        </span>
+                                        </div>
+                                  </div>
+                                  </div>
+                   ) : (
               <div className="row">
                     
                          {/* ------------------------------------------------------------------------------------------ */}
@@ -704,6 +715,7 @@ const Health_info = () => {
                           </div>
                 
                 </div>
+                 )}
             {/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
            
 
@@ -724,6 +736,19 @@ const Health_info = () => {
                                   แก้ไข
                                 </button>
                               </div>
+                              {HealthCheckUp.length === 0 ? (
+                                <div className="card" style={{width:"auto",height:"auto",margin:"5px",boxShadow: '1px 2px 12px 4px rgba(0, 0, 0, 0.2)'
+                                }}>
+                                  <div className="card-body"style={{width:"auto",height:"auto"}} >
+                                  <div className="text-center">
+                                          <span style={{fontSize:"22px",color: "#A0A0A0",fontWeight:"bold" }}>
+                                              ยังไม่มีการอัพเดทข้อมูล
+                                        </span>
+                                        </div>
+                                  </div>
+                                  </div>
+
+                                ) : (
                               <div className="row">
                               
                               <div className="col">
@@ -817,7 +842,7 @@ const Health_info = () => {
                                         </div> 
 
                          </div>
-
+                            )}
                          </div>
                          </div>
 

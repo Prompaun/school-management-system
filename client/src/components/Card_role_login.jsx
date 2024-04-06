@@ -9,15 +9,17 @@ const Card_role_login = () => {
           path: "/Login/Login_student"
         },
         {
-          text: "ผู้ปกครอง",
-          imageUrl: "src/images/parent_icon.png", // แทนที่ด้วย URL รูปภาพจริง
-          path: "/Login/Login_parent"
-        },
-        {
-          text: "บุคลากร",
+          text: "ผู้ปกครองและบุคลากร",
+          // imageUrl: "src/images/parent_icon.png", // แทนที่ด้วย URL รูปภาพจริง
           imageUrl: "src/images/teacher_icon.png", // แทนที่ด้วย URL รูปภาพจริง
-          path: "/Login_personnel"
-        }
+
+          path: "/Login/Login_parent_personnel"
+        },
+        // {
+        //   text: "บุคลากร",
+        //   imageUrl: "src/images/teacher_icon.png", // แทนที่ด้วย URL รูปภาพจริง
+        //   path: "/Login_personnel"
+        // }
       ]);
 
       function handleClick() {

@@ -742,11 +742,11 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             
             const handleHouseholdBackClick = () => {
                 console.log("file.name", Student_picture_file);
-                if (checkInputHousehold()) {
+                // if (checkInputHousehold()) {
                    
                     setStudent_info(true);
                     setHousehold(false);
-                }
+                // }
                 // setStudent_info(true);
                 // setHousehold(false);
                 
@@ -763,13 +763,13 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
               };
             //   hide parent
             const handleParentBackClick = () => {
-                if (checkInputParent()) {
+                // if (checkInputParent()) {
 
                     setStudent_info(false);
                     setHousehold(true);
                     setParent_info(false);
                    
-                }
+                // }
                 
               };
         

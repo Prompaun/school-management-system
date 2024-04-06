@@ -157,7 +157,7 @@ function App() {
             <Route path ="/Login/Login_student" element={<Login_student />} />
             <Route
               exact
-              path="/Login/Login_parent"
+              path="/Login/Login_parent_personnel"
               element={user ? <Navigate to="/Parent_menu" /> : <Login_parent />}
             />
 
