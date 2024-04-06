@@ -5,13 +5,15 @@ const Card_role_login = () => {
     const [obj, setObj] = useState([
         {
           text: "นักเรียน",
-          imageUrl: "src/images/student_icon.png", // แทนที่ด้วย URL รูปภาพจริง
+          // imageUrl: "src/images/student_icon.png", // แทนที่ด้วย URL รูปภาพจริง
+          imageUrl: "https://i.ibb.co/QPXRkmj/student-icon.png",
           path: "/Login/Login_student"
         },
         {
           text: "ผู้ปกครองและบุคลากร",
           // imageUrl: "src/images/parent_icon.png", // แทนที่ด้วย URL รูปภาพจริง
-          imageUrl: "src/images/teacher_icon.png", // แทนที่ด้วย URL รูปภาพจริง
+          // imageUrl: "src/images/teacher_icon.png", // แทนที่ด้วย URL รูปภาพจริง
+          imageUrl: "https://i.ibb.co/QCdT7fG/teacher-icon.png",
 
           path: "/Login/Login_parent_personnel"
         },
