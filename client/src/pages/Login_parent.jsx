@@ -76,16 +76,16 @@ const Login_parent = () => {
 //         "_self"
 //     );
 // };
-// const google = () => {
-//     // window.open(apiUrl + "/auth/google", "_self");
-//     window.open(apiUrl + "/auth/google", "_self");
-    
-//     // apiUrl('apiUrl',apiUrl);
-// };
-
 const google = () => {
-    window.open(`${process.env.API_URL}/auth/google?scope=email profile`, "_self");
+    // window.open(apiUrl + "/auth/google", "_self");
+    window.open(apiUrl + "/auth/google/callback", "_self");
+    
+    // apiUrl('apiUrl',apiUrl);
 };
+
+// const google = () => {
+//     window.open(`${process.env.API_URL}/auth/google?scope=email profile`, "_self");
+// };
 
     return (
         <>
