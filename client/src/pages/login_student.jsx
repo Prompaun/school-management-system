@@ -19,7 +19,7 @@ const Login_student = () => {
         fontSize: '16px'
       };
 
-      const apiUrl = process.env.api
+      const apiUrl = process.env.API_URL
     // const apiUrl = "http://localhost:8080"
 
       const { Role, setRole, user, setUser } = useContext(UserContext);
