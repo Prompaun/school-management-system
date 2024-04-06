@@ -555,7 +555,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
   
       const handleParentRoleChange = (event) => {
           setParentRole(event.target.value);
-        //   console.log('setParentRole',event.target.value);
+          console.log('setParentRole',event.target.value);
       }
       
       const handlewhoAreParent = (event) => {
@@ -566,12 +566,15 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
               console.log('okokokokok',event.target.id);
               if(event.target.id === "FatherIsParent"){
                 setParentRole('บิดา');
+                console.log('setParentRole','บิดา');
               }
               if(event.target.id === "MotherIsParent"){
                 setParentRole('มารดา');
+                console.log('setParentRole','มารดา');
               }
               if(event.target.id === "FatherAndMotherAreParent"){
                 setParentRole('บิดาและมารดา')
+                console.log('setParentRole','บิดาและมารดา');
               }
               
           }
@@ -712,7 +715,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                 setParentOccupation(data.results[0].Occupation);
                 setParentOffice(data.results[0].Office);
                 setParentTel(data.results[0].Tel);
-                setParentRole(data.results[0].Role);
+                // setParentRole(data.results[0].Role);
 
                 return true;
             } 
@@ -752,7 +755,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             // hide household
             
             const handleHouseholdBackClick = () => {
-                // console.log("file.name", Student_picture_file);
+                console.log("file.name", Student_picture_file);
                 // if (checkInputHousehold()) {
                    
                     setStudent_info(true);
@@ -1353,7 +1356,8 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
           }
           useEffect(() => {
             const SomeoneElseIsParent = document.getElementById('SomeoneElseIsParent');
-            if (SomeoneElseIsParent) {
+            // if (SomeoneElseIsParent) {
+            if (whoAreParent === 'SomeoneElseIsParent') {
                 setParentEmail("");
                 setParentFirstname("");
                 setParentLastname("");
@@ -1367,6 +1371,11 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
             }
        
         }, [whoAreParent]); 
+
+        useEffect(() => {
+            // console.log('ParentRoleeee',ParentRole);
+       
+        }, [ParentRole]); 
 
         const [Student_info, setStudent_info] = useState(true); 
         const [Household, setHousehold] = useState(false); 
@@ -1576,11 +1585,12 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         }
         console.log("formatDate(Student_DateOfBirth)",formatDate(Student_DateOfBirth))
         // setShowLoadingModal(true);
+        console.log('ParentRolehandleSubmit',ParentRole);
         if (checkInputParent()) {
             // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
             setShowLoadingModal(true);
             // if (confirmSubmit) {
-                console.log('ParentRolehandleSubmit',ParentRole);
+                
                 try {
                     await handleSubmit(
                             Student_picture_file, 
@@ -1721,7 +1731,7 @@ return (
                   
                 
               <p className="mt-3"style={{ fontSize: '22px' }}>ต้องการที่จะสมัครหลักสูตรทั่วไปใช่หรือไม่</p>
-             
+            
                   <Button
                     variant="sm"
                     style={{ fontSize: "20px" }}
