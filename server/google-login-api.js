@@ -40,7 +40,7 @@ module.exports = function() {
         origin: process.env.CLIENT_URL,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
-        allowedHeaders: "Content-Type",
+        allowedHeaders: "Content-Type,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Authorization",
       })
     );
     
