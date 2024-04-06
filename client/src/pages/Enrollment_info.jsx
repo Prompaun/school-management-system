@@ -1362,7 +1362,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
         const [Parent_info, setParent_info] = useState(false); 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         const navigate = useNavigate();
-  const handleSubmit = async (Student_picture_file, CopyofStudentIDCardFile, PreviousSchoolEducationalRecordsFile, studentNID, nameTitle, FirstName, LastName, Student_DateOfBirth, Transcript_type, CurrentLogin_Email, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, HouseReg_file) => {
+  const handleSubmit = async (Student_picture_file, CopyofStudentIDCardFile, PreviousSchoolEducationalRecordsFile, ParentRole, studentNID, nameTitle, FirstName, LastName, Student_DateOfBirth, Transcript_type, CurrentLogin_Email, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, HouseReg_file) => {
     // const confirmSubmit = window.confirm("ยืนยันที่จะส่งข้อมูลหรือไม่?");
     // if (confirmSubmit) {
         console.log("Student_DateOfBirth",Student_DateOfBirth);
@@ -1375,6 +1375,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
           formData.append('file', PreviousSchoolEducationalRecordsFile);
           
           // เพิ่มข้อมูลของนักเรียนเข้าไปใน formData
+          formData.append('Parent', ParentRole);
           formData.append('Student_NID', studentNID);
           formData.append('NameTitle', nameTitle);
           formData.append('FirstName', FirstName);
@@ -1574,6 +1575,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             Student_picture_file, 
                             CopyofStudentIDCardFile,
                             PreviousSchoolEducationalRecordsFile,
+                            ParentRole,
                             studentNID,
                             nameTitle,
                             FirstName,

@@ -44,7 +44,7 @@ module.exports = function(connection) {
                 const { body, files } = req;
 
                 // ดึงข้อมูลนักเรียนที่ส่งมาจากฟอร์ม
-                const { Student_NID, NameTitle, FirstName, LastName, Student_DOB, Transcript_type, ParentEmail, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict } = body;
+                const { Parent, Student_NID, NameTitle, FirstName, LastName, Student_DOB, Transcript_type, ParentEmail, HouseNumber, Moo, Soi, Road, Province, District, SubDistrict } = body;
 
                 console.log("files",files);
 
@@ -58,7 +58,7 @@ module.exports = function(connection) {
                 // ตรวจสอบว่ามี URL ของไฟล์ที่อัปโหลดพอสำหรับการเข้าถึงหรือไม่
                 if (transcriptFilesUrls.length >= 3) {
                     // เรียกใช้งานฟังก์ชันเพื่อเพิ่มข้อมูลลงในฐานข้อมูล
-                    await addApplicantToDatabase(Student_NID, NameTitle, FirstName, LastName, Student_DOB, transcriptFilesUrls[0], HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, Transcript_type, 'transcriptFilesUrls[0]', transcriptFilesUrls[1], transcriptFilesUrls[2], ParentEmail);
+                    await addApplicantToDatabase(Parent, Student_NID, NameTitle, FirstName, LastName, Student_DOB, transcriptFilesUrls[0], HouseNumber, Moo, Soi, Road, Province, District, SubDistrict, Transcript_type, 'transcriptFilesUrls[0]', transcriptFilesUrls[1], transcriptFilesUrls[2], ParentEmail);
                     res.status(200).send("Form Submitted");
                 } else {
                     // จัดการข้อผิดพลาดหาก URL ของไฟล์ไม่เพียงพอ
@@ -116,11 +116,11 @@ module.exports = function(connection) {
         return data;
     };
 
-    const addApplicantToDatabase = async (Student_NID, NameTitle, FirstName, LastName, Student_DOB, Avatar, House_No, Moo, Soi, Road, Province, District, Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, ParentEmail) => {
+    const addApplicantToDatabase = async (Parent, Student_NID, NameTitle, FirstName, LastName, Student_DOB, Avatar, House_No, Moo, Soi, Road, Province, District, Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, ParentEmail) => {
         return new Promise((resolve, reject) => {
             connection.query(
-                "INSERT INTO Applicant (Student_NID, NameTitle, FirstName, LastName, Student_DOB, Avatar, House_No, Moo, Soi, Road, Province, District, Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, ParentEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [Student_NID, NameTitle, FirstName, LastName, Student_DOB, Avatar, House_No, Moo, Soi, Road, Province, District, Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, ParentEmail],
+                "INSERT INTO Applicant (Parent, Student_NID, NameTitle, FirstName, LastName, Student_DOB, Avatar, House_No, Moo, Soi, Road, Province, District, Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, ParentEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                [Parent, Student_NID, NameTitle, FirstName, LastName, Student_DOB, Avatar, House_No, Moo, Soi, Road, Province, District, Sub_District, Transcript_type, Transcript_file, BirthCert_file, HouseReg_file, ParentEmail],
                 (err, results, fields) => {
                     if (err) {
                         if (err.code === 'ER_DUP_ENTRY') {
