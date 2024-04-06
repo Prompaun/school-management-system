@@ -424,11 +424,11 @@ router.get('/check-student-enrollment', (req, res) => {
 
 router.post('/enrollment', (req, res) => {
     try {
-        const { Student_NID, Enroll_Date, Enroll_Year, Enroll_Course, Enroll_Status } = req.body;
+        const { Student_NID, Enroll_Date, Enroll_Year, Enroll_Course, Enroll_Status, Admission_Scores, Admission_Status } = req.body;
 
-        const query = 'INSERT INTO Enrollment (Student_NID, Enroll_Date, Enroll_Year, Enroll_Course, Enroll_Status) VALUES (?, ?, ?, ?, ?)';
+        const query = 'INSERT INTO Enrollment (Student_NID, Enroll_Date, Enroll_Year, Enroll_Course, Enroll_Status, Admission_Scores, Admission_Status) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-        connection.query(query, [Student_NID, Enroll_Date, Enroll_Year, Enroll_Course, Enroll_Status], (err, results) => {
+        connection.query(query, [Student_NID, Enroll_Date, Enroll_Year, Enroll_Course, Enroll_Status, Admission_Scores, Admission_Status], (err, results) => {
             if (err) {
                 console.error('Error adding enrollment:', err);
                 return res.status(200).json({ error: 'Failed to add enrollment' });

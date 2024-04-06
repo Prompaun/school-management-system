@@ -83,87 +83,89 @@ const Check_Applicant_Information = () => {
     const [editedData, setEditedData] = useState(data);
     const [isEditing, setIsEditing] = useState(false);
 
-    // const filteredData = data.filter((item) => {
+    const filteredData = data.filter((item) => {
         
-    //     // if (isEditing && item.Enroll_ID === editingId) {
-    //     //     return true;
-    //     // }
-        
-    //     if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
-    //         return true;
-    //      }
-    //      if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
-
-    //         return item.Educational_Program === selectedCourse && item.ExamStatus === SelectedExamStatus;
-    //      }
-    //      if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
-
-    //         return item.ExamStatus === SelectedExamStatus;
-    //      }
-    //     if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
-
-    //         return item.Educational_Program === selectedCourse && item.EnrollStatus === SelectedEnrollStatus;
-    //      }
-    //      if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
-
-    //         return item.EnrollStatus === SelectedEnrollStatus;
-    //      }
-    //     if (selectedCourse !== 'ทั้งหมด'){
-    //         return item.Educational_Program === selectedCourse;
-    //      }
-        
-          
-    //     });
-
-    const selectedDropdown = oldData.filter((item) => {
+        // if (isEditing && item.Enroll_ID === editingId) {
+        //     return true;
+        // }
         
         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
             return true;
-            }
-            if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
+         }
+         if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
 
             return item.Educational_Program === selectedCourse && item.ExamStatus === SelectedExamStatus;
-            }
-            if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
+         }
+         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
 
             return item.ExamStatus === SelectedExamStatus;
-            }
+         }
         if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
 
             return item.Educational_Program === selectedCourse && item.EnrollStatus === SelectedEnrollStatus;
-            }
-            if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
+         }
+         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
 
             return item.EnrollStatus === SelectedEnrollStatus;
-            }
+         }
         if (selectedCourse !== 'ทั้งหมด'){
             return item.Educational_Program === selectedCourse;
-            }
-        }).map((mapData) => mapData.Enroll_ID);
+         }
+        
+          
+        });
+
+    // const selectedDropdown = oldData.filter((item) => {
+        
+    //     if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
+    //         return true;
+    //         }
+    //         if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
+
+    //         return item.Educational_Program === selectedCourse && item.ExamStatus === SelectedExamStatus;
+    //         }
+    //         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
+
+    //         return item.ExamStatus === SelectedExamStatus;
+    //         }
+    //     if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
+
+    //         return item.Educational_Program === selectedCourse && item.EnrollStatus === SelectedEnrollStatus;
+    //         }
+    //         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
+
+    //         return item.EnrollStatus === SelectedEnrollStatus;
+    //         }
+    //     if (selectedCourse !== 'ทั้งหมด'){
+    //         return item.Educational_Program === selectedCourse;
+    //         }
+    //     }).map((mapData) => mapData.Enroll_ID);
     
-    const filteredData = data.map((item) => 
-        selectedDropdown.includes(item.Enroll_ID) ? item : null
-    ).filter((item) => item !== null)
+    // const filteredData = data.map((item) => 
+    //     selectedDropdown.includes(item.Enroll_ID) ? item : null
+    // ).filter((item) => item !== null)
 
     const handleEditRow = (Enroll_ID) => {
         setIsEditing(true);
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
         if (editingId===Enroll_ID){
-            setShowModalSuccess(true)
-            // console.log("item.Enroll_ID",Enroll_ID)
-            // console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
+            // setShowModalSuccess(true)
+            // // console.log("item.Enroll_ID",Enroll_ID)
+            console.log("datadatadatadatadata",data)
+            console.log("Enroll_IDEnroll_IDEnroll_IDa",Enroll_ID)
+            console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
             const changeData = data.find(element => element.Enroll_ID === Enroll_ID)
-            updateApplicantInfo(changeData)
-            // setIsEditing(false);
+            updateApplicantInfo(changeData);
+            setIsEditing(false);
             if (changeData.ExamStatus === "ผ่าน") {
                 insertApplicanttoStudentInfo(changeData)
             }
             
-            setOldData(data)
+            // setOldData(data)
         } else {
-            setData(oldData)
+            // setData(oldData)
         }
-       getApplicantInfo()
+      //  getApplicantInfo()
     };
 
 
@@ -230,7 +232,8 @@ const Check_Applicant_Information = () => {
                 element.Exam_results = element.Exam_results === null ? "" : element.Exam_results
             })
             setData(response.data.results)
-            setOldData(response.data.results)
+            // setOldData(response.data.results)
+            console.log('getApplicantInfo');
             return response.data;
         } catch (error) {
             console.error('Error fetching classRoom dropdown:', error);
@@ -241,10 +244,11 @@ const Check_Applicant_Information = () => {
     async function updateApplicantInfo(changeData) {
         try {
             const response = await axios.post('http://localhost:8080/update-applicant-info', {
-                score: changeData.Exam_results === "" ? null : changeData.Exam_results,
+                score: changeData.Exam_results || null,
                 exam_status: changeData.ExamStatus === "" ? null : changeData.ExamStatus,
-                enroll_status: changeData.EnrollStatus || "รอการสอบคัดเลือก",
-                enroll_no: changeData.Registration_Number
+                enroll_status: changeData.EnrollStatus === "" ? null : changeData.EnrollStatus,
+                // enroll_no: changeData.Registration_Number
+                enroll_no: changeData.Enroll_No
             });
             return response.data;
         } catch (error) {
@@ -265,9 +269,386 @@ const Check_Applicant_Information = () => {
         }
     };
 
+    async function getApplicantInfoByEnrollCourse(enrollCourse) {
+      try {
+          const response = await axios.post('http://localhost:8080/get-applicant-Enroll-Course', {
+              enrollCourse: enrollCourse
+          });
+          console.log('Retrieve applicant info successfully:', response.data);
+          return response.data;
+      } catch (error) {
+          console.error('Error retrieving applicant info:', error);
+          throw error;
+      }
+    };
+
+    async function getApplicantInfoByAdmissionStatus(enrollCourse, admissionStatus) {
+      try {
+          const response = await axios.post('http://localhost:8080/get-applicant-Admission-Status', {
+              enrollCourse: enrollCourse,
+              admissionStatus: admissionStatus
+          });
+  
+          const data = response.data;
+          if (data && data.results && data.results.length > 0) {
+              // ข้อมูลพบ
+              console.log('Applicant info:', data.results);
+              return data;
+          } else {
+              // ไม่พบข้อมูล
+              console.log('Info not found');
+          }
+      } catch (error) {
+          console.error('Failed to retrieve applicant info:', error);
+      }
+    }
+  
+
+    async function getApplicantInfoByAllCourseAdmissionStatus(admissionStatus) {
+      try {
+          const response = await axios.post('http://localhost:8080/get-applicant-AllCourse-AdmissionStatus', {
+              admissionStatus: admissionStatus
+          });
+  
+          const data = response.data;
+          if (data.results.length > 0) {
+              // ข้อมูลพบ
+              console.log('Applicant info:', data.results);
+              return data;
+          } else {
+              // ไม่พบข้อมูล
+              console.log('Info not found');
+          }
+      } catch (error) {
+          console.log('Failed to retrieve getApplicantInfoByAllCourseAdmissionStatus:', error);
+      }
+    }
+
+    async function getApplicantInfoByEnrollStatus(enrollCourse, enrollStatus) {
+      try {
+          const response = await axios.post('http://localhost:8080/get-applicant-Enroll-Status', {
+              enrollCourse: enrollCourse,
+              enrollStatus: enrollStatus
+          });
+  
+          const data = response.data;
+          if (data && data.results && data.results.length > 0) {
+              // ข้อมูลพบ
+              console.log('Applicant info:', data.results);
+              return data;
+          } else {
+              // ไม่พบข้อมูล
+              console.log('Info not found');
+          }
+      } catch (error) {
+          console.error('Failed to retrieve applicant info:', error);
+      }
+    }
+    
+    async function getApplicantInfoByAllCourseEnrollStatus(enrollStatus) {
+      try {
+          const response = await axios.post('http://localhost:8080/get-applicant-AllCourse-EnrollStatus', {
+            enrollStatus: enrollStatus
+          });
+  
+          const data = response.data;
+          if (data.results.length > 0) {
+              // ข้อมูลพบ
+              console.log('Applicant info:', data.results);
+              return data;
+          } else {
+              // ไม่พบข้อมูล
+              console.log('Info not found');
+          }
+      } catch (error) {
+          console.log('Failed to retrieve getApplicantInfoByAllCourseEnrollStatus:', error);
+      }
+    }
+  
+  
+
+    // useEffect(() => {
+    //     getApplicantInfo();
+    // }, [])
+
     useEffect(() => {
-        getApplicantInfo()
-    }, [])
+      if(selectedCourse !== 'ทั้งหมด'){
+        async function fetchApplicantInfo() {
+          try {
+              const Applicantdata = await getApplicantInfoByEnrollCourse(selectedCourse);
+      
+              // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
+              if (Array.isArray(Applicantdata.results)) {
+                  const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                      Enroll_No: Enroll_No,
+                      Enroll_ID: item.Enroll_ID, 
+                      Registration_Number: item.Registration_Number,
+                      Registration_Date: formatDateThaiYear(item.Registration_Date),
+                      Applicant_name_title: item.Applicant_name_title,
+                      Applicants_first_name: item.Applicants_first_name, 
+                      Applicants_last_name: item.Applicants_last_name, 
+                      TranscriptFile: item.TranscriptFile, 
+                      HouseRegFile: item.HouseRegFile, 
+                      Educational_Program: item.Educational_Program,
+                      Exam_results: item.Exam_results === null ? "" : item.Exam_results,
+                      ExamStatus: item.ExamStatus === null ? "" : item.ExamStatus,
+                      EnrollStatus: item.EnrollStatus
+                  }));
+                  console.log('fetchApplicantInfo');
+                  setData(mappedApplicantdata);
+              } else {
+                  console.error('Results is not an array:', Applicantdata.results);
+              }
+          } catch (error) {
+              console.log('Failed to retrieve applicant info:', error);
+          }
+      }
+      fetchApplicantInfo(); 
+    }
+    else{
+      getApplicantInfo();
+    }
+
+    setSelectedExamStatus('ทั้งหมด');
+    setSelectedEnrollStatus('ทั้งหมด');
+  }, [selectedCourse])
+
+  useEffect(() => {
+    console.log('SelectedExamStatus',SelectedExamStatus);
+    console.log('selectedCourse',selectedCourse);
+    if(SelectedExamStatus !== 'ทั้งหมด'){
+      if(selectedCourse === 'ทั้งหมด'){
+        async function fetchApplicantInfo() {
+          try {
+              const Applicantdata = await getApplicantInfoByAllCourseAdmissionStatus(SelectedExamStatus);
+              
+              // ตรวจสอบว่า Applicantdata ไม่เป็น null และไม่เป็น undefined
+              if (Applicantdata && Applicantdata.results) {
+                  // ตรวจสอบว่า Applicantdata.results เป็น array หรือไม่
+                  if (Array.isArray(Applicantdata.results)) {
+                      const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                          Enroll_No: Enroll_No,
+                          Enroll_ID: item.Enroll_ID, 
+                          Registration_Number: item.Registration_Number,
+                          Registration_Date: formatDateThaiYear(item.Registration_Date),
+                          Applicant_name_title: item.Applicant_name_title,
+                          Applicants_first_name: item.Applicants_first_name, 
+                          Applicants_last_name: item.Applicants_last_name, 
+                          TranscriptFile: item.TranscriptFile, 
+                          HouseRegFile: item.HouseRegFile, 
+                          Educational_Program: item.Educational_Program,
+                          Exam_results: item.Exam_results === null ? "" : item.Exam_results,
+                          ExamStatus: item.ExamStatus === null ? "" : item.ExamStatus,
+                          EnrollStatus: item.EnrollStatus
+                      }));
+                      console.log('fetchApplicantInfo');
+                      setData(mappedApplicantdata);
+                  } else {
+                      console.log('Results is not an array:', Applicantdata.results);
+                  }
+              } else {
+                  console.log('Applicantdata or Applicantdata.results is null or undefined');
+              }
+          } catch (error) {
+              console.log('Failed to retrieve applicant info:', error);
+          }
+      }
+      fetchApplicantInfo();
+      
+      }
+      else{
+        async function fetchApplicantInfo() {
+          try {
+              const Applicantdata = await getApplicantInfoByAdmissionStatus(selectedCourse, SelectedExamStatus);
+      
+              // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
+              if (Array.isArray(Applicantdata.results)) {
+                  const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                      Enroll_No: Enroll_No,
+                      Enroll_ID: item.Enroll_ID, 
+                      Registration_Number: item.Registration_Number,
+                      Registration_Date: formatDateThaiYear(item.Registration_Date),
+                      Applicant_name_title: item.Applicant_name_title,
+                      Applicants_first_name: item.Applicants_first_name, 
+                      Applicants_last_name: item.Applicants_last_name, 
+                      TranscriptFile: item.TranscriptFile, 
+                      HouseRegFile: item.HouseRegFile, 
+                      Educational_Program: item.Educational_Program,
+                      Exam_results: item.Exam_results === null ? "" : item.Exam_results,
+                      ExamStatus: item.ExamStatus === null ? "" : item.ExamStatus,
+                      EnrollStatus: item.EnrollStatus
+                  }));
+                  console.log('fetchApplicantInfo');
+                  setData(mappedApplicantdata);
+              } else {
+                  console.error('Results is not an array:', Applicantdata.results);
+              }
+          } catch (error) {
+              console.log('Failed to retrieve applicant info:', error);
+          }
+        }
+        fetchApplicantInfo(); 
+      }
+  }
+    else{
+      if(selectedCourse !== 'ทั้งหมด'){
+        async function fetchApplicantInfo() {
+          try {
+              const Applicantdata = await getApplicantInfoByEnrollCourse(selectedCourse);
+      
+              // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
+              if (Array.isArray(Applicantdata.results)) {
+                  const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                      Enroll_No: Enroll_No,
+                      Enroll_ID: item.Enroll_ID, 
+                      Registration_Number: item.Registration_Number,
+                      Registration_Date: formatDateThaiYear(item.Registration_Date),
+                      Applicant_name_title: item.Applicant_name_title,
+                      Applicants_first_name: item.Applicants_first_name, 
+                      Applicants_last_name: item.Applicants_last_name, 
+                      TranscriptFile: item.TranscriptFile, 
+                      HouseRegFile: item.HouseRegFile, 
+                      Educational_Program: item.Educational_Program,
+                      Exam_results: item.Exam_results,
+                      ExamStatus: item.ExamStatus,
+                      EnrollStatus: item.EnrollStatus
+                  }));
+                  console.log('fetchApplicantInfo');
+                  setData(mappedApplicantdata);
+              } else {
+                  console.error('Results is not an array:', Applicantdata.results);
+              }
+          } catch (error) {
+              console.log('Failed to retrieve applicant info:', error);
+          }
+      }
+      fetchApplicantInfo(); 
+    }
+    else{
+      getApplicantInfo();
+    }
+  }
+}, [SelectedExamStatus])
+
+useEffect(() => {
+  console.log('SelectedEnrollStatus',SelectedEnrollStatus);
+  console.log('selectedCourse',selectedCourse);
+  if(SelectedEnrollStatus !== 'ทั้งหมด'){
+    if(selectedCourse === 'ทั้งหมด'){
+      async function fetchApplicantInfo() {
+        try {
+            const Applicantdata = await getApplicantInfoByAllCourseEnrollStatus(SelectedEnrollStatus);
+
+            // ตรวจสอบว่า Applicantdata ไม่เป็น null และไม่เป็น undefined
+            if (Applicantdata && Applicantdata.results) {
+                // ตรวจสอบว่า Applicantdata.results เป็น array หรือไม่
+                if (Array.isArray(Applicantdata.results)) {
+                    const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                        Enroll_No: Enroll_No,
+                        Enroll_ID: item.Enroll_ID, 
+                        Registration_Number: item.Registration_Number,
+                        Registration_Date: formatDateThaiYear(item.Registration_Date),
+                        Applicant_name_title: item.Applicant_name_title,
+                        Applicants_first_name: item.Applicants_first_name, 
+                        Applicants_last_name: item.Applicants_last_name, 
+                        TranscriptFile: item.TranscriptFile, 
+                        HouseRegFile: item.HouseRegFile, 
+                        Educational_Program: item.Educational_Program,
+                        Exam_results: item.Exam_results === null ? "" : item.Exam_results,
+                        ExamStatus: item.ExamStatus === null ? "" : item.ExamStatus,
+                        EnrollStatus: item.EnrollStatus
+                    }));
+                    console.log('fetchApplicantInfo');
+                    setData(mappedApplicantdata);
+                } else {
+                    console.log('Results is not an array:', Applicantdata.results);
+                }
+            } else {
+                console.log('Applicantdata or Applicantdata.results is null or undefined',Applicantdata);
+            }
+        } catch (error) {
+            console.log('Failed to retrieve applicant info:', error);
+        }
+    }
+    fetchApplicantInfo();
+    
+    }
+    else{
+      async function fetchApplicantInfo() {
+        try {
+            const Applicantdata = await getApplicantInfoByEnrollStatus(selectedCourse, SelectedEnrollStatus);
+            
+            // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
+            if (Array.isArray(Applicantdata.results)) {
+                const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                    Enroll_No: Enroll_No,
+                    Enroll_ID: item.Enroll_ID, 
+                    Registration_Number: item.Registration_Number,
+                    Registration_Date: formatDateThaiYear(item.Registration_Date),
+                    Applicant_name_title: item.Applicant_name_title,
+                    Applicants_first_name: item.Applicants_first_name, 
+                    Applicants_last_name: item.Applicants_last_name, 
+                    TranscriptFile: item.TranscriptFile, 
+                    HouseRegFile: item.HouseRegFile, 
+                    Educational_Program: item.Educational_Program,
+                    Exam_results: item.Exam_results === null ? "" : item.Exam_results,
+                    ExamStatus: item.ExamStatus === null ? "" : item.ExamStatus,
+                    EnrollStatus: item.EnrollStatus
+                }));
+                console.log('fetchApplicantInfo');
+                setData(mappedApplicantdata);
+            } else {
+                console.error('Results is not an array:', Applicantdata.results);
+            }
+        } catch (error) {
+            console.log('Failed to retrieve applicant info:', error);
+        }
+      }
+      fetchApplicantInfo(); 
+    }
+  }
+    else{
+      if(selectedCourse !== 'ทั้งหมด'){
+        async function fetchApplicantInfo() {
+          try {
+              const Applicantdata = await getApplicantInfoByEnrollCourse(selectedCourse);
+      
+              // ตรวจสอบว่า Applicantdata เป็น array หรือไม่
+              if (Array.isArray(Applicantdata.results)) {
+                  const mappedApplicantdata = Applicantdata.results.map(item => ({ 
+                      Enroll_No: Enroll_No,
+                      Enroll_ID: item.Enroll_ID, 
+                      Registration_Number: item.Registration_Number,
+                      Registration_Date: formatDateThaiYear(item.Registration_Date),
+                      Applicant_name_title: item.Applicant_name_title,
+                      Applicants_first_name: item.Applicants_first_name, 
+                      Applicants_last_name: item.Applicants_last_name, 
+                      TranscriptFile: item.TranscriptFile, 
+                      HouseRegFile: item.HouseRegFile, 
+                      Educational_Program: item.Educational_Program,
+                      Exam_results: item.Exam_results,
+                      ExamStatus: item.ExamStatus,
+                      EnrollStatus: item.EnrollStatus
+                  }));
+                  console.log('fetchApplicantInfo');
+                  setData(mappedApplicantdata);
+              } else {
+                  console.error('Results is not an array:', Applicantdata.results);
+              }
+          } catch (error) {
+              console.log('Failed to retrieve applicant info:', error);
+          }
+      }
+      fetchApplicantInfo(); 
+    }
+    else{
+      getApplicantInfo();
+    }
+  }
+}, [SelectedEnrollStatus])
+
+
+// SelectedEnrollStatus
 
     // useEffect(() => {
     //     console.log('dataka',data)
@@ -400,7 +781,7 @@ const Check_Applicant_Information = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {currentItems.map((item, index) => (
+                      {data.map((item, index) => (
                         <tr key={item.Enroll_ID} style={{ height: '50px' }}>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Registration_Number}</td>
                           <td style={{ backgroundColor: '#FFFFFF', fontSize: '16px' }}>{item.Registration_Date}</td>
@@ -485,7 +866,7 @@ const Check_Applicant_Information = () => {
                                   value={item.ExamStatus}
                                   onChange={(e) => handleChange(item.Enroll_ID, 'ExamStatus', e.target.value)}
                                   className="custom-select">
-                                  <option value="">-</option>
+                                  <option value="-">-</option>
                                   <option value="ผ่าน">ผ่าน</option>
                                   <option value="ไม่ผ่าน">ไม่ผ่าน</option>
                                   <option value="ขาดสอบ">ขาดสอบ</option>

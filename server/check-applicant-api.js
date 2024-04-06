@@ -3,10 +3,36 @@ const router = express.Router();
 
 module.exports = function(connection) {
     router.post('/get-applicant-info', (req, res) => {
+        // const sql = `
+        //     SELECT 
+        //         Enroll_ID AS Enroll_ID, 
+        //         Enroll_No AS Registration_Number, 
+        //         Enroll_Date AS Registration_Date, 
+        //         NameTitle AS Applicant_name_title, 
+        //         FirstName AS Applicants_first_name, 
+        //         LastName AS Applicants_last_name, 
+        //         Enroll_Course AS Educational_Program, 
+        //         Admission_Scores AS Exam_results, 
+        //         Admission_Status AS ExamStatus, 
+        //         Enroll_Status AS EnrollStatus
+        //     FROM 
+        //         enrollment
+        //     JOIN
+        //         applicant
+        //     ON
+        //         applicant.Student_NID = enrollment.Student_NID
+        //     WHERE
+        //         Enroll_Year = ?
+        // `;
+
+        // Enroll_ID AS Enroll_ID, 
+
+
         const sql = `
             SELECT 
+                Enroll_No As Enroll_No,
                 Enroll_ID AS Enroll_ID, 
-                Enroll_No AS Registration_Number, 
+                Enroll_ID AS Registration_Number, 
                 Enroll_Date AS Registration_Date, 
                 NameTitle AS Applicant_name_title, 
                 FirstName AS Applicants_first_name, 
@@ -23,7 +49,6 @@ module.exports = function(connection) {
                 applicant.Student_NID = enrollment.Student_NID
             WHERE
                 Enroll_Year = ?
-    
         `;
         connection.query(sql, [new Date().getFullYear()], (err, results) => {
             if (err) {
@@ -38,6 +63,219 @@ module.exports = function(connection) {
             return res.status(200).json({results, message: 'Retrieve applitcant info successfully' });
         });
     });
+
+    router.post('/get-applicant-Enroll-Course', (req, res) => {
+        const { enrollCourse } = req.body; // สมมติว่าค่า Enroll_Course ที่ต้องการกรองมาจาก request body
+    
+        const sql = `
+            SELECT 
+                Enroll_No As Enroll_No,
+                Enroll_ID AS Enroll_ID, 
+                Enroll_ID AS Registration_Number, 
+                Enroll_Date AS Registration_Date, 
+                NameTitle AS Applicant_name_title, 
+                FirstName AS Applicants_first_name, 
+                LastName AS Applicants_last_name, 
+                Enrollment.Enroll_Course AS Educational_Program, 
+                Admission_Scores AS Exam_results, 
+                Admission_Status AS ExamStatus, 
+                Enroll_Status AS EnrollStatus
+            FROM 
+                enrollment
+            JOIN
+                applicant
+            ON
+                applicant.Student_NID = enrollment.Student_NID
+            WHERE
+                Enroll_Year = ? 
+                AND Enrollment.Enroll_Course = ?`; 
+    
+        connection.query(sql, [new Date().getFullYear(), enrollCourse], (err, results) => {
+            if (err) {
+                console.error('Error querying get applicant info:', err);
+                return res.status(200).json({ error: 'Failed to retrieve applicant info' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(200).json({ message: 'Info not found' });
+            }
+    
+            return res.status(200).json({ results, message: 'Retrieve applicant info successfully' });
+        });
+    });
+
+    router.post('/get-applicant-Admission-Status', (req, res) => {
+        const { enrollCourse, admissionStatus } = req.body; // สมมติว่าค่า Enroll_Course และ Admission_Status ที่ต้องการกรองมาจาก request body
+    
+        const sql = `
+            SELECT 
+                Enroll_No As Enroll_No,
+                Enroll_ID AS Enroll_ID, 
+                Enroll_ID AS Registration_Number, 
+                Enroll_Date AS Registration_Date, 
+                NameTitle AS Applicant_name_title, 
+                FirstName AS Applicants_first_name, 
+                LastName AS Applicants_last_name, 
+                Enrollment.Enroll_Course AS Educational_Program, 
+                Admission_Scores AS Exam_results, 
+                Admission_Status AS ExamStatus, 
+                Enroll_Status AS EnrollStatus
+            FROM 
+                enrollment
+            JOIN
+                applicant
+            ON
+                applicant.Student_NID = enrollment.Student_NID
+            WHERE
+                Enroll_Year = ? 
+                AND Enrollment.Enroll_Course = ?
+                AND Enrollment.Admission_Status = ?`; 
+    
+        connection.query(sql, [new Date().getFullYear(), enrollCourse, admissionStatus], (err, results) => {
+            if (err) {
+                console.error('Error querying get applicant info:', err);
+                return res.status(200).json({ error: 'Failed to retrieve applicant info' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(200).json({ message: 'Info not found' });
+            }
+    
+            return res.status(200).json({ results, message: 'Retrieve applicant info successfully' });
+        });
+    });
+
+    router.post('/get-applicant-AllCourse-AdmissionStatus', (req, res) => {
+        const { admissionStatus } = req.body; // สมมติว่าค่า Enroll_Course และ Admission_Status ที่ต้องการกรองมาจาก request body
+    
+        const sql = `
+            SELECT 
+                Enroll_No As Enroll_No,
+                Enroll_ID AS Enroll_ID, 
+                Enroll_ID AS Registration_Number, 
+                Enroll_Date AS Registration_Date, 
+                NameTitle AS Applicant_name_title, 
+                FirstName AS Applicants_first_name, 
+                LastName AS Applicants_last_name, 
+                Enrollment.Enroll_Course AS Educational_Program, 
+                Admission_Scores AS Exam_results, 
+                Admission_Status AS ExamStatus, 
+                Enroll_Status AS EnrollStatus
+            FROM 
+                enrollment
+            JOIN
+                applicant
+            ON
+                applicant.Student_NID = enrollment.Student_NID
+            WHERE
+                Enroll_Year = ? 
+                AND Enrollment.Admission_Status = ?`; 
+    
+        connection.query(sql, [new Date().getFullYear(), admissionStatus], (err, results) => {
+            if (err) {
+                console.error('Error querying get applicant info:', err);
+                return res.status(200).json({ error: 'Failed to retrieve applicant info' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(200).json({ message: 'Info not found' });
+            }
+    
+            return res.status(200).json({ results, message: 'Retrieve applicant info successfully' });
+        });
+    });
+
+
+
+
+
+
+    router.post('/get-applicant-Enroll-Status', (req, res) => {
+        const { enrollCourse, enrollStatus } = req.body; 
+        const sql = `
+            SELECT 
+                Enroll_No As Enroll_No,
+                Enroll_ID AS Enroll_ID, 
+                Enroll_ID AS Registration_Number, 
+                Enroll_Date AS Registration_Date, 
+                NameTitle AS Applicant_name_title, 
+                FirstName AS Applicants_first_name, 
+                LastName AS Applicants_last_name, 
+                Enrollment.Enroll_Course AS Educational_Program, 
+                Admission_Scores AS Exam_results, 
+                Admission_Status AS ExamStatus, 
+                Enroll_Status AS EnrollStatus
+            FROM 
+                enrollment
+            JOIN
+                applicant
+            ON
+                applicant.Student_NID = enrollment.Student_NID
+            WHERE
+                Enroll_Year = ? 
+                AND Enrollment.Enroll_Course = ?
+                AND Enrollment.Enroll_Status = ?`; 
+    
+        connection.query(sql, [new Date().getFullYear(), enrollCourse, enrollStatus], (err, results) => {
+            if (err) {
+                console.error('Error querying get applicant info:', err);
+                return res.status(200).json({ error: 'Failed to retrieve applicant info' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(200).json({ message: 'Info not found' });
+            }
+    
+            return res.status(200).json({ results, message: 'Retrieve applicant info successfully' });
+        });
+    });
+
+    router.post('/get-applicant-AllCourse-EnrollStatus', (req, res) => {
+        const { enrollStatus } = req.body; // สมมติว่าค่า Enroll_Course และ Admission_Status ที่ต้องการกรองมาจาก request body
+    
+        const sql = `
+            SELECT 
+                Enroll_No As Enroll_No,
+                Enroll_ID AS Enroll_ID, 
+                Enroll_ID AS Registration_Number, 
+                Enroll_Date AS Registration_Date, 
+                NameTitle AS Applicant_name_title, 
+                FirstName AS Applicants_first_name, 
+                LastName AS Applicants_last_name, 
+                Enrollment.Enroll_Course AS Educational_Program, 
+                Admission_Scores AS Exam_results, 
+                Admission_Status AS ExamStatus, 
+                Enroll_Status AS EnrollStatus
+            FROM 
+                enrollment
+            JOIN
+                applicant
+            ON
+                applicant.Student_NID = enrollment.Student_NID
+            WHERE
+                Enroll_Year = ? 
+                AND Enrollment.Enroll_Status = ?`; 
+    
+        connection.query(sql, [new Date().getFullYear(), enrollStatus], (err, results) => {
+            if (err) {
+                console.error('Error querying get applicant info:', err);
+                return res.status(200).json({ error: 'Failed to retrieve applicant info' });
+            }
+    
+            if (results.length === 0) {
+                return res.status(200).json({ message: 'Info not found' });
+            }
+    
+            return res.status(200).json({ results, message: 'Retrieve applicant info successfully' });
+        });
+    });
+
+
+
+
+
+    
+    
 
     router.post('/update-applicant-info', (req, res) => {
         const {score,exam_status,enroll_status,enroll_no} = req.body

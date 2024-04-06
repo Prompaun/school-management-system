@@ -302,7 +302,7 @@ const Subject_Score_Record = ({Role, Email}) => {
                     id: Assessment[id].Assessment_id
                 });  
                 setAssessment(Assessment.filter((row) => row.id !== id));
-                alert('ลบข้อมูลเสร็จสิ้น')
+                // alert('ลบข้อมูลเสร็จสิ้น')
                 setShowModalDelete(true);
 
                 getStudentInfo();
