@@ -59,6 +59,7 @@ export const UserContext = createContext();
 // Main App component
 function App() {
   const apiUrl = process.env.API_URL
+  console.log('apiUrl',apiUrl);
   const [user, setUser] = useState(null);
   const [Role, setRole] = useState('');
   const [login_Email, setlogin_Email] = useState('');
