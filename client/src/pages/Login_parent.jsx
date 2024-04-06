@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import GoogleIMG from '../images/google.png'
 // require("dotenv").config();
 const Login_parent = () => {
+    // const apiUrl = "http://localhost:8080"
     const apiUrl = process.env.API_URL
     const containerStyle = {
         position: 'relative', // เพื่อให้สามารถใส่คำว่า "ระบบ" ลงในภาพได้
@@ -76,7 +77,7 @@ const Login_parent = () => {
 //     );
 // };
 const google = () => {
-    window.open(apiUrl + "/auth/google/callback", "_self");
+    window.open(apiUrl + "/auth/google", "_self");
     apiUrl('apiUrl',apiUrl);
 };
 
