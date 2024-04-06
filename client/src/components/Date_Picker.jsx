@@ -52,7 +52,7 @@ function Date_Picker({ value, onChange }) {
     }, [value]); // เฝ้าดูการเปลี่ยนแปลงของ value และอัพเดต startDate เมื่อ value เปลี่ยน
 
     const currentYear = new Date().getFullYear();
-    const years = Array.from({ length: currentYear - 1989 }, (_, index) => 1990 + index);
+    const years = Array.from({ length: currentYear - 1949 }, (_, index) => 1950 + index);
     const months = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
