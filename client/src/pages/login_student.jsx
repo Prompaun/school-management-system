@@ -62,7 +62,7 @@ const Login_student = () => {
             });
             
             const { exist } = response.data;
-            
+            // console.log(exist,'exist');
             if (exist) {
                 // ถ้ามีการตรวจสอบสำเร็จและข้อมูลถูกต้อง
                 // setuuuuu(formData.username);

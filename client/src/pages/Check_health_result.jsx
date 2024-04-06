@@ -63,7 +63,7 @@ function Check_health_result({login_Email}) {
 
   async function getStudentIdByParentEmail(email) {
     try {
-        const response = await axios.get('http://localhost:8080/get-student-id-request-by-parent-email', {
+        const response = await axios.get('http://localhost:8080/get-student-id-by-parent-email', {
             params: {
                 email: email
             }
