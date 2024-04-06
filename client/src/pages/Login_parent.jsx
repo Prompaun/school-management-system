@@ -82,7 +82,7 @@ const google = () => {
     return (
         <>
             {/* <Navbar/> */}
-            <Header header="ระบบบริการข้อมูล" subhead="สำหรับผู้ปกครอง"/>
+            <Header header="ระบบบริการข้อมูล" subhead="สำหรับผู้ปกครองและบุคลากรภายในโรงเรียน"/>
 
            
         <div className="d-flex flex-column"style={{fontFamily: 'Kanit, sans-serif',height: '100vh'}}>
