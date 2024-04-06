@@ -46,9 +46,9 @@ function CheckEnroll_status({Email}) {
 
           Axios.get('http://localhost:8080/dropdownData_EnrollStatus/'+Email)
           .then((response) => {
-            console.log("so sad cannot connect to http://localhost:8080/dropdownArray_EnrollStatus",response.data);
+            // console.log("so sad cannot connect to http://localhost:8080/dropdownArray_EnrollStatus",response.data);
             setEnroll_dataDropdownList(response.data);
-            console.log("hello world",response.data[0].Name);
+            console.log("ok",response.data[0].Name);
           }).catch((err) => {
             console.log(err)
           });
@@ -57,15 +57,17 @@ function CheckEnroll_status({Email}) {
         Axios.get('http://localhost:8080/defaultData_EnrollStatus/'+Email)
         // Axios.get('http://localhost:8080/CheckEnroll_status/1')
             .then((response) => {
-              console.log("so sad cannot connect to http://localhost:8080/defaultData_EnrollStatus/"+Email,response.data);
+              // console.log("so sad cannot connect to http://localhost:8080/defaultData_EnrollStatus/"+Email,response.data);
+              console.log('ok')
               setEnroll_statusList(response.data);
             }).catch((err) => {
-              console.log(err)
+
+              console.log('errerrerrerr',err)
             });
       }, []);
 
       useEffect(() => {
-        console.log("ค่าที่เลือกใน dropdown:", selectedApplicantData);
+        // console.log("ค่าที่เลือกใน dropdown:", selectedApplicantData);
         if (selectedApplicantData) {
             const dataParts = selectedApplicantData.split('/');
             if (dataParts.length === 3) {
@@ -79,8 +81,8 @@ function CheckEnroll_status({Email}) {
                 
                 const studentNIDMap = new Map(Enroll_dataDropdownList.map(student => [`${student.FirstName} ${student.LastName}`, student.Student_NID]));
                 const studentNID = studentNIDMap.get(selectedName);
-                console.log("studentNIDMap",studentNIDMap);
-                console.log("studentNID",studentNID);
+                // console.log("studentNIDMap",studentNIDMap);
+                // console.log("studentNID",studentNID);
                 // const nameIndex = Enroll_ArrayDropdownList[0].Name.indexOf(selectedName);
                 // if (nameIndex !== -1) {
                   // const nidValue = Enroll_ArrayDropdownList[0].array[nameIndex];
@@ -98,15 +100,15 @@ function CheckEnroll_status({Email}) {
                       }
                     });
               // }
-                console.log("ชื่อ:", selectedName);
-                console.log("ปีการศึกษา:", selectedYear);
-                console.log("หลักสูตร:", selectedCourse);
+                // console.log("ชื่อ:", selectedName);
+                // console.log("ปีการศึกษา:", selectedYear);
+                // console.log("หลักสูตร:", selectedCourse);
 
             } else {
-                console.log("ข้อมูลที่เลือกไม่ถูกต้อง");
+                // console.log("ข้อมูลที่เลือกไม่ถูกต้อง");
             }
         } else {
-            console.log("ไม่มีข้อมูลที่เลือก");
+            // console.log("ไม่มีข้อมูลที่เลือก");
         }
     }, [selectedApplicantData]);
 
@@ -128,10 +130,12 @@ function CheckEnroll_status({Email}) {
           </div>
 
           <div className="dropdown" style={{ maxWidth: '100%' }}>
+            {/* <select value={selectedApplicantData} onChange={handleApplicantDataChange} className="custom-select"> */}
             <select value={selectedApplicantData} onChange={handleApplicantDataChange} className="custom-select">
-              <option value="">
-                เลือกผู้สมัคร/ปีการศึกษา/หลักสูตร
-              </option>
+              {/* <option value=""> */}
+                {/* เลือกผู้สมัคร/ปีการศึกษา/หลักสูตร */}
+                {/* {Enroll_dataDropdownList[0].FirstName + " " + Enroll_dataDropdownList[0].LastName + " /" + Enroll_dataDropdownList[0].Enroll_Year + " /" + Enroll_dataDropdownList[0].Enroll_Course}
+              </option> */}
               
               {Enroll_dataDropdownList.length > 0 && Enroll_dataDropdownList.map((applicant, index) => (
                 <option key={index} value={`${applicant.FirstName} ${applicant.LastName} / ${applicant.Enroll_Year} / ${applicant.Enroll_Course}`}>

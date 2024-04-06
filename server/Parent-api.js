@@ -932,7 +932,7 @@ router.get("/CheckEnroll_status", async (req, res) => {
 
     try {
         connection.query(
-            "SELECT app.NameTitle, app.FirstName, app.LastName, app.Student_NID, enroll.Enroll_ID, enroll.Enroll_Year, enroll.Enroll_Course, enroll.Enroll_Status FROM applicant AS app JOIN enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE enroll.Student_NID = ? AND enroll.Enroll_Year = ? AND enroll.Enroll_Course = ?",
+            "SELECT app.Applicant_ID, app.NameTitle, app.FirstName, app.LastName, app.Student_NID, enroll.Enroll_ID, enroll.Enroll_Year, enroll.Enroll_Course, enroll.Enroll_Status FROM applicant AS app JOIN enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE enroll.Student_NID = ? AND enroll.Enroll_Year = ? AND enroll.Enroll_Course = ?",
             [Enroll_ID, Enroll_Year, Enroll_Course],
             (err, results, fields) => {
                 if (err) {
@@ -1124,7 +1124,26 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
 
                 // Query to fetch details from Applicant table based on the obtained Student_NIDs
                 connection.query(
-                    "SELECT app.NameTitle, app.FirstName, app.LastName, app.Student_NID, enroll.Enroll_ID, enroll.Enroll_Year, enroll.Enroll_Course, enroll.Enroll_Status FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE app.Student_NID IN (?)",
+                    `SELECT 
+                        app.NameTitle, 
+                        app.FirstName, 
+                        app.LastName, 
+                        app.Student_NID, 
+                        enroll.Enroll_ID, 
+                        enroll.Enroll_Year, 
+                        enroll.Enroll_Course, 
+                        enroll.Enroll_Status 
+                    FROM 
+                        Applicant AS app 
+                    INNER JOIN 
+                        Enrollment AS enroll 
+                    ON 
+                        app.Student_NID = enroll.Student_NID 
+                    WHERE 
+                        app.Student_NID IN (?)
+                    ORDER BY 
+                        enroll.Enroll_ID ASC;
+                    `,
 //app.FirstName, app.LastName, enroll.Enroll_ID, enroll.Student_NID, enroll.Enroll_Year, enroll.Enroll_Course FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID 
                     [studentNIDs],
                     (err, applicantResults, fields) => {
@@ -1159,11 +1178,12 @@ router.get("/DropdownData_EnrollStatus/:parentEmail", async (req, res) => {
 //แสดงข้อมูลหน้าตรวจสอบสถานะการสมัครเรียนแบบ default เลือกแสดงจากผู้สมัครคนล่าสุด
 router.get("/defaultData_EnrollStatus/:parentEmail", async (req, res) => {
     const parentEmail = req.params.parentEmail;
-
+console.log('parentEmail',parentEmail);
     try {
         // Query to get Student_NIDs from Applicant_ParentEmail table based on the provided ParentEmail
         connection.query(
-            "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+            // "SELECT Student_NID FROM Applicant_ParentEmail WHERE first_ParentEmail = ? OR second_ParentEmail = ? OR third_ParentEmail = ?",
+            "SELECT Student_NID FROM applicant WHERE ParentEmail = ?",
             [parentEmail, parentEmail, parentEmail],
             (err, parentEmailResults, fields) => {
                 if (err) {
@@ -1176,7 +1196,7 @@ router.get("/defaultData_EnrollStatus/:parentEmail", async (req, res) => {
                 }
 
                 const studentNIDs = parentEmailResults.map(result => result.Student_NID);
-
+                console.log('studentNIDs',studentNIDs);
                 // Query to fetch details from Applicant table based on the obtained Student_NIDs
                 connection.query(
                     "SELECT app.FirstName, app.LastName, enroll.Enroll_ID, enroll.Enroll_Year, enroll.Enroll_Course FROM Applicant AS app INNER JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE app.Student_NID IN (?)",
@@ -1213,24 +1233,26 @@ router.get("/defaultData_EnrollStatus/:parentEmail", async (req, res) => {
                         const finalResponse = [{
                             Enroll_ID: maxEnrollID.toString(),
                             Enroll_Year: maxEnrollYear.toString(),
-                            Enroll_Course: courseCount === 1 ? Array.from(uniqueEnrollCourses)[0] : (courseCount >= 2 ? "หลักสูตรปกติ" : "ไม่พบข้อมูลการสมัครเรียน")
+                            Enroll_Course: courseCount === 1 ? Array.from(uniqueEnrollCourses)[0] : (courseCount >= 2 ? "หลักสูตรทั่วไป" : "ไม่พบข้อมูลการสมัครเรียน")
                         }];
 
                         // Now, using the Enroll_ID from the finalResponse, proceed with the next query
                         const enrollID = finalResponse[0].Enroll_ID;
+                        console.log('enrollID',enrollID);
                         connection.query(
                             "SELECT app.NameTitle, app.FirstName, app.LastName, app.Student_NID, enroll.Enroll_ID, enroll.Enroll_Year, enroll.Enroll_Course, enroll.Enroll_Status FROM Applicant AS app JOIN Enrollment AS enroll ON app.Student_NID = enroll.Student_NID WHERE enroll.Enroll_ID = ?",
                             [enrollID],
                             (err, results, fields) => {
                                 if (err) {
                                     console.log("Error while retrieving data from the database", err);
-                                    return res.status(500).json({ error: err.message });
+                                    return res.status(200).json({ error: err.message });///////////////
                                 }
 
                                 if (results.length === 0) {
-                                    return res.status(404).json({ error: "Applicant not found" });
+                                    console.log("results", results);
+                                    return res.status(200).json({ error: "Applicant not found" });///////////////
                                 }
-
+                                
                                 // Map through the results array to format the data
                                 const formattedData = results.map(result => ({
                                     NameTitle: result.NameTitle,
