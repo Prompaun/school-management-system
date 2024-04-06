@@ -18,9 +18,8 @@ const Check_Applicant_Information = () => {
     const [ShowExamStatusCheck,setShowExamStatusCheck] = useState(false);
     const [ShowEnrollStatusCheck,setShowEnrollStatusCheck] = useState(false);
 
+    const [oldData, setOldData] = useState([])
     const [data, setData] = useState([
-        
-            
             // { Enroll_ID:1, 
             // Registration_Number: 'XXX1',
             //  Registration_Date: '12/05/2566',
@@ -60,21 +59,20 @@ const Check_Applicant_Information = () => {
             // ExamStatus: "",
             // EnrollStatus:""
             // },
-            
-        
         ]);
 
     const handleSelectCourseChange = (event) => {
         setSelectedCourse(event.target.value);
         };
     const handleSelectExamStatusChange = (event) => {
-        let value
-        if (event.target.value === "") {
-            value = null
-        } else {
-            value = event.target.value
-        }
-        setSelectedExamStatus(value);
+        // let value
+        // if (event.target.value === "") {
+        //     value = null
+        // } else {
+        //     value = event.target.value
+        // }
+        // setSelectedExamStatus(value);
+        setSelectedExamStatus(event.target.value);
         };
     const handleSelectEnrollStatusChange = (event) => {
         setSelectedEnrollStatus(event.target.value);
@@ -84,65 +82,94 @@ const Check_Applicant_Information = () => {
     // const [editedData, setEditedData] = useState(data);
     const [isEditing, setIsEditing] = useState(false);
 
-    const filteredData = data.filter((item) => {
+    // const filteredData = data.filter((item) => {
         
-        // if (isEditing && item.Enroll_ID === editingId) {
-        //     return true;
-        // }
+    //     // if (isEditing && item.Enroll_ID === editingId) {
+    //     //     return true;
+    //     // }
+        
+    //     if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
+    //         return true;
+    //      }
+    //      if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
+
+    //         return item.Educational_Program === selectedCourse && item.ExamStatus === SelectedExamStatus;
+    //      }
+    //      if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
+
+    //         return item.ExamStatus === SelectedExamStatus;
+    //      }
+    //     if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
+
+    //         return item.Educational_Program === selectedCourse && item.EnrollStatus === SelectedEnrollStatus;
+    //      }
+    //      if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
+
+    //         return item.EnrollStatus === SelectedEnrollStatus;
+    //      }
+    //     if (selectedCourse !== 'ทั้งหมด'){
+    //         return item.Educational_Program === selectedCourse;
+    //      }
+        
+          
+    //     });
+
+    const selectedDropdown = oldData.filter((item) => {
         
         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
             return true;
-         }
-         if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
+            }
+            if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด'&& SelectedEnrollStatus === 'ทั้งหมด'){
 
             return item.Educational_Program === selectedCourse && item.ExamStatus === SelectedExamStatus;
-         }
-         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
+            }
+            if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus !== 'ทั้งหมด' && SelectedEnrollStatus === 'ทั้งหมด'){
 
             return item.ExamStatus === SelectedExamStatus;
-         }
+            }
         if (selectedCourse !== 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
 
             return item.Educational_Program === selectedCourse && item.EnrollStatus === SelectedEnrollStatus;
-         }
-         if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
+            }
+            if (selectedCourse === 'ทั้งหมด'&& SelectedExamStatus === 'ทั้งหมด'&& SelectedEnrollStatus !== 'ทั้งหมด'){
 
             return item.EnrollStatus === SelectedEnrollStatus;
-         }
+            }
         if (selectedCourse !== 'ทั้งหมด'){
             return item.Educational_Program === selectedCourse;
-         }
-        
-          
-        });
+            }
+        }).map((mapData) => mapData.Enroll_ID);
     
-
+    const filteredData = data.map((item) => 
+        selectedDropdown.includes(item.Enroll_ID) ? item : null
+    ).filter((item) => item !== null)
 
     const handleEditRow = (Enroll_ID) => {
         setIsEditing(true);
         setEditingId(Enroll_ID === editingId ? null : Enroll_ID);
         if (editingId===Enroll_ID){
             setShowModalSuccess(true)
-                console.log("item.Enroll_ID",Enroll_ID)
-                console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
-                const changeData = data.find(element => element.Enroll_ID === Enroll_ID)
-                updateApplicantInfo(changeData)
-                // setIsEditing(false);
-                if (changeData.ExamStatus === "ผ่าน") {
-                    insertApplicanttoStudentInfo(changeData)
-                   
-
-                }
-                
+            // console.log("item.Enroll_ID",Enroll_ID)
+            // console.log("get data change",data.find((item) => item.Enroll_ID === Enroll_ID))
+            const changeData = data.find(element => element.Enroll_ID === Enroll_ID)
+            updateApplicantInfo(changeData)
+            // setIsEditing(false);
+            if (changeData.ExamStatus === "ผ่าน") {
+                insertApplicanttoStudentInfo(changeData)
+            }
+            
+            setOldData(data)
+        } else {
+            setData(oldData)
         }
        getApplicantInfo()
     };
 
 
     const handleChange = (Enroll_ID, field, value) => {
-        if (value === "") {
-            value = null
-        }
+        // if (value === "") {
+        //     value = null
+        // }
         // && data.find(element => element.Enroll_ID === Enroll_ID).EnrollStatus === "มอบตัวสำเร็จ"
  
         setData(
@@ -198,8 +225,11 @@ const Check_Applicant_Information = () => {
             const response = await axios.post('http://localhost:8080/get-applicant-info', {});
             response.data.results.forEach((element,index) => {
                 element.Registration_Date = formatDateThaiYear(element.Registration_Date)
+                element.ExamStatus = element.ExamStatus === null ? "" : element.ExamStatus
+                element.Exam_results = element.Exam_results === null ? "" : element.Exam_results
             })
             setData(response.data.results)
+            setOldData(response.data.results)
             return response.data;
         } catch (error) {
             console.error('Error fetching classRoom dropdown:', error);
@@ -210,8 +240,8 @@ const Check_Applicant_Information = () => {
     async function updateApplicantInfo(changeData) {
         try {
             const response = await axios.post('http://localhost:8080/update-applicant-info', {
-                score: changeData.Exam_results || null,
-                exam_status: changeData.ExamStatus || null,
+                score: changeData.Exam_results === "" ? null : changeData.Exam_results,
+                exam_status: changeData.ExamStatus === "" ? null : changeData.ExamStatus,
                 enroll_status: changeData.EnrollStatus || "รอการสอบคัดเลือก",
                 enroll_no: changeData.Registration_Number
             });
@@ -238,9 +268,21 @@ const Check_Applicant_Information = () => {
         getApplicantInfo()
     }, [])
 
-    useEffect(() => {
-        console.log('dataka',data)
-    }, [data])
+    // useEffect(() => {
+    //     console.log('dataka',data)
+    // }, [data])
+
+    // useEffect(() => {
+    //     console.log('olddataka',oldData)
+    // }, [oldData])
+
+    // useEffect(() => {
+    //     console.log('change',selectedDropdown)
+    // }, [selectedDropdown])
+
+    // useEffect(() => {
+    //     console.log('fil;te',filteredData)
+    // }, [filteredData])
        
     const [ShowModalSuccess,setShowModalSuccess] = useState(false);
 
