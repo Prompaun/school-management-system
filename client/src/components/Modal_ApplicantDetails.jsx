@@ -117,7 +117,7 @@ function Modal_ApplicantDetails({show,setShow,applicant_id}) {
             const response = await axios.post('http://localhost:8080/get-applicant-detail-info', {
                 applicant: applicant_id
             });
-
+            console.log('res',response,applicant_id)
             const formatStudentDOB = formatDateThaiYear(response.data.results[0].Student_DOB)
             setStudentData([
                 {
@@ -199,7 +199,7 @@ function Modal_ApplicantDetails({show,setShow,applicant_id}) {
             
             return response.data;
         } catch (error) {
-            console.error('Error fetching classRoom dropdown:', error);
+            console.error('Error fetching ApplicantDetailInfo():', error);
             throw error;
         }
     };
@@ -382,7 +382,7 @@ function Modal_ApplicantDetails({show,setShow,applicant_id}) {
                 <button type="submit" className="btn btn-primary">file</button>
             </div> */}
 
-            <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
+            {/* <div className="d-flex align-items-center" style={{fontWeight:"bold",fontSize:"20px"}}>
                 <label htmlFor="FirstName" className="col-form-label">ข้อมูลการศึกษา</label>
             </div>
         
@@ -409,10 +409,10 @@ function Modal_ApplicantDetails({show,setShow,applicant_id}) {
                         fontSize: '18px'
                     }} 
                 />
-            </div>
+            </div> */}
 
             {/* <div className="align-items-center"> */}
-                <button 
+                {/* <button 
                         type="submit" 
                         className="btn btn-custom" 
                         style={{
@@ -424,15 +424,15 @@ function Modal_ApplicantDetails({show,setShow,applicant_id}) {
                         backgroundColor: '#EE82EE',
                         width: 'auto', // กำหนดความกว้าง
                         height: 'auto'  // กำหนดความสูง
-                        }}
-                        // onClick={StudentData[0].PreviousSchoolEducationalRecordsFile}
-                        onClick={() => window.open(StudentData[0].PreviousSchoolEducationalRecordsFile )}
-                    >
-                        <span>file</span>
-                </button>
+                        }} */}
+                        {/* onClick={StudentData[0].PreviousSchoolEducationalRecordsFile} */}
+                        {/* onClick={() => window.open(StudentData[0].PreviousSchoolEducationalRecordsFile )} */}
+                    {/* > */}
+                        {/* <span>file</span> */}
+                {/* </button> */}
 
                
-                </div>
+                {/* </div> */}
 
                 </div>
                 </div>

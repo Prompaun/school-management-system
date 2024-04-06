@@ -846,7 +846,7 @@ useEffect(() => {
                               border: "none",
                               background: "none"
                             }}
-                              onClick={(e) => handleShowDetail(item.Registration_Number)}>
+                              onClick={(e) => handleShowDetail(item.Enroll_No)}>
                               ดูรายละเอียด
                             </button>
                           </td> {/* Additional_Details */}
