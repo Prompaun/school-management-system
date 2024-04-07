@@ -57,7 +57,7 @@ function Student_Information(props) {
                 setStudentData(StudentInfo);
 
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.log('Error fetching getStudentInfoByID:', error);
             }
         };
 
