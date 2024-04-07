@@ -1,8 +1,10 @@
 import logoImage from '../images/IMG_5416.png';
 import React, { useEffect, useState } from 'react';
 import { Button,Dropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import personCircle from '../assets/person-circle.svg';
+import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import { Link ,useNavigate} from 'react-router-dom';
+import {gapi} from 'gapi-script';
 
 const Navbar = ({user, Role}) => {
   const linkStyle = {
@@ -89,6 +91,28 @@ const Navbar = ({user, Role}) => {
 
       console.log("ClassifyRole",ClassifyRole);
     }, [ClassifyRole]);
+    const navigate = useNavigate();
+    const ClientID = process.env.CLIENT_ID;
+        useEffect(() => {
+            const initClient = () => {
+            gapi.client.init({
+                cliendId: ClientID,
+                scope: ''
+            })
+        }
+        gapi.load("client:auth2", initClient)
+        },[])
+    
+        const onSuccess = (res) => {
+          // const email = res.profileObj.email;
+          if(res){
+              
+              updateProfile(null);
+          }
+          
+          navigate("/")
+          window.location.reload()
+      };
 
   return (
     <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>
@@ -150,14 +174,21 @@ const Navbar = ({user, Role}) => {
                   <Dropdown.Item>
                   <span>
                     {/* {user.email} */}
-                    {user.givenName}
+                    {user.name}
                     </span>
                     <br />
                     <span> 
                     {user.email}
                   </span>
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                  <Dropdown.Item >
+                    <GoogleLogout
+                      clientId={ClientID} 
+                      buttonText='Log Out'
+                      onLogoutSuccess={onSuccess}
+                      style={{fontFamily:'Kanit, sans-serif'}}
+                    />
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
         </span> ) 

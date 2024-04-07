@@ -206,17 +206,18 @@ console.log("ClientID",process.env.CLIENT_ID)
                                         <span className="d-flex align-items-center">หรือ </span>
                                     
                                </div> */}
-                               <div className="d-flex justify-content-center" style={{flexWrap:"wrap"}}>
+                               <div className="d-flex justify-content-center" style={{flexWrap:"wrap",fontFamily:'Kanit, sans-serif'}}>
                                {/* <button className="google_btn" onClick={GoogleLogin} >
                                         <img src={GoogleIMG} alt="google icon" />
                                         <span style={{fontSize:"20px"}}>เข้าสู่ระบบด้วย Google</span>
                                     </button> */}
                                     <GoogleLogin clientId={ClientID} 
-                                            buttonText='เข้าสู่ระบบด้วย Google'
+                                            buttonText='Log in with Google'
                                             onSuccess={onSuccess}
                                             onFailure={onFailure}
                                             cookiePolicy={'single_host_origin'}
                                             isSignedIn={true}
+                                            
                                     />
                                   
                                </div>
