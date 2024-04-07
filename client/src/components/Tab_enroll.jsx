@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Tab_enroll({ user }) {
-  const apiUrl = process.env.API_URL
+
   const linkStyle = {
       color: 'gray',
       textDecoration: 'none',
@@ -433,7 +433,7 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
           formData.append('file', HouseReg_file);
     
 
-          await axios.post(apiUrl + '/upload', formData, {
+          await axios.post('http://localhost:8080/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -456,7 +456,7 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
 
   async function checkEnrollment(Student_NID, Enroll_Date, Enroll_Year, Enroll_Course) {
     try {
-        const check_enrollment_response = await axios.get(apiUrl + `/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
+        const check_enrollment_response = await axios.get(`http://localhost:8080/check-student-enrollment?Student_NID=${Student_NID}&Enroll_Year=${Enroll_Year}&Enroll_Course=${Enroll_Course}`);
         const data = check_enrollment_response.data;
 
         if (data.length > 0) {
@@ -474,7 +474,7 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
                     Enroll_Status: "รอการสอบคัดเลือก"
                 };
                 // console.log("Enroll_Date",Enroll_Date);
-                const save_enrollment_response = await axios.post(apiUrl + '/enrollment', formData);
+                const save_enrollment_response = await axios.post('http://localhost:8080/enrollment', formData);
                 console.log(save_enrollment_response.data.message); // พิมพ์ข้อความตอบกลับจาก API ใน console
 
             } catch (error) {
@@ -497,7 +497,7 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
         };
 
         // เรียกใช้ API สำหรับเพิ่มอีเมล์ของผู้ปกครอง
-        const response = await axios.post(apiUrl + '/add-parent-emails', requestData);
+        const response = await axios.post('http://localhost:8080/add-parent-emails', requestData);
         
         // หากสำเร็จ
         console.log(response.data.message);
@@ -523,7 +523,7 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
         Role: Role,
         Tel: Tel
       }];
-        const response = await axios.post(apiUrl + '/Parent_information', parentData);
+        const response = await axios.post('http://localhost:8080/Parent_information', parentData);
         console.log(response.data.message);
         return response.data.message;
     } catch (error) {
@@ -560,7 +560,7 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
     // }];
     
     // // ส่งข้อมูลไปยังเส้นทาง /Parent_information โดยใช้ Axios
-    // axios.post(apiUrl + '/Parent_information', parentData)
+    // axios.post('http://localhost:8080/Parent_information', parentData)
     //   .then(response => {
     //     console.log(response.data);
     //     // ดำเนินการเพิ่มข้อมูลสำเร็จ

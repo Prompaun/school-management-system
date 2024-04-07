@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Button, Modal,Spinner } from 'react-bootstrap';
 
 function AddStudentID() {
-    const apiUrl = process.env.API_URL
+
     const [NewStudent,setNewStudent] = useState([
         // {id:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Course:"หลักสูตรทั่วไป",StudentNewID:"9"},
         // {id:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Course:"English Program (EP)",StudentNewID:""}
@@ -56,7 +56,7 @@ function AddStudentID() {
       //=============================api=============================
       async function getStidentInfo() {
         try {
-            const response = await axios.get(apiUrl + '/add-student-id-get-student-info', {});
+            const response = await axios.get('http://localhost:8080/add-student-id-get-student-info', {});
             const newData = response.data.map((item,index) => ({
               id: index,
               Data_id:item.id,
@@ -78,7 +78,7 @@ function AddStudentID() {
       async function updateStidentInfo(id) {
         try {
             console.log('current', NewStudent[id].StudentNewID, NewStudent[id].Data_id)
-            const response = await axios.post(apiUrl + '/add-student-id-update-student-info', {
+            const response = await axios.post('http://localhost:8080/add-student-id-update-student-info', {
               student_id: NewStudent[id].StudentNewID, 
               id: NewStudent[id].Data_id
             });

@@ -8,9 +8,9 @@ import eye_closed from "../images/eye-closed.png";
 import GoogleIMG from '../images/google.png'
 
 const Login_personnel = () => {
-    const apiUrl = process.env.API_URL
+
     const google = () => {
-        window.open(apiUrl + "/auth/google", "_self");
+        window.open("http://localhost:8080/auth/google", "_self");
     };
 
 

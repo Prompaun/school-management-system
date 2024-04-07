@@ -14,8 +14,8 @@ function Enrollment_info({user}) {
 
 const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 // const [apiUrl, setapiUrl] = useState(false);
-// const apiUrl = "http://localhost:8080";
-const apiUrl = process.env.API_URL
+const apiUrl = "http://localhost:8080";
+// const apiUrl = process.env.API_URL
 // console.log("process.env.api",process.env.api);
 // console.log("apiUrl",apiUrl);
   const fontStyle = {

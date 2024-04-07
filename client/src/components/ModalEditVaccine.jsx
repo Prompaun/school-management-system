@@ -5,7 +5,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
-    const apiUrl = process.env.API_URL
+
     const [Click, setClick] = useState (false);
     const handleClose = () => {
         setShow(false);
@@ -34,7 +34,7 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
     async function checkVaccine(studentId) {
         try {
             // เรียกใช้ API ด้วย Axios
-            const response = await axios.get(apiUrl + `/check-vaccine/${studentId}`);
+            const response = await axios.get(`http://localhost:8080/check-vaccine/${studentId}`);
             // return ข้อมูลที่ได้รับกลับมา
             return response.data;
         } catch (error) {
@@ -66,7 +66,7 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
 
     const addInjectionBasicVaccine = async (basicVaccineId, studentId, vaccinatedDate, sideEffects, note) => {
         try {
-            const response = await axios.post(apiUrl + '/add-injection-basic-vaccine', {
+            const response = await axios.post('http://localhost:8080/add-injection-basic-vaccine', {
                 Basic_Vaccine_ID: basicVaccineId,
                 Student_ID: studentId,
                 Vaccinated_Date: vaccinatedDate,
@@ -83,7 +83,7 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
 
     const deleteInjectionBasicVaccine = async (vaccineId) => {
         try {
-            const response = await axios.delete(apiUrl + `/delete-injection-basic-vaccine/${vaccineId}`);
+            const response = await axios.delete(`http://localhost:8080/delete-injection-basic-vaccine/${vaccineId}`);
             console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
             return response.data; // ส่งข้อมูลที่ได้รับกลับ
         } catch (error) {
@@ -98,7 +98,7 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
     //   }, []);
     const addAlternativeVaccine = async (studentId, vaccineName, vaccinatedDate, sideEffects, note) => {
         try {
-            const response = await axios.post(apiUrl + '/add-injection-alternative-vaccine', {
+            const response = await axios.post('http://localhost:8080/add-injection-alternative-vaccine', {
                 Student_ID: studentId,
                 Vaccine_name: vaccineName,
                 Vaccinated_Date: vaccinatedDate,
@@ -115,7 +115,7 @@ function ModalEditVaccine({show, setShow, Student_id, Optional_Vaccine}) {
 
     const deleteInjectionAlternativeVaccine = async (id) => {
         try {
-            const response = await axios.delete(apiUrl + `/delete-injection-alternative-vaccine/${id}`);
+            const response = await axios.delete(`http://localhost:8080/delete-injection-alternative-vaccine/${id}`);
             console.log(response.data.message); // แสดงข้อความที่ได้รับจากเซิร์ฟเวอร์
             return response.data; // ส่งข้อมูลที่ได้รับกลับ
         } catch (error) {

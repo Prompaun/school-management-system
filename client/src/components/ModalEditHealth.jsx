@@ -5,7 +5,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 function ModalEditHealth({show, setShow, Student_id, HealthCheckUp}) {
-    const apiUrl = process.env.API_URL
+
     const [Eyesight,setEyesight] = useState("");
     const [InputEyesight,setInputEyesight] = useState("");
     const [Hearing,setHearing] = useState("");
@@ -24,7 +24,7 @@ function ModalEditHealth({show, setShow, Student_id, HealthCheckUp}) {
     // ฟังก์ชันสำหรับเพิ่มข้อมูลใหม่ลงในฐานข้อมูล Health_Check
     async function addHealthCheck(data) {
         try {
-            const response = await axios.post(apiUrl + '/add-health-check', data);
+            const response = await axios.post('http://localhost:8080/add-health-check', data);
             return response.data;
         } catch (error) {
             console.error('Error adding health check data:', error);
@@ -35,14 +35,14 @@ function ModalEditHealth({show, setShow, Student_id, HealthCheckUp}) {
     // ฟังก์ชันสำหรับอัปเดตข้อมูลในฐานข้อมูล Health_Check ด้วย ID ที่ระบุ
     async function updateHealthCheck(id, data) {
         try {
-            const response = await axios.put(apiUrl + `/update-health-check/${id}`, data);
+            const response = await axios.put(`http://localhost:8080/update-health-check/${id}`, data);
             return response.data;
         } catch (error) {
             console.error('Error updating health check data:', error);
             throw error;
         }
     }
-    
+
     const formatDate = (date) => {
         if (date !== ''){
           const year = date.getFullYear();

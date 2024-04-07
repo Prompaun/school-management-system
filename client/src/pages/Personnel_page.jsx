@@ -5,7 +5,6 @@ import logoImage from '../images/IMG_5416.png';
 import Header from '../components/Header';
 
 function  Personnel_page() {
-  
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none',

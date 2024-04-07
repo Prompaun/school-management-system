@@ -9,7 +9,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 
 const Student_List_Information = () => {
-    const apiUrl = process.env.API_URL
+
     const [Data, setData] = useState([{ subjects: [] }]);
 
     const location = useLocation();
@@ -31,7 +31,7 @@ const Student_List_Information = () => {
 
     // async function getPersonnelStudentInfo(Student_ID) {
     //     try {
-    //         const response = await axios.get(apiUrl + '/personnel-get-student-info', {
+    //         const response = await axios.get('http://localhost:8080/personnel-get-student-info', {
     //             params: {
     //                 Student_ID: Student_ID
     //             }

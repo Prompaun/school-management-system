@@ -9,7 +9,6 @@ import Modal_success from '../components/Modal_success';
 
 // import Modal_subject from "../components/Modal_subject";
 const Subject_Score_Record = ({Role, Email}) => {
-    
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -21,7 +20,7 @@ const Subject_Score_Record = ({Role, Email}) => {
       };
     
     //   const apiUrl = process.env.api
-      const apiUrl = process.env.API_URL
+    const apiUrl = "http://localhost:8080"
       
     const [YearData, setYearData] = useState(
     {
@@ -457,14 +456,14 @@ const Subject_Score_Record = ({Role, Email}) => {
         if (selectedRoom !== "เลือกห้อง"){
             // let response, assessmentNameResponse, scoreResponse, student,gradeResponse
             try {
-                const response = await axios.post(apiUrl + '/get-student-info-by-teacher', {
+                const response = await axios.post('http://localhost:8080/get-student-info-by-teacher', {
                     year: selectedYear,
                     level: selectedClassYear,
                     room: selectedRoom
                 });
 
                 try {
-                    const assessmentNameResponse = await axios.post(apiUrl + '/get-assessment-name-by-teacher', {
+                    const assessmentNameResponse = await axios.post('http://localhost:8080/get-assessment-name-by-teacher', {
                         year: selectedYear,
                         semester: selectedSemester,
                         subject: selectedSubject
@@ -472,12 +471,12 @@ const Subject_Score_Record = ({Role, Email}) => {
 
                     try {
                         const student = response.data.map(item => item.Student_ID);
-                        const scoreResponse = await axios.post(apiUrl + '/get-student-assessment-score-by-teacher', {
+                        const scoreResponse = await axios.post('http://localhost:8080/get-student-assessment-score-by-teacher', {
                             student: student
                         });
                         console.log('score',scoreResponse,student)
                         try {
-                            const gradeResponse = await axios.post(apiUrl + '/assessment-get-grade', {
+                            const gradeResponse = await axios.post('http://localhost:8080/assessment-get-grade', {
                                 year: selectedYear, 
                                 semester: selectedSemester, 
                                 subject: selectedSubject,
