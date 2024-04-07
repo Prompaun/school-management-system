@@ -24,6 +24,26 @@ module.exports = function(connection) {
         });
     });
     
+    // router.post('/add-student-id-update-student-info', (req, res) => {
+    //     const {student_id, id} = req.body
+    //     const sql = `
+    //         UPDATE 
+    //             student
+    //         SET
+    //             Student_ID = ?
+    //         WHERE
+    //             id = ?
+    //     `;
+    
+    //     connection.query(sql, [student_id, id], (err, results) => {
+    //         if (err) {
+    //             console.error('Error updating student info id:', err);
+    //             return res.status(500).json({ error: 'Failed to update student info id', email });
+    //         }
+    //         return res.status(200).json(results);
+    //     });
+    // });
+
     router.post('/add-student-id-update-student-info', (req, res) => {
         const {student_id, id} = req.body
         const sql = `
@@ -40,7 +60,24 @@ module.exports = function(connection) {
                 console.error('Error updating student info id:', err);
                 return res.status(500).json({ error: 'Failed to update student info id', email });
             }
-            return res.status(200).json(results);
+            const sql = `
+                UPDATE
+                    student_parentemail
+                SET
+                    Student_ID = ?
+                WHERE
+                    Student_NID = (SELECT Student_NID FROM student WHERE id = ?)
+            `;
+        
+            connection.query(sql, [student_id, id], (err, results) => {
+                if (err) {
+                    console.error('Error updating student id to parentEmail:', err);
+                    return res.status(500).json({ error: 'Failed to update student id to parentEmail', email });
+                }
+                return res.status(200).json(results);
+            });
+
+            // return res.status(200).json(results);
         });
     });
     
