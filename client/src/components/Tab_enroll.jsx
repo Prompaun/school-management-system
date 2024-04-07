@@ -763,9 +763,9 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
   //     }
   //   }
     
-  //   if (user && user.emails[0].value) {
-  //     setCurrentLogin_Email(user.emails[0].value);
-  //     console.log("user", user.emails[0].value);
+  //   if (user && user.email) {
+  //     setCurrentLogin_Email(user.email);
+  //     console.log("user", user.email);
   //   } else {
   //     console.log('User email is not available.');
   //   }
@@ -864,17 +864,17 @@ const sendwhoAreParentToEnroll = (whoAreParent) => {
       }
     }
     
-    // if (user && user.emails[0].value) {
-    //   setCurrentLogin_Email(user.emails[0].value);
-    //   console.log("user", user.emails[0].value);
+    // if (user && user.email) {
+    //   setCurrentLogin_Email(user.email);
+    //   console.log("user", user.email);
     // } else {
     //   console.log('User email is not available.');
     // }
     // ตรวจสอบว่ามีอ็อบเจกต์ user และมีอีเมลในอ็อบเจกต์ user หรือไม่
     if (user && user.emails && user.emails.length > 0) {
       // กำหนดค่า currentLogin_Email ด้วยค่าอีเมลที่ได้จากอ็อบเจกต์ user
-      setCurrentLogin_Email(user.emails[0].value);
-      console.log("user", user.emails[0].value);
+      setCurrentLogin_Email(user.email);
+      console.log("user", user.email);
 
       // ตรวจสอบว่าอ็อบเจกต์ user มีค่า id หรือไม่
       if (user.id) {

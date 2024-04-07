@@ -1570,18 +1570,19 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
 
     const handleButtonClick = async () => {
         
-        if (user && user.emails[0].value) {
-            setCurrentLogin_Email(user.emails[0].value);
-            console.log("user.emails[0].value", user.emails[0].value);
+        if (user && user.email) {
+            setCurrentLogin_Email(user.email);
+            console.log("user.email", user.email);
             } else {
             console.log('User email is not available.');
             } 
 
         // ตรวจสอบว่ามีอ็อบเจกต์ user และมีรูปภาพในอ็อบเจกต์ user หรือไม่
-        if (user && user.photos && user.photos.length > 0) {
+        // if (user && user.photos && user.photos.length > 0) {
+            if (user && user.imageUrl) {
             // กำหนดค่า currentPhotoURL ด้วยลิงก์ของรูปภาพที่ได้จากอ็อบเจกต์ user
-            setCurrentPhotoURL(user.photos[0].value);
-            console.log("user photo URL:", user.photos[0].value);
+            setCurrentPhotoURL(user.imageUrl);
+            console.log("user photo URL:", user.imageUrl);
         } else {
             console.log('User photo URL is not available.');
         }
@@ -1605,7 +1606,7 @@ const handlePreviousSchoolEducationalRecordsFileChange = (event) => {
                             LastName,
                             formatDate(Student_DateOfBirth),
                             Transcript_type,
-                            user.emails[0].value,
+                            user.email,
                             HouseNumber,
                             Moo,
                             Soi,
