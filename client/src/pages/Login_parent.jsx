@@ -6,8 +6,8 @@ import eye_open from "../images/eye-open.png";
 import eye_closed from "../images/eye-closed.png";
 import Header from '../components/Header';
 import GoogleIMG from '../images/google.png'
-import dotenv from 'dotenv';
-dotenv.config();
+
+
 // require("dotenv").config();
 const Login_parent = () => {
 
