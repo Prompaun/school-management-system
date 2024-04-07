@@ -18,6 +18,7 @@ function ModalHistoryHealth({show, setShow, Student_id, congenitalDisease, Histo
       const addCongenitalDiseaseInfo = async (studentId, date, congenitalDisease) => {
         try {
             const response = await axios.post(apiUrl + '/add-congenital-disease-info', {
+                // const response = await axios.post('http://localhost:8080/add-congenital-disease-info', {
                 Student_ID: studentId,
                 Date: date,
                 Congenital_Disease: congenitalDisease

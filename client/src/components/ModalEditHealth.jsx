@@ -167,7 +167,7 @@ function ModalEditHealth({show, setShow, Student_id, HealthCheckUp}) {
                             };
 
                             
-                            if (HealthCheckUp[0].id) {
+                            if (HealthCheckUp.length !== 0) {
                                 const updatedData = await updateHealthCheck(HealthCheckUp[0].id, HealthCheckData);
                                 console.log(updatedData);
                             } else {

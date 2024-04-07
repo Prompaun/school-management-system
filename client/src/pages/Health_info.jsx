@@ -79,7 +79,7 @@ const Health_info = () => {
     //ยังไม่มีเงื่อนไขเช็คถ้าไม่เจอค่า
     const [BodyData,setBodyData] = useState([
       // {id:1,DateRecord:"12/05/2024",weight_kg:"50",height_cm:"160"}
-      {id:1,DateRecord:"",weight_kg:"",height_cm:""}
+      // {id:1,DateRecord:"",weight_kg:"",height_cm:""}
     ])
     const [BMI,setBMI] = useState(null);
   
@@ -337,6 +337,7 @@ const Health_info = () => {
                       height_cm: item.Height
                     }));
                   setBodyData(mappedGrowthNutrition);
+                  console.log('mappedGrowthNutrition',mappedGrowthNutrition);
             } catch (error) {
               console.log('Error fetching data:', error);
             }

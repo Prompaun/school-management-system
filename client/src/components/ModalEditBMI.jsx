@@ -128,19 +128,24 @@ function ModalEditBMI({show, setShow, Student_id, BodyData}) {
             setShowLoadingModal(true)
             const fetchData = async () => {
                 try {
+                    console.log('HeightWeight',Height,Weight);
                     const GrowthNutrition = {
                         Student_ID: Student_id,
                         Year: getYearFromDate(new Date()),
-                        // Semester: '',
+                        Semester: '',
                         Health_Check_Date: formatDate(new Date()),
-                        // Student_Age: '',
+                        Student_Age: '',
                         Height: Height,
                         Weight: Weight
                     };
-                    if (BodyData[0].height_cm && BodyData[0].DateRecord) {
+                    
+                    // if (BodyData[0].height_cm && BodyData[0].DateRecord) {
+                    if (BodyData.length !== 0) {
                         const updatedData = await updateGrowthNutrition(BodyData[0].id, GrowthNutrition);
+                        console.log('updatedData144',updatedData);
                     } else {
                         const addedData = await addGrowthNutrition(GrowthNutrition);
+                        console.log('addedData147',addedData);
                     }
                 } catch (error) {
                     console.error('Error fetching Data:', error);

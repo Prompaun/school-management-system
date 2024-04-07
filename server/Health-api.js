@@ -169,7 +169,7 @@ module.exports = function(connection) {
         const { Student_ID, Year, Health_Check_Date, Height, Weight } = req.body;
         const sql = `
             INSERT INTO Growth_Nutrition (Student_ID, Year, Health_Check_Date, Height, Weight)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
         `;
         const values = [Student_ID, Year, Health_Check_Date, Height, Weight];
 
