@@ -64,7 +64,7 @@ const Navbar = ({user, Role}) => {
    }
   };
 
-  
+  // const [user, setUser] = useState(null);
   console.log('RoleRoleRoleRoleRole',Role);
   useEffect(() => {
       // if (user.Role == "Student") {
@@ -85,10 +85,9 @@ const Navbar = ({user, Role}) => {
 
     }, [Role]);
 
-    useEffect(() => {
-
-      console.log("ClassifyRole",ClassifyRole);
-    }, [ClassifyRole]);
+    // useEffect(() => {
+    //   setUser(user);
+    // }, [user]);
 
   return (
     <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>

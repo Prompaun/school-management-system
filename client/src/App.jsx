@@ -87,6 +87,13 @@ function App() {
     }
 }
 
+const [profile, setProfile] = useState(null);
+const isLoggedIn = profile !== null;
+const updateProfile = (newProfile) => {
+  setProfile(newProfile);
+  console.log("app updateProfile", newProfile)
+};
+
   // const user = false;
   useEffect(() => {
     // if (user !== null){
@@ -103,53 +110,66 @@ function App() {
         }
       // }
     }
-    
+
     const getUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/auth/login/success", {
-          withCredentials: true,
-        });
-        console.log("Hiiii");
-        if (response.status === 200) {
-          const resObject = response.data;
-          console.log(resObject); // ตรวจสอบข้อมูลที่ได้รับกลับมาจาก API endpoint
-          setUser(resObject.user); // ตั้งค่าข้อมูลผู้ใช้ในตัวแปร user
-          console.log("User ID:", resObject.user.id);
-          console.log("User Avatar:", resObject.user.photos[0].value);
-
-          handleGetRole(resObject.user.emails[0].value);
-          // setRole("ClassTeacher");
-          // console.log(user.emails[0].value);
-          setlogin_Email(resObject.user.emails[0].value);
-          // เรียกใช้ฟังก์ชัน addParentLogin ด้วยข้อมูลผู้ใช้
-          await addParentLogin(
-            resObject.user.photos[0].value,
-            resObject.user.emails[0].value,
-            resObject.user.id
-          );
-        } else {
-          throw new Error("authentication has been failed!");
-        }
+          if(profile){
+            setUser(profile);
+            handleGetRole(profile.email);
+            setlogin_Email(profile.email);
+            await addParentLogin(
+              resObject.user.photos[0].value,
+              resObject.user.emails[0].value,
+              resObject.user.id
+            );
+          }
+          
       } catch (error) {
-        console.log(error);
+        console.log('error',error);
       }
     };
     getUser();
 
-  }, []);
+  }, [profile]);
+    
+  //   const getUser = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:8080/auth/login/success", {
+  //         withCredentials: true,
+  //       });
+  //       console.log("Hiiii");
+  //       if (response.status === 200) {
+  //         const resObject = response.data;
+  //         console.log(resObject); // ตรวจสอบข้อมูลที่ได้รับกลับมาจาก API endpoint
+  //         setUser(resObject.user); // ตั้งค่าข้อมูลผู้ใช้ในตัวแปร user
+  //         console.log("User ID:", resObject.user.id);
+  //         console.log("User Avatar:", resObject.user.photos[0].value);
+
+  //         handleGetRole(resObject.user.emails[0].value);
+  //         // setRole("ClassTeacher");
+  //         // console.log(user.emails[0].value);
+  //         setlogin_Email(resObject.user.emails[0].value);
+  //         // เรียกใช้ฟังก์ชัน addParentLogin ด้วยข้อมูลผู้ใช้
+  //         await addParentLogin(
+  //           resObject.user.photos[0].value,
+  //           resObject.user.emails[0].value,
+  //           resObject.user.id
+  //         );
+  //       } else {
+  //         throw new Error("authentication has been failed!");
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getUser();
+
+  // }, []);
 
   useEffect(() => {
     console.log('appppp',Role, user)
     setUser(user);
   }, [Role, user])
-
-  const [profile, setProfile] = useState(null);
-  const isLoggedIn = profile !== null;
-  const updateProfile = (newProfile) => {
-    setProfile(newProfile);
-    console.log("app updateProfile", newProfile)
-  };
-  
 
   
 
@@ -157,7 +177,7 @@ function App() {
   return (
       <>
       <BrowserRouter>
-      <Navbar user={profile} Role={Role} />
+      <Navbar user={user} Role={Role} />
         <UserContext.Provider value={{ Role, setRole, user, setUser}}>
           <Routes>
             <Route path="/" element={<Home />} />
