@@ -113,8 +113,8 @@ const Subject_Score_Record = ({Role, Email}) => {
     async function getAssessmentInfo() {
         if (selectedSubject !== "เลือกวิชา") {
             let newAssessmentInfo = [
-                {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: "",id: 0},
-                {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: "",id: 1}
+                {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: "",id: 0,saved: false},
+                {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: "",id: 1,saved: false}
             ]
             let midFinal
             try {
@@ -123,9 +123,22 @@ const Subject_Score_Record = ({Role, Email}) => {
                     semester : selectedSemester,
                     subject : selectedSubject
                 });
-                newAssessmentInfo.splice(0);
-                newAssessmentInfo[0] = {Assessment_name: "คะแนนสอบกลางภาค",Assessment_proportion: midFinal.data[0].Full_score_mid,id: 0,saved: true}
-                newAssessmentInfo[1] = {Assessment_name: "คะแนนสอบปลายภาค",Assessment_proportion: midFinal.data[0].Full_score_final,id: 1,saved: true}
+                if (midFinal.data.message === "Success") {
+                        newAssessmentInfo[1] = {
+                            Assessment_name: "คะแนนสอบปลายภาค",
+                            Assessment_proportion: midFinal.data.results[0].Full_score_final === null ? "" : midFinal.data.results[0].Full_score_final ,
+                            id: 1,
+                            saved: true
+                        }
+
+                        newAssessmentInfo[0] = {
+                            Assessment_name: "คะแนนสอบกลางภาค",
+                            Assessment_proportion: midFinal.data.results[0].Full_score_mid === null ? "" : midFinal.data.results[0].Full_score_mid,
+                            id: 0,
+                            saved: true
+                        }
+                }
+                
                 try {
                     const response = await axios.post(apiUrl + '/assessment-get-name-proportion', {
                         year : selectedYear,
@@ -133,55 +146,33 @@ const Subject_Score_Record = ({Role, Email}) => {
                         subject : selectedSubject
                     });
 
-                    newAssessmentInfo = [...newAssessmentInfo, ...response.data]
-                    const newInfo = newAssessmentInfo.map((item, index) => ({
-                        ...item,
-                        id: index,
-                        saved: true
-                    }));
-                    setAssessment(newInfo);
-                    return response.data;
-
-                } catch (errr) {
-                    if (errr.response.request.status !== 404) {
-                        console.error('Error fetching assessment info:', errr);
-                        throw errr;
+                    if (response.data.message === "Success") {
+                        const newResponse = response.data.results.map(item => ({
+                            ...item,
+                            saved: true
+                        }));
+                        newAssessmentInfo = [...newAssessmentInfo, ...newResponse]
+                        const newInfo = newAssessmentInfo.map((item, index) => 
+                        ({
+                            ...item,
+                            id: index
+                        })
+                        );
+                        setAssessment(newInfo);
                     } else {
                         setAssessment(newAssessmentInfo);
                     }
+                    return response.data;
+
+                } catch (errr) {
+                    setAssessment(newAssessmentInfo);
+                    console.error('Error fetching assessment info:', errr);
+                    throw errr;
                 }
             } catch (error) {
-                if (error.response.request.status === 404) {
-                    try {
-                        const response = await axios.post(apiUrl + '/assessment-get-name-proportion', {
-                            year : selectedYear,
-                            semester : selectedSemester,
-                            subject : selectedSubject
-                        });
-
-                        newAssessmentInfo = [...newAssessmentInfo, ...response.data]
-                        const newInfo = newAssessmentInfo.map((item, index) => ({
-                            ...item,
-                            id: index,
-                            saved: true
-                        }));
-                        setAssessment(newInfo);
-                        return response.data;
-
-                    } catch (err) {
-                        if (err.response.request.status === 404) {
-                            setAssessment(newAssessmentInfo);
-                        } else {
-                            setAssessment(newAssessmentInfo);
-                            console.error('Error fetching assessment info:', error);
-                            throw error;
-                        }
-                    }
-                } else {
-                    setAssessment(newAssessmentInfo);
-                    console.error('Error fetching assessment info:', error);
-                    throw error;
-                }
+                setAssessment(newAssessmentInfo);
+                console.error('Error fetching assessment info:', error);
+                throw error;
             }
         }
     };
@@ -220,19 +211,24 @@ const Subject_Score_Record = ({Role, Email}) => {
 
     async function updateAssessmentScore(key,value,id) {
         if (selectedSubject !== "เลือกวิชา" ) {
+            const full_final = Assessment.find(element => element.Assessment_name === "คะแนนสอบปลายภาค").Assessment_proportion
+            const full_mid = Assessment.find(element => element.Assessment_name === "คะแนนสอบกลางภาค").Assessment_proportion
             try {
-                const response = await axios.post(apiUrl + '/update-assessment-score', {
-                    score: value || null,
-                    assessment: key,
-                    year: selectedYear,
-                    semester: selectedSemester,
-                    subject: selectedSubject,
-                    student: StudentScore[id].StudentID,
-                    full_score_final: Assessment.find(element => element.Assessment_name === "คะแนนสอบปลายภาค").Assessment_proportion,
-                    full_score_mid: Assessment.find(element => element.Assessment_name === "คะแนนสอบกลางภาค").Assessment_proportion
-                });
+                let response
+                if (value !== "") {
+                    response = await axios.post(apiUrl + '/update-assessment-score', {
+                        score: value === "" ? null : value,
+                        assessment: key,
+                        year: selectedYear,
+                        semester: selectedSemester,
+                        subject: selectedSubject,
+                        student: StudentScore[id].StudentID,
+                        full_score_final: full_final === "" ? null : full_final,
+                        full_score_mid: full_mid === "" ? null : full_mid
+                    });
+                }
 
-                return response.data;
+                return response;
             } catch (error) {
                 console.error('Error updating assessment:', error);
                 throw error;
@@ -367,6 +363,7 @@ const Subject_Score_Record = ({Role, Email}) => {
             }
         }
     };
+
     async function getStudentInfo() {
         if (selectedRoom !== "เลือกห้อง"){
             // let response, assessmentNameResponse, scoreResponse, student,gradeResponse
@@ -389,7 +386,6 @@ const Subject_Score_Record = ({Role, Email}) => {
                         const scoreResponse = await axios.post(apiUrl + '/get-student-assessment-score-by-teacher', {
                             student: student
                         });
-                        console.log('score',scoreResponse,student)
                         try {
                             const gradeResponse = await axios.post(apiUrl + '/assessment-get-grade', {
                                 year: selectedYear, 
@@ -397,23 +393,18 @@ const Subject_Score_Record = ({Role, Email}) => {
                                 subject: selectedSubject,
                                 student: student
                             }); 
-                            console.log('grade',gradeResponse)
-
-                            console.log(gradeResponse.data,scoreResponse.data)
 
                             const newAssessmentName = [
                                 {Assessment_Name: "คะแนนสอบกลางภาค"},
                                 {Assessment_Name: "คะแนนสอบปลายภาค"}, 
                                 ...assessmentNameResponse.data
                             ]
-                            console.log('new',newAssessmentName)
                             let scores = [];
                             const mapStudent = response.data.forEach((element,index) => {
                                 const scoreObj = {}
                                 newAssessmentName.map((assName,nameIndex) => {
                                     scoreObj[assName.Assessment_Name] = "";
                                 })
-                                console.log('scorobj',scoreObj,element)
                                 scores[index] = {...scores[index], ...scoreObj}
                                 if (scoreResponse.data.message === "founded") {
                                     scoreResponse.data.results.forEach((score,ind) => {
@@ -438,8 +429,6 @@ const Subject_Score_Record = ({Role, Email}) => {
                                     });
                                 }
                             })
-
-                            console.log('n',scores)
             
                             const newInfo = response.data.map((item, index) => ({
                                 id: index,
@@ -596,9 +585,9 @@ const Subject_Score_Record = ({Role, Email}) => {
             setAssessment_name(Assessment[id].Assessment_name);}
             setEditingId(id === editingId ? null : id);
             if (id === editingId){
-                setShowModalSuccess(true);
                 if (Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== ''){
                     updateAssessmentInfo(id);
+                    setShowModalSuccess(true);
                 } else if (Assessment[id].saved && (Assessment[id].Assessment_name !== '' || Assessment[id].Assessment_proportion !== '')) {
                     setAssessment(
                         Assessment.map((row) =>
@@ -607,7 +596,8 @@ const Subject_Score_Record = ({Role, Email}) => {
                     );
                     alert('กรุณากรอกข้อมูลให้ครบ')
                 } else if (!Assessment[id].saved && Assessment[id].Assessment_name !== '' && Assessment[id].Assessment_proportion !== '') {
-                   insertAssessmentInfo(id);
+                    insertAssessmentInfo(id);
+                   setShowModalSuccess(true);
                 } else {
                     if (id !== 0 && id !== 1){
                         Assessment.splice(id, 1);

@@ -135,11 +135,11 @@ module.exports = function(connection) {
 
             // Check if student information is found
             if (results.length === 0) {
-                return res.status(404).json({ error: 'full score midterm final information not found' });
+                return res.status(200).json({ message: 'not found' });
             }
 
             // Return the student information
-            res.status(200).json(results);
+            res.status(200).json({results: results, message:'Success'});
         });
     });
 
@@ -169,11 +169,11 @@ module.exports = function(connection) {
 
             // Check if student information is found
             if (results.length === 0) {
-                return res.status(404).json({ error: 'Assessment information not found' });
+                return res.status(200).json({ message: 'not found' });
             }
 
             // Return the student information
-            res.status(200).json(results);
+            res.status(200).json({results: results, message:'Success'});
         });
     });
 
@@ -452,7 +452,7 @@ module.exports = function(connection) {
                 }
                 res.status(200).json({outcome, message: "Insert assessment successfully"});
             });
-        // });
+        // })
     });
 
     router.post('/insert-full-grade', (req, res) => {
