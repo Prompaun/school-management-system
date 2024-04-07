@@ -103,7 +103,7 @@ const Student_info = () => {
                                 
                                     
                                         
-                                            <div className='container d-flex justify-content-end'>
+                                            {/* <div className='container d-flex justify-content-end'>
                                                 <span
                                                 className="btn btn-link float-end"
                                                 style={{ color: 'black', textDecoration: 'none', fontFamily: 'Kanit, sans-serif', cursor: 'pointer'}}
@@ -126,7 +126,7 @@ const Student_info = () => {
                                                     //     printWindow.print();
                                                     // }}
                                                 />
-                                            </div>
+                                            </div> */}
                                             
             <div class="card" style={{width: 'auto', height: 'auto'}}>
                 <div class="card-header">
