@@ -181,9 +181,9 @@ function Check_health_result({login_Email}) {
                 const mappedHealthCheck = HealthCheck.map(item => ({
                     id: item.id,
                     DateCheck: formatDateThaiYear(item.Date),
-                    Eyesight: item.Eye_examination,
+                    Eyesight: item.EyeExamination,
                     Hearing: item.Hearing,
-                    Mouth: item.Oral_health
+                    Mouth: item.OralHealth
                   }));
       
                 const Basic_Vaccine  = await checkVaccine(selectedStudent_ID);
