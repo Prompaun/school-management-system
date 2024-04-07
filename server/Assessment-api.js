@@ -14,7 +14,7 @@ module.exports = function(connection) {
             SELECT distinct 
                 year
             FROM 
-                teaching_assignment
+                teaching_assignment 
             ${option}
             ORDER BY year ASC
         `;
@@ -721,7 +721,7 @@ module.exports = function(connection) {
                 return res.status(200).json({ message: 'not found' });
             }
 
-            res.status(200).json(results);
+            res.status(200).json({ results: results, message: 'founded' });
         });
     });
     
@@ -758,7 +758,7 @@ module.exports = function(connection) {
             }
 
             // Return the student information
-            res.status(200).json(results);
+            res.status(200).json({ results: results, message: 'founded' });
         });
     });
     
