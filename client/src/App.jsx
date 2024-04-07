@@ -59,9 +59,11 @@ export const UserContext = createContext();
 // Main App component
 function App() {
   const apiUrl = process.env.API_URL
+  console.log("apiUrl",apiUrl)
   const [user, setUser] = useState(null);
   const [Role, setRole] = useState('');
   const [login_Email, setlogin_Email] = useState('');
+  
   async function addParentLogin(avatar, email, token) {
     try {
         const response = await axios.post(apiUrl + '/add-parent-login', {

@@ -6,6 +6,8 @@ import eye_open from "../images/eye-open.png";
 import eye_closed from "../images/eye-closed.png";
 import Header from '../components/Header';
 import GoogleIMG from '../images/google.png'
+import dotenv from 'dotenv';
+dotenv.config();
 // require("dotenv").config();
 const Login_parent = () => {
     const apiUrl = process.env.API_URL
@@ -76,8 +78,14 @@ const Login_parent = () => {
 //     );
 // };
 const google = () => {
-    window.open(apiUrl + "/auth/google", "_self");
+    // window.open(apiUrl + "/auth/google/callback", "_self");
+    window.open(apiUrl + "/auth/google/callback", "_self");
+
 };
+
+// const google = () => {
+//     window.open(`${process.env.API_URL}/auth/google?scope=email profile`, "_self");
+// };
 
     return (
         <>
