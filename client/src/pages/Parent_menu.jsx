@@ -5,7 +5,6 @@ import Header from '../components/Header';
 import Card_menu_parent from '../components/Card_menu_parent';
 
 function Parent_menu({Role}) {
-
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'

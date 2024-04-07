@@ -10,7 +10,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 
 const Education_information = () => {
-    const apiUrl = process.env.API_URL
+
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -24,7 +24,7 @@ const Education_information = () => {
 
     async function getYearByStudentId(studentId) {
     try {
-        const response = await axios.get(apiUrl + '/get-years-by-student-id', {
+        const response = await axios.get('http://localhost:8080/get-years-by-student-id', {
             params: {
                 studentId: studentId
             }
@@ -38,7 +38,7 @@ const Education_information = () => {
 
     async function getSemesterByStudentId(selectedStudent_ID, selectedYear) {
     try {
-        const response = await axios.get(apiUrl + '/get-semesters-by-student-id', {
+        const response = await axios.get('http://localhost:8080/get-semesters-by-student-id', {
             params: {
                 studentId: selectedStudent_ID,
                 Year: selectedYear
@@ -53,7 +53,7 @@ const Education_information = () => {
 
     async function getGradeInfo(selectedStudent_ID, selectedYear, Semesters) {
         try {
-            const response = await axios.get(apiUrl + '/get-grade-info', {
+            const response = await axios.get('http://localhost:8080/get-grade-info', {
                 params: {
                     studentId: selectedStudent_ID,
                     year: selectedYear,

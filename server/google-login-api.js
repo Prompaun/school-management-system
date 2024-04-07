@@ -27,16 +27,32 @@ module.exports = function() {
     router.use(passport.initialize());
     router.use(passport.session());
     
+    // router.use(
+    //   cors({
+    //     // origin: "http://localhost:5173",
+    //     origin: process.env.CLIENT_URL,
+    //     methods: "GET,POST,PUT,DELETE",
+    //     credentials: true,
+    //   })
+    // );
     router.use(
       cors({
-        // origin: "http://localhost:5173",
         origin: process.env.CLIENT_URL,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
+        // allowedHeaders: "Content-Type,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Authorization",
+        allowedHeaders: "Content-Type",
       })
     );
+    
 
     router.use("/auth", authRoute);
+
+    // app.use(function(req, res, next) {
+    //   res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+    //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //   next();
+    // });
 
     router.get('/auth/login/success', (req, res) => {
     // ตรวจสอบว่าผู้ใช้ล็อกอินเข้ามาด้วย Google OAuth หรือไม่

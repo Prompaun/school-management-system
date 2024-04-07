@@ -4,10 +4,10 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport = require("passport");
 require('dotenv').config();
 
-// const GOOGLE_CLIENT_ID = "56880766590-iki02gu6p9ssen1kun7gjqempsct2c98.apps.googleusercontent.com";
-// const GOOGLE_CLIENT_SECRET = "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";
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const GOOGLE_CLIENT_ID = "56880766590-iki02gu6p9ssen1kun7gjqempsct2c98.apps.googleusercontent.com";
+const GOOGLE_CLIENT_SECRET = "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";
+// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 // GITHUB_CLIENT_ID = "your id";
 // GITHUB_CLIENT_SECRET = "your id";
@@ -21,12 +21,39 @@ passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
+      scope: ['profile', 'email']
     },
     function (accessToken, refreshToken, profile, done) {
       done(null, profile);
     }
   )
 );
+
+// passport.use(new GoogleStrategy({
+//   clientID: process.env.GOOGLE_CLIENT_ID,
+//   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+//   callbackURL: "/auth/google/callback",
+//   scope: ['profile', 'email']
+// },
+// function(accessToken, refreshToken, profile, cb) {
+//   User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//     return cb(err, user);
+//   });
+// }
+// ));
+
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: GOOGLE_CLIENT_ID,
+//       clientSecret: GOOGLE_CLIENT_SECRET,
+//       callbackURL: "/auth/google/callback",
+//     },
+//     function (accessToken, refreshToken, profile, done) {
+//       done(null, profile);
+//     }
+//   )
+// );
 
 // passport.use(
 //   new GithubStrategy(

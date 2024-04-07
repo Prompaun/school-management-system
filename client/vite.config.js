@@ -6,7 +6,7 @@ dotenv.config();
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // server: { port: 5173 },
+  server: { port: 5173 },
   plugins: [react()],
   define: {
     'process.env': process.env

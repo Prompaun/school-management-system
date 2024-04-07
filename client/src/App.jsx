@@ -58,15 +58,14 @@ export const UserContext = createContext();
 
 // Main App component
 function App() {
-  const apiUrl = process.env.API_URL
-  console.log("apiUrl",apiUrl)
+  
   const [user, setUser] = useState(null);
   const [Role, setRole] = useState('');
   const [login_Email, setlogin_Email] = useState('');
   
   async function addParentLogin(avatar, email, token) {
     try {
-        const response = await axios.post(apiUrl + '/add-parent-login', {
+        const response = await axios.post('http://localhost:8080/add-parent-login', {
             Avatar: avatar,
             Email: email,
             Token: token
@@ -80,7 +79,7 @@ function App() {
 
   async function getRole(email) {
     try {
-        const response = await axios.get(apiUrl + `/get-role/${email}`);
+        const response = await axios.get(`http://localhost:8080/get-role/${email}`);
         return response.data.role; // return role from response
     } catch (error) {
         console.error('Error fetching role:', error);
@@ -107,7 +106,7 @@ function App() {
     
     const getUser = async () => {
       try {
-        const response = await axios.get(apiUrl + "/auth/login/success", {
+        const response = await axios.get("http://localhost:8080/auth/login/success", {
           withCredentials: true,
         });
         console.log("Hiiii");

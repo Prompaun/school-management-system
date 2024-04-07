@@ -3,7 +3,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 function Modal_ApplicantDetails({show,setShow,applicant_id}) {
-    const apiUrl = process.env.API_URL
+
     const handleClose = () => {
         setShow(false);
       };
@@ -114,7 +114,7 @@ function Modal_ApplicantDetails({show,setShow,applicant_id}) {
 
     async function getApplicantDetailInfo() {
         try {
-            const response = await axios.post(apiUrl + '/get-applicant-detail-info', {
+            const response = await axios.post('http://localhost:8080/get-applicant-detail-info', {
                 applicant: applicant_id
             });
             console.log('res',response,applicant_id)

@@ -22,6 +22,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
+
+
 // const connection = mysql.createConnection({
 //     host: process.env.HOST,
 //     user: process.env.USER,
@@ -99,6 +107,8 @@ app.use(allergic_api);
 
 app.use(basicVaccine_api);
 app.use(alternativeVaccine_api);
+
+
 // app.use(Personnel_api);
 // app.use(Student_api);
 
@@ -110,7 +120,7 @@ app.use(alternativeVaccine_api);
 
 app.get('/', (req, res) => {
   // return res.send(`hello world TEST=${process.env.TEST} ${process.env.HOST} ${process.env.USER} ${process.env.DATABASE} ${process.env.PASSWORD} ${process.env.PORT_DB} ${process.env.SSL} `)
-  return res.send(`hello world TEST=${process.env.TEST} `)
+  return res.send(`hello world TEST=${process.env.TEST} ${process.env.CLIENT_URL}`)
 
 });
 

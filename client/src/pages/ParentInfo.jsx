@@ -40,7 +40,7 @@ function ParentsInfo({  //------------------1------------------
     sendParentRoleToEnroll,
     sendwhoAreParentToEnroll
     }) {
-        const apiUrl = process.env.API_URL
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     // const [age, setAge] = useState(''); 
@@ -533,7 +533,7 @@ function ParentsInfo({  //------------------1------------------
 
     const checkFather_Email = async (email) => {
         try {
-            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
+            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -584,7 +584,7 @@ function ParentsInfo({  //------------------1------------------
 
     const checkMother_Email = async (email) => {
         try {
-            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
+            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {
@@ -632,7 +632,7 @@ function ParentsInfo({  //------------------1------------------
 
     const checkParent_Email = async (email) => {
         try {
-            const response = await axios.get(apiUrl + `/check-email?email=${email}`);
+            const response = await axios.get(`http://localhost:8080/check-email?email=${email}`);
             const data = response.data;
 
             if (data.results) {

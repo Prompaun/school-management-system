@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function Student_Information(props) {
-    const apiUrl = process.env.API_URL
+
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
@@ -11,7 +11,7 @@ function Student_Information(props) {
 
   async function getStudentInfoByID(Student_ID) {
     try {
-            const response = await axios.get(apiUrl + '/personnel-get-student-info-by-student-id', {
+            const response = await axios.get('http://localhost:8080/personnel-get-student-info-by-student-id', {
                 params: {
                     Student_ID: Student_ID
                 }

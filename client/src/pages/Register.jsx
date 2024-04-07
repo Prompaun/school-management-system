@@ -7,7 +7,7 @@ import Header from '../components/Header'
 import GoogleIMG from '../images/google.png'
 
 const Register = () => {
-  const apiUrl = process.env.API_URL
+  
   // เพิ่ม state สำหรับเก็บข้อมูลจากฟอร์ม
   const [formData, setFormData] = useState({
     username: '',
@@ -32,7 +32,7 @@ const Register = () => {
   };
   const history = createBrowserHistory();
   const google = () => {
-    window.open(apiUrl + "/auth/google", "_self");
+    window.open("http://localhost:8080/auth/google", "_self");
     // Add a delay of 2 seconds (you can adjust this as needed)
     if (response.ok) {
       // Redirect to /Register_info page after a successful login

@@ -7,7 +7,7 @@ import Modal_success from '../components/Modal_success';
 import axios from 'axios';
 
 function Request_cert({login_Email}) {
-  const apiUrl = process.env.API_URL
+
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -46,7 +46,7 @@ function Request_cert({login_Email}) {
 
       async function getStudentIdByParentEmail(email) {
         try {
-            const response = await axios.get(apiUrl + '/get-student-id-grade-by-parent-email', {
+            const response = await axios.get('http://localhost:8080/get-student-id-grade-by-parent-email', {
                 params: {
                     email: email
                 }
@@ -263,7 +263,7 @@ function Request_cert({login_Email}) {
               formData.append('file', Student_picture_file);
               formData.append('Request_status', 'รอดำเนินการ');
 
-              await axios.post(apiUrl + '/upload-student-img-request', formData, {
+              await axios.post('http://localhost:8080/upload-student-img-request', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -286,7 +286,7 @@ function Request_cert({login_Email}) {
             //   formData.append('file', Student_picture_file);
             //   formData.append('Request_status', 'รอดำเนินการ');
 
-            //   await axios.post(apiUrl + '/upload-student-img-request', formData, {
+            //   await axios.post('http://localhost:8080/upload-student-img-request', formData, {
             //     headers: {
             //       'Content-Type': 'multipart/form-data'
             //     }

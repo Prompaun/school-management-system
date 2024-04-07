@@ -12,7 +12,7 @@ import ModalEditHealth from '../components/ModalEditHealth';
 import ModalEditVaccine from '../components/ModalEditVaccine';
 import ModalHistoryHealth from '../components/ModalHistoryHealth';
 const Health_info = () => {
-  const apiUrl = process.env.API_URL
+
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -163,7 +163,7 @@ const Health_info = () => {
 
     async function getCongenitalDiseaseInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-congenital-disease-info/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-congenital-disease-info/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching congenital disease information:', error);
@@ -173,7 +173,7 @@ const Health_info = () => {
 
     async function getHistoryDiseaseInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-history-disease-info/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-history-disease-info/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching congenital disease information:', error);
@@ -183,7 +183,7 @@ const Health_info = () => {
 
     async function getAllergiesInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-allergies-info/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-allergies-info/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching allergies information:', error);
@@ -193,7 +193,7 @@ const Health_info = () => {
 
     async function getSurgeryAccidentInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-surgery-accident-info/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-surgery-accident-info/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching surgery_accident information:', error);
@@ -203,7 +203,7 @@ const Health_info = () => {
 
     async function getInjectionAlternativeVaccineInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-injection-alternative-vaccine-info/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-injection-alternative-vaccine-info/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching injection_alternative_vaccine information:', error);
@@ -213,7 +213,7 @@ const Health_info = () => {
 
     async function getGrowthNutritionInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-growth-nutrition-info/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-growth-nutrition-info/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching growth_nutrition information:', error);
@@ -223,7 +223,7 @@ const Health_info = () => {
 
     async function getHealthCheckInfo(studentId) {
       try {
-          const response = await axios.get(apiUrl + `/get-health_check/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/get-health_check/${studentId}`);
           return response.data;
       } catch (error) {
           console.error('Error fetching health_check information:', error);
@@ -234,7 +234,7 @@ const Health_info = () => {
     async function checkVaccine(studentId) {
       try {
           // เรียกใช้ API ด้วย Axios
-          const response = await axios.get(apiUrl + `/check-vaccine/${studentId}`);
+          const response = await axios.get(`http://localhost:8080/check-vaccine/${studentId}`);
           // return ข้อมูลที่ได้รับกลับมา
           return response.data;
       } catch (error) {

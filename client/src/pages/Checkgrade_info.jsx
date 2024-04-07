@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import axios from 'axios';
 
 const Checkgrade_info = ({login_Email}) => {
-  const apiUrl = process.env.API_URL
   const handleGoBack = () => {
     window.history.back();
   };
@@ -12,7 +11,7 @@ const Checkgrade_info = ({login_Email}) => {
   // ฟังก์ชันสำหรับเรียกใช้ API เพื่อดึงข้อมูล Student_ID จาก email ของผู้ปกครอง
   async function getStudentIdByParentEmail(email) {
     try {
-        const response = await axios.get(apiUrl + '/get-student-id-grade-by-parent-email', {
+        const response = await axios.get('http://localhost:8080/get-student-id-grade-by-parent-email', {
             params: {
                 email: email
             }
@@ -26,7 +25,7 @@ const Checkgrade_info = ({login_Email}) => {
 
   async function getYearSemestersByStudentId(studentId) {
     try {
-        const response = await axios.get(apiUrl + '/get-year-semesters-by-student-id', {
+        const response = await axios.get('http://localhost:8080/get-year-semesters-by-student-id', {
             params: {
                 studentId: studentId
             }
@@ -40,7 +39,7 @@ const Checkgrade_info = ({login_Email}) => {
 
   async function getYearByStudentId(studentId) {
     try {
-        const response = await axios.get(apiUrl + '/get-years-by-student-id', {
+        const response = await axios.get('http://localhost:8080/get-years-by-student-id', {
             params: {
                 studentId: studentId
             }
@@ -54,7 +53,7 @@ const Checkgrade_info = ({login_Email}) => {
 
   async function getSemesterByStudentId(selectedStudent_ID, selectedYear) {
     try {
-        const response = await axios.get(apiUrl + '/get-semesters-by-student-id', {
+        const response = await axios.get('http://localhost:8080/get-semesters-by-student-id', {
             params: {
                 studentId: selectedStudent_ID,
                 Year: selectedYear
@@ -69,7 +68,7 @@ const Checkgrade_info = ({login_Email}) => {
 
   async function getGradeInfo(selectedStudent_ID, selectedYear, Semesters) {
     try {
-        const response = await axios.get(apiUrl + '/get-grade-info', {
+        const response = await axios.get('http://localhost:8080/get-grade-info', {
             params: {
                 studentId: selectedStudent_ID,
                 year: selectedYear,
