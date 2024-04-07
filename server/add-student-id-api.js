@@ -57,8 +57,14 @@ module.exports = function(connection) {
     
         connection.query(sql, [student_id, id], (err, results) => {
             if (err) {
-                console.error('Error updating student info id:', err);
-                return res.status(500).json({ error: 'Failed to update student info id', email });
+                if (err.code === "ER_DUP_ENTRY") {
+                    return res.status(200).json({ message: 'Duplicate ID'});
+                } else if (err.code === "ER_ROW_IS_REFERENCED_2") {
+                    return res.status(200).json({ message: 'Already have'});
+                } else {
+                    console.error('Error updating student info id:', err);
+                    return res.status(500).json({ error: 'Failed to update student info id'});
+                }
             }
             const sql = `
                 UPDATE
@@ -74,7 +80,7 @@ module.exports = function(connection) {
                     console.error('Error updating student id to parentEmail:', err);
                     return res.status(500).json({ error: 'Failed to update student id to parentEmail', email });
                 }
-                return res.status(200).json(results);
+                return res.status(200).json({ message: 'Success', results: results});
             });
 
             // return res.status(200).json(results);

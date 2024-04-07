@@ -6,6 +6,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 
 function AddStudentID() {
     const apiUrl = process.env.API_URL
+    // const apiUrl = "http://localhost:8080"
     const [NewStudent,setNewStudent] = useState([
         // {id:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Course:"หลักสูตรทั่วไป",StudentNewID:"9"},
         // {id:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Course:"English Program (EP)",StudentNewID:""}
@@ -36,9 +37,22 @@ function AddStudentID() {
     const handleEditRow = async (id) => {
         setEditingId(id === editingId ? null : id);
         if (id === editingId) {
-          setoldData(NewStudent)
-          updateStidentInfo(id)
-          setShowSuccessModal(true);
+          const updatedData = updateStidentInfo(id)
+          updatedData.then((result) => {
+            console.log(result.message);
+            if (result.message === "Duplicate ID") {
+              alert('ไม่สามารถกำหนดให้เลขประจำตัวนักเรียนซ้ำได้')
+              setNewStudent(oldData)
+            } else if (result.message === "Already have") {
+              alert('ไม่สามารถแก้ไขเลขประจำตัวนักเรียนที่มีอยู่แล้วได้')
+              setNewStudent(oldData)
+            } else {
+              setShowSuccessModal(true);
+              setoldData(NewStudent)
+            }
+          }).catch((error) => {
+            console.error(error); 
+          });
 
         } else {
           setNewStudent(oldData)
@@ -71,7 +85,7 @@ function AddStudentID() {
             return response.data;
         } catch (error) {
             console.error('Error fetching student id and info:', error);
-            throw error;
+            throw error; 
         }
       };
 
@@ -79,8 +93,8 @@ function AddStudentID() {
         try {
             console.log('current', NewStudent[id].StudentNewID, NewStudent[id].Data_id)
             const response = await axios.post(apiUrl + '/add-student-id-update-student-info', {
-              student_id: NewStudent[id].StudentNewID, 
-              id: NewStudent[id].Data_id
+              student_id: NewStudent[id].StudentNewID === "" ? null : NewStudent[id].StudentNewID, 
+              id: NewStudent[id].Data_id 
             });
             return response.data;
         } catch (error) {
