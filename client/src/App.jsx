@@ -143,13 +143,21 @@ function App() {
     setUser(user);
   }, [Role, user])
 
+  const [profile, setProfile] = useState(null);
+  const isLoggedIn = profile !== null;
+  const updateProfile = (newProfile) => {
+    setProfile(newProfile);
+    console.log("app updateProfile", newProfile)
+  };
+  
+
   
 
 
   return (
       <>
       <BrowserRouter>
-      <Navbar user={user} Role={Role}/>
+      <Navbar user={profile} Role={Role} />
         <UserContext.Provider value={{ Role, setRole, user, setUser}}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -159,7 +167,7 @@ function App() {
             <Route
               exact
               path="/Login/Login_parent_personnel"
-              element={user ? <Navigate to="/Parent_menu" /> : <Login_parent />}
+              element={user ? <Navigate to="/Parent_menu" /> : <Login_parent updateProfile={updateProfile}/>}
             />
 
             <Route path ="/Login_personnel" element={<Login_personnel />} />
