@@ -680,12 +680,11 @@ const Subject_Score_Record = ({Role, Email}) => {
         setEditingIdScore(id === editingIdScore ? null : id);
         if (editingIdScore !== null) {
             let total = 0
-            setShowModalSuccess(true);
             Object.keys(StudentScore[id].scores).forEach(element => {
                 updateAssessmentScore(element,StudentScore[id].scores[element],id)
                 //update grade
-                if (typeof StudentScore[id].scores[element] === 'number') {
-                    total += StudentScore[id].scores[element]
+                if (typeof parseFloat(StudentScore[id].scores[element]) === 'number') {
+                    total += parseFloat(StudentScore[id].scores[element])
                 }
             })
             let score2grade = 5
@@ -707,7 +706,7 @@ const Subject_Score_Record = ({Role, Email}) => {
                 score2grade = 0.0;
             }
             updateTotalScore(total,score2grade,id)
-        
+            setShowModalSuccess(true);
         }
         getStudentInfo()
       };
