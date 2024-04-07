@@ -230,6 +230,7 @@ const Navbar = ({user, studentUser,Role}) => {
             {/* {user.email} */}
             {user.name}
             </span>
+            <br />
             <span>
 
             {user.email}
