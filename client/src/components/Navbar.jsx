@@ -1,6 +1,7 @@
 import logoImage from '../images/IMG_5416.png';
 import React, { useEffect, useState } from 'react';
 import { Button,Dropdown } from 'react-bootstrap';
+// import { Link } from 'react-router-dom';
 import personCircle from '../assets/person-circle.svg';
 import {GoogleLogin, GoogleLogout} from 'react-google-login';
 import { Link ,useNavigate} from 'react-router-dom';
@@ -87,10 +88,14 @@ const Navbar = ({user, Role}) => {
 
     }, [Role]);
 
-    useEffect(() => {
+    // useEffect(() => {
+    //   setUser(user);
+    // }, [user]);
 
-      console.log("ClassifyRole",ClassifyRole);
-    }, [ClassifyRole]);
+    // useEffect(() => {
+
+    //   console.log("ClassifyRole",ClassifyRole);
+    // }, [ClassifyRole]);
     const navigate = useNavigate();
     const ClientID = process.env.CLIENT_ID;
         useEffect(() => {
@@ -174,21 +179,11 @@ const Navbar = ({user, Role}) => {
                   <Dropdown.Item>
                   <span>
                     {/* {user.email} */}
-                    {user.name}
-                    </span>
-                    <br />
-                    <span> 
+                    {user.givenName}
                     {user.email}
                   </span>
                   </Dropdown.Item>
-                  <Dropdown.Item >
-                    <GoogleLogout
-                      clientId={ClientID} 
-                      buttonText='Log Out'
-                      onLogoutSuccess={onSuccess}
-                      style={{fontFamily:'Kanit, sans-serif'}}
-                    />
-                  </Dropdown.Item>
+                  <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
         </span> ) 
