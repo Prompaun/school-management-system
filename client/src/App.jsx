@@ -128,9 +128,9 @@ const updateProfile = (newProfile) => {
             handleGetRole(profile.email);
             setlogin_Email(profile.email);
             await addParentLogin(
-              resObject.user.imageUrl,
-              resObject.user.email,
-              resObject.user.googleId
+              profile.imageUrl,
+              profile.email,
+              profile.googleId
             );
           }
           
@@ -151,19 +151,19 @@ const updateProfile = (newProfile) => {
   //       if (response.status === 200) {
   //         const resObject = response.data;
   //         console.log(resObject); // ตรวจสอบข้อมูลที่ได้รับกลับมาจาก API endpoint
-  //         setUser(resObject.user); // ตั้งค่าข้อมูลผู้ใช้ในตัวแปร user
-  //         console.log("User ID:", resObject.user.googleId);
-  //         console.log("User Avatar:", resObject.user.imageUrl);
+  //         setUser(profile); // ตั้งค่าข้อมูลผู้ใช้ในตัวแปร user
+  //         console.log("User ID:", profile.googleId);
+  //         console.log("User Avatar:", profile.imageUrl);
 
-  //         handleGetRole(resObject.user.email);
+  //         handleGetRole(profile.email);
   //         // setRole("ClassTeacher");
   //         // console.log(user.email);
-  //         setlogin_Email(resObject.user.email);
+  //         setlogin_Email(profile.email);
   //         // เรียกใช้ฟังก์ชัน addParentLogin ด้วยข้อมูลผู้ใช้
   //         await addParentLogin(
-  //           resObject.user.imageUrl,
-  //           resObject.user.email,
-  //           resObject.user.googleId
+  //           profile.imageUrl,
+  //           profile.email,
+  //           profile.googleId
   //         );
   //       } else {
   //         throw new Error("authentication has been failed!");
