@@ -11,7 +11,8 @@ import {gapi} from 'gapi-script';
 
 // require("dotenv").config();
 const Login_parent = ({updateProfile}) => {
-
+    // const apiUrl = "http://localhost:8080"
+    const apiUrl = process.env.API_URL
     const containerStyle = {
         position: 'relative', // เพื่อให้สามารถใส่คำว่า "ระบบ" ลงในภาพได้
         overflow: 'hidden', // ป้องกันข้อความเลื่อนออกนอกพื้นที่ของ container
@@ -109,7 +110,6 @@ const ClientID = process.env.CLIENT_ID;
 
 console.log("ClientID",process.env.CLIENT_ID)
     return (
-
         <>
             {/* <Navbar/> */}
             <Header header="ระบบบริการข้อมูล" subhead="สำหรับผู้ปกครองและบุคลากรภายในโรงเรียน"/>

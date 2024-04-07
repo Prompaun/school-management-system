@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 
 function Filter_student_information({login_Email}) {
+    const apiUrl = process.env.API_URL
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none',
@@ -15,7 +16,7 @@ function Filter_student_information({login_Email}) {
     
     async function getYearFromClassroom(Personnel_Email) {
         try {
-            const response = await axios.get('http://localhost:8080/get-distinct-years-of-personnel', {
+            const response = await axios.get(apiUrl + '/get-distinct-years-of-personnel', {
                 params: {
                     Personnel_Email: Personnel_Email
                 }
@@ -31,7 +32,7 @@ function Filter_student_information({login_Email}) {
 
     async function getPersonnelStudentInfo(Student_ID) {
         try {
-            const response = await axios.get('http://localhost:8080/personnel-get-student-info', {
+            const response = await axios.get(apiUrl + '/personnel-get-student-info', {
                 params: {
                     Student_ID: Student_ID
                 }
@@ -46,7 +47,7 @@ function Filter_student_information({login_Email}) {
 
     async function getClassroomInfoFromPersonnel(Personnel_Email) {
         try {
-            const response = await axios.get('http://localhost:8080/get-classroom-info-from-personnel', {
+            const response = await axios.get(apiUrl + '/get-classroom-info-from-personnel', {
                 params: {
                     Personnel_Email: Personnel_Email
                 }
@@ -61,7 +62,7 @@ function Filter_student_information({login_Email}) {
 
     async function getClassroomInfoFromYear(Personnel_Email, Year) {
         try {
-            const response = await axios.get('http://localhost:8080/personnel-get-classroom-info-from-year', {
+            const response = await axios.get(apiUrl + '/personnel-get-classroom-info-from-year', {
                 params: {
                     Personnel_Email: Personnel_Email,
                     Year: Year
@@ -82,7 +83,7 @@ function Filter_student_information({login_Email}) {
             //     { "Student_ID": "ID5" }
             // ];
     
-            const response = await axios.post('http://localhost:8080/get-student-info-by-id', studentIDs);
+            const response = await axios.post(apiUrl + '/get-student-info-by-id', studentIDs);
             // console.log('Response------------------:', response.data);
             return response.data;
         } catch (error) {
@@ -93,7 +94,7 @@ function Filter_student_information({login_Email}) {
 
     // async function getStudentInfoByID(studentIDs) {
     //     try {
-    //         const response = await axios.get('http://localhost:8080/get-student-info-by-id', [], {
+    //         const response = await axios.get(apiUrl + '/get-student-info-by-id', [], {
     //             params: { studentIDs }
     //         });
     //         return response.data;

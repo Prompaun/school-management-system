@@ -58,7 +58,11 @@ export const UserContext = createContext();
 
 // Main App component
 function App() {
+  const apiUrl = process.env.API_URL
 
+
+  // const apiUrl = "http://localhost:8080"
+  console.log('apiUrl',apiUrl);
 //   const ClientID = process.env.GOOGLE_CLIENT_ID;
 // console.log(ClientID,"ClientID")
 
@@ -69,7 +73,7 @@ function App() {
   
   async function addParentLogin(avatar, email, token) {
     try {
-        const response = await axios.post('http://localhost:8080/add-parent-login', {
+        const response = await axios.post(apiUrl + '/add-parent-login', {
             Avatar: avatar,
             Email: email,
             Token: token
@@ -83,13 +87,14 @@ function App() {
 
   async function getRole(email) {
     try {
-        const response = await axios.get(`http://localhost:8080/get-role/${email}`);
+        const response = await axios.get(apiUrl + `/get-role/${email}`);
         return response.data.role; // return role from response
     } catch (error) {
         console.error('Error fetching role:', error);
         throw error;
     }
 }
+
 
 const [profile, setProfile] = useState(null);
 const isLoggedIn = profile !== null;
@@ -114,6 +119,7 @@ const updateProfile = (newProfile) => {
         }
       // }
     }
+    
 
     const getUser = async () => {
       try {
@@ -179,22 +185,22 @@ const updateProfile = (newProfile) => {
 
 
   return (
-      <>
-      <BrowserRouter>
-      <Navbar user={user} studentUser={studentUser} Role={Role} />
-        <UserContext.Provider value={{ Role, setRole, user, setUser, studentUser, setstudentUser}}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Login" element={<Login />} />
-            {/* <Route path ="/Login/Login_student" /> */}
-            <Route path ="/Login/Login_student" element={<Login_student />} />
-            <Route
-              exact
-              path="/Login/Login_parent_personnel"
-              element={user ? <Navigate to="/Parent_menu" /> : <Login_parent updateProfile={updateProfile}/>}
-            />
+    <>
+    <BrowserRouter>
+    <Navbar user={user} studentUser={studentUser} Role={Role} />
+      <UserContext.Provider value={{ Role, setRole, user, setUser, studentUser, setstudentUser}}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Login" element={<Login />} />
+          {/* <Route path ="/Login/Login_student" /> */}
+          <Route path ="/Login/Login_student" element={<Login_student />} />
+          <Route
+            exact
+            path="/Login/Login_parent_personnel"
+            element={user ? <Navigate to="/Parent_menu" /> : <Login_parent updateProfile={updateProfile}/>}
+          />
 
-            <Route path ="/Login_personnel" element={<Login_personnel />} />
+          <Route path ="/Login_personnel" element={<Login_personnel />} />
 
         {user ? (
           <>

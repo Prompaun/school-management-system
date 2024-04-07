@@ -4,7 +4,7 @@ import Card from '../components/Card';
 import Navbar from '../components/Navbar';
 import Header from '../components/Header';
 const Home = () => {
-  console.log(process.env.GOOGLE_CLIENT_ID,"ClientID")
+
 
   // const user = userDetails.user;
 	// const logout = () => {

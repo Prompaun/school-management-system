@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 import Modal_success from '../components/Modal_success';
 const Check_Certification_Request = () => {
-
+    const apiUrl = process.env.API_URL
     const linkStyle = {
         color: 'gray',
         textDecoration: 'none'
@@ -48,7 +48,7 @@ const Check_Certification_Request = () => {
 
     async function getAllRequests() {
         try {
-            const response = await axios.get('http://localhost:8080/get-all-requests');
+            const response = await axios.get(apiUrl + '/get-all-requests');
             return response.data;
         } catch (error) {
             console.error('Error fetching all requests:', error);
@@ -58,7 +58,7 @@ const Check_Certification_Request = () => {
 
     async function getRequestsByStatus(status) {
         try {
-            const response = await axios.get(`http://localhost:8080/get-requests/${status}`);
+            const response = await axios.get(apiUrl + `/get-requests/${status}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching requests:', error);
@@ -68,7 +68,7 @@ const Check_Certification_Request = () => {
 
     async function updateRequest(requestId, requestData) {
         try {
-            const response = await axios.put(`http://localhost:8080/update-request/${requestId}`, requestData);
+            const response = await axios.put(apiUrl + `/update-request/${requestId}`, requestData);
             return response.data;
         } catch (error) {
             console.error('Error updating request:', error);

@@ -8,6 +8,7 @@ import { Link ,useNavigate} from 'react-router-dom';
 import {gapi} from 'gapi-script';
 
 const Navbar = ({user, studentUser,Role}) => {
+  const apiUrl = process.env.API_URL
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
@@ -69,7 +70,7 @@ const Navbar = ({user, studentUser,Role}) => {
    }
   };
 
-  // const [user, setUser] = useState(null);
+  
   console.log('RoleRoleRoleRoleRole',Role);
   useEffect(() => {
       // if (user.Role == "Student") {
@@ -91,6 +92,11 @@ const Navbar = ({user, studentUser,Role}) => {
     }, [Role]);
 
     // useEffect(() => {
+
+    //   console.log("ClassifyRole",ClassifyRole);
+    // }, [ClassifyRole]);
+
+        // useEffect(() => {
     //   setUser(user);
     // }, [user]);
 
@@ -123,141 +129,141 @@ const Navbar = ({user, studentUser,Role}) => {
      
 
 
-  return (
-    <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>
-      <div className="container">
-        <Link className="navbar-brand" to="/">
-          {/* Logo and School Name */}
-          <div className="container d-flex flex-column align-items-center justify-content-center"style={{ flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap'}}>
-          <div className="d-flex align-items-center">
-            <img src={logoImage} alt="Logo" width="30" height="24" className="d-inline-block align-text-top" />
-            </div>
-            <div style={{flexWrap: 'wrap'}}>
-            <h5 style={{marginBottom: '0',flexWrap: 'wrap'}}>โรงเรียนฤทธิยะวรรณาลัย (ประถม)</h5>
-            </div>
-          </div>
-          </div>
-
-        </Link>
-        <div className="nav navbar-nav navbar-right" stlye={{display: "flex"}}>
-        {user && Role==="Student" ? (
-           <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
-            
-           <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
-             เลือกเมนู
-           </Link>
-         
-     <Dropdown>
-           <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
-             <span style={{marginRight: '10px'}}>
-           
-             {user.imageUrl ? (
-                 <img
-                  
-                   src={user.imageUrl}
+      return (
+        <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>
+          <div className="container">
+            <Link className="navbar-brand" to="/">
+              {/* Logo and School Name */}
+              <div className="container d-flex flex-column align-items-center justify-content-center"style={{ flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+              <div className="d-flex align-items-center">
+                <img src={logoImage} alt="Logo" width="30" height="24" className="d-inline-block align-text-top" />
+                </div>
+                <div style={{flexWrap: 'wrap'}}>
+                <h5 style={{marginBottom: '0',flexWrap: 'wrap'}}>โรงเรียนฤทธิยะวรรณาลัย (ประถม)</h5>
+                </div>
+              </div>
+              </div>
+    
+            </Link>
+            <div className="nav navbar-nav navbar-right" stlye={{display: "flex"}}>
+            {user && Role==="Student" ? (
+               <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
                 
-                   alt=""
-                   className="avatar"
-                 />
-               ) : (
-                 <img
-                   
-                   src={personCircle}
-                   alt=""
-                   className="avatar"
-                   style={{ filter: 'brightness(0) invert(1)' }}
-                 />
-               )}
-             </span>
-            
-           </Dropdown.Toggle>
-
-           <Dropdown.Menu>
-           
-             <Dropdown.Item>
-             <span>
-               {/* {user.email} */}
-               {user.name}
-               {/* {user.email} */}
-             </span>
-             </Dropdown.Item>
-             <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
-           </Dropdown.Menu>
-         </Dropdown>
-        </span>
-        ) : user && Role !== "Student"? (
-         
-
-        <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
+               <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
+                 เลือกเมนู
+               </Link>
+             
+         <Dropdown>
+               <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
+                 <span style={{marginRight: '10px'}}>
+               
+                 {user.imageUrl ? (
+                     <img
+                      
+                       src={user.imageUrl}
                     
-        <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
-          เลือกเมนู
-        </Link>
-
-        <Dropdown>
-        <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
-          <span style={{marginRight: '10px'}}>
-          {/* {user.photos[0].value ? ( */}
-          {user.imageUrl ? (
-              <img
-            
-                src={user.imageUrl}
-            
-                alt=""
-                className="avatar"
-              />
-            ) : (
-              <img
-                // src={user.photos[0].value}
-                src={personCircle}
-                alt=""
-                className="avatar"
-                style={{ filter: 'brightness(0) invert(1)' }}
-              />
-            )}
-          </span>
-          {/* <span>
-            {user.displayName}+
-
-          </span> */}
-        </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-        
-          <Dropdown.Item>
-          <span>
-            {/* {user.email} */}
-            {user.name}
+                       alt=""
+                       className="avatar"
+                     />
+                   ) : (
+                     <img
+                       
+                       src={personCircle}
+                       alt=""
+                       className="avatar"
+                       style={{ filter: 'brightness(0) invert(1)' }}
+                     />
+                   )}
+                 </span>
+                
+               </Dropdown.Toggle>
+    
+               <Dropdown.Menu>
+               
+                 <Dropdown.Item>
+                 <span>
+                   {/* {user.email} */}
+                   {user.name}
+                   {/* {user.email} */}
+                 </span>
+                 </Dropdown.Item>
+                 <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
+               </Dropdown.Menu>
+             </Dropdown>
             </span>
-            <br />
-            <span>
-
-            {user.email}
-          </span>
-          </Dropdown.Item>
-          <Dropdown.Item>
-          <GoogleLogout
-              clientId={ClientID} 
-              buttonText='Log Out'
-              onLogoutSuccess={onSuccess}
-              style={{fontFamily:'Kanit, sans-serif'}}
-            />
-          </Dropdown.Item>
-        </Dropdown.Menu>
-        </Dropdown>
-        </span>
-        ) : (
-          <span className='nav-link'>
-            <Link to='/Login' style={{...linkStyle, marginLeft: '10px' }}>Log in</Link>
-          </span>
-        )}
-          
-          
-        </div>
-      </div>
-    </nav>
-  );
-}
-
-export default Navbar
+            ) : user && Role !== "Student"? (
+             
+    
+            <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
+                        
+            <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
+              เลือกเมนู
+            </Link>
+    
+            <Dropdown>
+            <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
+              <span style={{marginRight: '10px'}}>
+              {/* {user.photos[0].value ? ( */}
+              {user.imageUrl ? (
+                  <img
+                
+                    src={user.imageUrl}
+                
+                    alt=""
+                    className="avatar"
+                  />
+                ) : (
+                  <img
+                    // src={user.photos[0].value}
+                    src={personCircle}
+                    alt=""
+                    className="avatar"
+                    style={{ filter: 'brightness(0) invert(1)' }}
+                  />
+                )}
+              </span>
+              {/* <span>
+                {user.displayName}+
+    
+              </span> */}
+            </Dropdown.Toggle>
+    
+            <Dropdown.Menu>
+            
+              <Dropdown.Item>
+              <span>
+                {/* {user.email} */}
+                {user.name}
+                </span>
+                <br />
+                <span>
+    
+                {user.email}
+              </span>
+              </Dropdown.Item>
+              <Dropdown.Item>
+              <GoogleLogout
+                  clientId={ClientID} 
+                  buttonText='Log Out'
+                  onLogoutSuccess={onSuccess}
+                  style={{fontFamily:'Kanit, sans-serif'}}
+                />
+              </Dropdown.Item>
+            </Dropdown.Menu>
+            </Dropdown>
+            </span>
+            ) : (
+              <span className='nav-link'>
+                <Link to='/Login' style={{...linkStyle, marginLeft: '10px' }}>Log in</Link>
+              </span>
+            )}
+              
+              
+            </div>
+          </div>
+        </nav>
+      );
+    }
+    
+    export default Navbar

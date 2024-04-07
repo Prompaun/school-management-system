@@ -9,6 +9,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 
 import axios from 'axios';
 function PostNews() {
+  const apiUrl = process.env.API_URL
   const fontStyle = {
     fontFamily: 'Kanit, sans-serif',
     textDecoration: 'none'
@@ -92,7 +93,7 @@ function PostNews() {
 
   async function getPostNews() {
     try {
-        const response = await axios.get('http://localhost:8080/get-news');
+        const response = await axios.get(apiUrl + '/get-news');
         return response.data;
       } catch (error) {
           console.error('Error fetching news:', error);
@@ -102,7 +103,7 @@ function PostNews() {
 
   async function addPostNews(topic, content, link, date) {
     try {
-        const response = await axios.post('http://localhost:8080/add-post-news', {
+        const response = await axios.post(apiUrl + '/add-post-news', {
             topic: topic,
             content: content,
             link: link,
@@ -118,7 +119,7 @@ function PostNews() {
 
   // async function deletePost(postId) {
   //   try {
-  //       const response = await fetch(`http://localhost:8080/delete-post/${postId}`, {
+  //       const response = await fetch(apiUrl + `/delete-post/${postId}`, {
   //           method: 'DELETE'
   //       });
 
@@ -134,7 +135,7 @@ function PostNews() {
   //     }
     async function deletePost(postId) {
       try {
-          const response = await axios.delete(`http://localhost:8080/delete-post/${postId}`);
+          const response = await axios.delete(apiUrl + `/delete-post/${postId}`);
   
           if (!response.status === 200) {
               throw new Error('Failed to delete post');
@@ -149,7 +150,7 @@ function PostNews() {
 
     async function updatePost(postId, updatedData) {
       try {
-          const response = await axios.put(`http://localhost:8080/update-post/${postId}`, updatedData);
+          const response = await axios.put(apiUrl + `/update-post/${postId}`, updatedData);
   
           if (!response.data || response.data.error) {
               throw new Error('Failed to update post');

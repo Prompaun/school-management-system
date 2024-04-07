@@ -5,7 +5,7 @@ import { Button, Modal,Spinner } from 'react-bootstrap';
 import axios from 'axios';
 
 function ModalEditBMI({show, setShow, Student_id, BodyData}) {
-
+    const apiUrl = process.env.API_URL
     const [Weight,setWeight] = useState("");
     const [Height,setHeight] = useState("");
     // const [BodyData,setBodyData] = useState([{id:1,DateRecord:"",weight_kg:"",height_cm:""}]);
@@ -62,7 +62,7 @@ function ModalEditBMI({show, setShow, Student_id, BodyData}) {
     async function addGrowthNutrition(data) {
         try {
             // เรียกใช้ API เพื่อเพิ่มข้อมูลในตาราง Growth_Nutrition
-            const response = await axios.post('http://localhost:8080/add-growth-nutrition', data);
+            const response = await axios.post(apiUrl + '/add-growth-nutrition', data);
             return response.data;
         } catch (error) {
             console.error('Error adding growth nutrition data:', error);
@@ -73,7 +73,7 @@ function ModalEditBMI({show, setShow, Student_id, BodyData}) {
     async function updateGrowthNutrition(id, data) {
         try {
             // เรียกใช้ API เพื่ออัปเดตข้อมูลในตาราง Growth_Nutrition ด้วย ID ที่กำหนด
-            const response = await axios.put(`http://localhost:8080/update-growth-nutrition/${id}`, data);
+            const response = await axios.put(apiUrl + `/update-growth-nutrition/${id}`, data);
             return response.data;
         } catch (error) {
             console.error('Error updating growth nutrition data:', error);

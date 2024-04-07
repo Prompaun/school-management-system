@@ -7,7 +7,7 @@ import Modal_success from '../components/Modal_success';
 import Pagination_table from '../components/Pagination_table';
 
 const Check_Applicant_Information = () => {
-    
+  const apiUrl = process.env.API_URL
     const fontStyle = {
         fontFamily: 'Kanit, sans-serif',
         textDecoration: 'none'
@@ -225,7 +225,7 @@ const Check_Applicant_Information = () => {
     
     async function getApplicantInfo() {
         try {
-            const response = await axios.post('http://localhost:8080/get-applicant-info', {});
+            const response = await axios.post(apiUrl + '/get-applicant-info', {});
             response.data.results.forEach((element,index) => {
                 element.Registration_Date = formatDateThaiYear(element.Registration_Date)
                 element.ExamStatus = element.ExamStatus === null ? "" : element.ExamStatus
@@ -243,7 +243,7 @@ const Check_Applicant_Information = () => {
 
     async function updateApplicantInfo(changeData) {
         try {
-            const response = await axios.post('http://localhost:8080/update-applicant-info', {
+            const response = await axios.post(apiUrl + '/update-applicant-info', {
                 score: changeData.Exam_results || null,
                 exam_status: changeData.ExamStatus === "" ? null : changeData.ExamStatus,
                 enroll_status: changeData.EnrollStatus === "" ? null : changeData.EnrollStatus,
@@ -259,7 +259,7 @@ const Check_Applicant_Information = () => {
 
     async function insertApplicanttoStudentInfo(changeData) {
         try {
-            const response = await axios.post('http://localhost:8080/insert-applicant-to-student-info', {
+            const response = await axios.post(apiUrl + '/insert-applicant-to-student-info', {
                 // Enroll_ID: changeData.Registration_Number
                 Enroll_ID: changeData.Enroll_No
             });
@@ -272,7 +272,7 @@ const Check_Applicant_Information = () => {
 
     async function getApplicantInfoByEnrollCourse(enrollCourse) {
       try {
-          const response = await axios.post('http://localhost:8080/get-applicant-Enroll-Course', {
+          const response = await axios.post(apiUrl + '/get-applicant-Enroll-Course', {
               enrollCourse: enrollCourse
           });
           console.log('Retrieve applicant info successfully:', response.data);
@@ -285,7 +285,7 @@ const Check_Applicant_Information = () => {
 
     async function getApplicantInfoByAdmissionStatus(enrollCourse, admissionStatus) {
       try {
-          const response = await axios.post('http://localhost:8080/get-applicant-Admission-Status', {
+          const response = await axios.post(apiUrl + '/get-applicant-Admission-Status', {
               enrollCourse: enrollCourse,
               admissionStatus: admissionStatus
           });
@@ -307,7 +307,7 @@ const Check_Applicant_Information = () => {
 
     async function getApplicantInfoByAllCourseAdmissionStatus(admissionStatus) {
       try {
-          const response = await axios.post('http://localhost:8080/get-applicant-AllCourse-AdmissionStatus', {
+          const response = await axios.post(apiUrl + '/get-applicant-AllCourse-AdmissionStatus', {
               admissionStatus: admissionStatus
           });
   
@@ -327,7 +327,7 @@ const Check_Applicant_Information = () => {
 
     async function getApplicantInfoByEnrollStatus(enrollCourse, enrollStatus) {
       try {
-          const response = await axios.post('http://localhost:8080/get-applicant-Enroll-Status', {
+          const response = await axios.post(apiUrl + '/get-applicant-Enroll-Status', {
               enrollCourse: enrollCourse,
               enrollStatus: enrollStatus
           });
@@ -348,7 +348,7 @@ const Check_Applicant_Information = () => {
     
     async function getApplicantInfoByAllCourseEnrollStatus(enrollStatus) {
       try {
-          const response = await axios.post('http://localhost:8080/get-applicant-AllCourse-EnrollStatus', {
+          const response = await axios.post(apiUrl + '/get-applicant-AllCourse-EnrollStatus', {
             enrollStatus: enrollStatus
           });
   

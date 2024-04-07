@@ -7,6 +7,7 @@ import { kMaxLength } from 'buffer';
 import { Button, Modal,Spinner } from 'react-bootstrap';
 
 function ManageStudentClass() {
+    const apiUrl = process.env.API_URL
     const [StudentData,setStudentData] = useState([
         // {StudentID:1,nameTitle:"เด็กชาย",FirstName:"ณรงค์",LastName:"ใจสะอาด",Year:"",Room:""},
         // {StudentID:2,nameTitle:"เด็กหญิง",FirstName:"ณภร",LastName:"ใจดี",Year:"5",Room:"6"},
@@ -143,7 +144,7 @@ function ManageStudentClass() {
       //=============================api=============================
       async function getStidentInfo() {
         try {
-            const response = await axios.get('http://localhost:8080/manageClass-get-student-info', {});
+            const response = await axios.get(apiUrl + '/manageClass-get-student-info', {});
             const newData = response.data.results.map((item,index) => ({
                 id: index,
                 StudentID: item.Student_ID,
@@ -165,7 +166,7 @@ function ManageStudentClass() {
 
       async function updateStidentInfo(mode,id) {
         try {
-            const response = await axios.post('http://localhost:8080/manageClass-update-student-info', {
+            const response = await axios.post(apiUrl + '/manageClass-update-student-info', {
                 mode: mode, 
                 level: StudentData[id].Year, 
                 room: StudentData[id].Room, 

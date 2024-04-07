@@ -5,6 +5,7 @@ import EP_icon from '../images/EP_icon.png';
 import axios from 'axios';
 
 function Card_menu_course() {
+  const apiUrl = process.env.API_URL
   const [obj, setObj] = useState([
     {
       text: 'English Program (EP)',
@@ -41,7 +42,7 @@ function Card_menu_course() {
 
   async function getRecruitmentPeriod() {
     try {
-        const response = await axios.get('http://localhost:8080/get-recruitment-period');
+        const response = await axios.get(apiUrl + '/get-recruitment-period');
         return response.data;
       } catch (error) {
           console.error('Error fetching Recruitment Period:', error);

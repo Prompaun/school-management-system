@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 
 const History_request = ({login_Email}) => {
+  const apiUrl = process.env.API_URL
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
@@ -17,7 +18,7 @@ const History_request = ({login_Email}) => {
 
   async function getStudentIdByParentEmail(email) {
     try {
-        const response = await axios.get('http://localhost:8080/get-student-id-request-by-parent-email', {
+        const response = await axios.get(apiUrl + '/get-student-id-request-by-parent-email', {
             params: {
                 email: email
             }
@@ -31,7 +32,7 @@ const History_request = ({login_Email}) => {
 
 async function getRequestInfo(email, Student_ID, Request_status) {
   try {
-      const response = await axios.get('http://localhost:8080/get-request-by-studentID-and-status', {
+      const response = await axios.get(apiUrl + '/get-request-by-studentID-and-status', {
           params: {
               Parent_Email: email,
               Student_ID: Student_ID,
@@ -47,7 +48,7 @@ async function getRequestInfo(email, Student_ID, Request_status) {
 
 async function getAllRequestInfo(email, Student_ID) {
   try {
-      const response = await axios.get('http://localhost:8080/get-all-request', {
+      const response = await axios.get(apiUrl + '/get-all-request', {
           params: {
               Parent_Email: email,
               Student_ID: Student_ID
@@ -62,7 +63,7 @@ async function getAllRequestInfo(email, Student_ID) {
 
 async function getRequestInfoByPareantEmail(email) {
   try {
-      const response = await axios.get('http://localhost:8080/get-request-by-parent-email', {
+      const response = await axios.get(apiUrl + '/get-request-by-parent-email', {
           params: {
               Parent_Email: email
           }

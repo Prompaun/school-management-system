@@ -31,7 +31,7 @@ function NewStudent_info({
     const [Student_picture_file, setStudent_picture_file] = useState('');
     const [CopyofStudentIDCardFile, setCopyofStudentIDCardFile] = useState('');
     const [PreviousSchoolEducationalRecordsFile, setPreviousSchoolEducationalRecordsFile] = useState('');
-
+    const apiUrl = process.env.API_URL
     useEffect(() => {
         // if (studentNID !== '' && studentNID.length === 13) {
         if (studentNID.length === 13) {
@@ -232,7 +232,7 @@ function NewStudent_info({
         try {
             const formData = new FormData(formElem);
             console.log("yoky", formData);
-            await axios.post('http://localhost:8080/upload', formData, {
+            await axios.post(apiUrl + '/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
