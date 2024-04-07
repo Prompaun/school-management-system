@@ -38,7 +38,9 @@ const Navbar = ({user, studentUser,Role}) => {
     filter: 'brightness(25%)',
   };
   const logout = () => {
-    window.open("http://localhost:8080/auth/logout", "_self");
+
+    navigate("/")
+    window.location.reload()
   };
 
   const [Pathmenu,setPathmenu] = useState([
@@ -118,6 +120,8 @@ const Navbar = ({user, studentUser,Role}) => {
           navigate("/")
           window.location.reload()
       };
+     
+
 
   return (
     <nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark" style={{fontFamily:'Kanit, sans-serif'}}>
@@ -137,74 +141,116 @@ const Navbar = ({user, studentUser,Role}) => {
 
         </Link>
         <div className="nav navbar-nav navbar-right" stlye={{display: "flex"}}>
-        {user ? (
-          <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
+        {user && Role==="Student" ? (
+           <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
             
-                <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
-                  เลือกเมนู
-                </Link>
-              
-          <Dropdown>
-                <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
-                  <span style={{marginRight: '10px'}}>
-                  {/* {user.photos[0].value ? ( */}
-                  {user.imageUrl ? (
-                      <img
-                        // src={personCircle}
-                        // src={user.photos[0].value}
-                        src={user.imageUrl}
-                        // imageurl = {true}
-                        alt=""
-                        className="avatar"
-                      />
-                    ) : (
-                      <img
-                        // src={user.photos[0].value}
-                        src={personCircle}
-                        alt=""
-                        className="avatar"
-                      />
-                    )}
-                  </span>
-                  {/* <span>
-                    {user.displayName}+
+           <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
+             เลือกเมนู
+           </Link>
+         
+     <Dropdown>
+           <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
+             <span style={{marginRight: '10px'}}>
+           
+             {user.imageUrl ? (
+                 <img
+                  
+                   src={user.imageUrl}
+                
+                   alt=""
+                   className="avatar"
+                 />
+               ) : (
+                 <img
+                   
+                   src={personCircle}
+                   alt=""
+                   className="avatar"
+                   style={{ filter: 'brightness(0) invert(1)' }}
+                 />
+               )}
+             </span>
+            
+           </Dropdown.Toggle>
 
-                  </span> */}
-                </Dropdown.Toggle>
+           <Dropdown.Menu>
+           
+             <Dropdown.Item>
+             <span>
+               {/* {user.email} */}
+               {user.name}
+               {/* {user.email} */}
+             </span>
+             </Dropdown.Item>
+             <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
+           </Dropdown.Menu>
+         </Dropdown>
+        </span>
+        ) : user && Role !== "Student"? (
+         
 
-                <Dropdown.Menu>
-                  {/* <Link to="/Parent_menu" style={{...linkStyle, marginLeft: '20px'}} >
-                    <Dropdown.Item>เลือกเมนู</Dropdown.Item>
-                  </Link> */}
-                  <Dropdown.Item>
-                  <span>
-                    {/* {user.email} */}
-                    {user.name}
-                    </span>
-                    <br />
-                    <span> 
-                    {user.email}
-                  </span>
-                  </Dropdown.Item>
-                  <Dropdown.Item >
-                    <GoogleLogout
-                      clientId={ClientID} 
-                      buttonText='Log Out'
-                      onLogoutSuccess={onSuccess}
-                      style={{fontFamily:'Kanit, sans-serif'}}
-                    />
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-        </span> ) 
-            : ( //ถ้าไม่มีคน Log in
-          <span className='nav-link'> 
-            {/* <Link to='/Register' style={{...linkStyle, marginRight: '10px'}}>Register</Link> 
-             |   */}
-            <Link to='/Login' style={{...linkStyle, marginLeft: '10px'}}>Log in</Link>
-          </span>
+        <span className='nav-link' style={{display: 'flex', alignItems: 'center'}}>
+                    
+        <Link to={Path()} style={{...linkStyle,marginRight:"15px"}} >
+          เลือกเมนู
+        </Link>
 
+        <Dropdown>
+        <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
+          <span style={{marginRight: '10px'}}>
+          {/* {user.photos[0].value ? ( */}
+          {user.imageUrl ? (
+              <img
+            
+                src={user.imageUrl}
+            
+                alt=""
+                className="avatar"
+              />
+            ) : (
+              <img
+                // src={user.photos[0].value}
+                src={personCircle}
+                alt=""
+                className="avatar"
+                style={{ filter: 'brightness(0) invert(1)' }}
+              />
             )}
+          </span>
+          {/* <span>
+            {user.displayName}+
+
+          </span> */}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+        
+          <Dropdown.Item>
+          <span>
+            {/* {user.email} */}
+            {user.name}
+            </span>
+            <span>
+
+            {user.email}
+          </span>
+          </Dropdown.Item>
+          <Dropdown.Item>
+          <GoogleLogout
+              clientId={ClientID} 
+              buttonText='Log Out'
+              onLogoutSuccess={onSuccess}
+              style={{fontFamily:'Kanit, sans-serif'}}
+            />
+          </Dropdown.Item>
+        </Dropdown.Menu>
+        </Dropdown>
+        </span>
+        ) : (
+          <span className='nav-link'>
+            <Link to='/Login' style={{...linkStyle, marginLeft: '10px' }}>Log in</Link>
+          </span>
+        )}
           
           
         </div>
