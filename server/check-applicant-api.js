@@ -340,7 +340,7 @@ module.exports = function(connection) {
         connection.query(sql, [new Date().getFullYear()+543, Enroll_ID], (err, results) => {
             if (err) {
                 console.error('Error querying get applitcant info:', err);
-                if (err.sqlMessage !== "Duplicate entry '' for key 'student.Student_ID'" ){
+                if (err.code !== "ER_DUP_ENTRY" ){
                     return res.status(500).json({ error: 'Failed to insert applitcant to student info' });
                 } else {
                     return res.status(200).json({ error: 'Already have' });
