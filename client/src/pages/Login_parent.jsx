@@ -10,7 +10,7 @@ import {GoogleLogin, GoogleLogout} from 'react-google-login';
 import {gapi} from 'gapi-script';
 
 // require("dotenv").config();
-const Login_parent = () => {
+const Login_parent = ({updateProfile}) => {
 
     const containerStyle = {
         position: 'relative', // เพื่อให้สามารถใส่คำว่า "ระบบ" ลงในภาพได้
@@ -81,8 +81,8 @@ const Login_parent = () => {
 const google = () => {
     window.open("http://localhost:8080/auth/google", "_self");
 };
-
-const ClientID = process.env.GOOGLE_CLIENT_ID;
+const navigate = useNavigate();
+const ClientID = process.env.CLIENT_ID;
     useEffect(() => {
         const initClient = () => {
         gapi.client.init({
@@ -93,14 +93,21 @@ const ClientID = process.env.GOOGLE_CLIENT_ID;
     gapi.load("client:auth2", initClient)
     },[])
 
-    const onSuccess = () => {
+    const onSuccess = (res) => {
+        // const email = res.profileObj.email;
+        if(res){
+            console.log("log in success", res.profileObj.email)
+            updateProfile(res.profileObj);
+        }
+        
         navigate("/")
     };
-    const onFailure = () => {
+    const onFailure = (res) => {
+        console.log('error' + res)
         alert("Log In failed")
     };
 
-console.log(ClientID,"ClientID")
+console.log("ClientID",process.env.CLIENT_ID)
     return (
 
         <>

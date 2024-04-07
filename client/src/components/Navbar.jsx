@@ -118,10 +118,13 @@ const Navbar = ({user, Role}) => {
           <Dropdown>
                 <Dropdown.Toggle variant="none" id="dropdown-user" style={{display: 'flex', alignItems: 'center'}}>
                   <span style={{marginRight: '10px'}}>
-                  {user.photos[0].value ? (
+                  {/* {user.photos[0].value ? ( */}
+                  {user.imageUrl ? (
                       <img
                         // src={personCircle}
-                        src={user.photos[0].value}
+                        // src={user.photos[0].value}
+                        src={user.imageUrl}
+                        // imageurl = {true}
                         alt=""
                         className="avatar"
                       />
@@ -146,7 +149,12 @@ const Navbar = ({user, Role}) => {
                   </Link> */}
                   <Dropdown.Item>
                   <span>
-                    {user.displayName}
+                    {/* {user.email} */}
+                    {user.givenName}
+                    </span>
+                    <br />
+                    <span> 
+                    {user.email}
                   </span>
                   </Dropdown.Item>
                   <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
