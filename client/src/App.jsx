@@ -202,82 +202,138 @@ const updateProfile = (newProfile) => {
 
           <Route path ="/Login_personnel" element={<Login_personnel />} />
 
-        {user ? (
-          <>
-          
-            {/* <Route path="/Parent_menu" element={<Parent_menu />} /> */}
-        
-            <Route path="/Register_info" element={<Register_info />} />
-            <Route
-                exact
-                path="/Register"
-                element={user ? <Navigate to="/Register_info" /> : <Register />}
-              />
-            <Route path="/NewUser_menu" element={<NewUser_menu />} />
-            {/* <Route path="/Tab_enroll" element={<Tab_enroll />} /> */}
-            {/* <Route path="/Tab_enroll" element={<Tab_enroll user={user} />} /> */}
-            <Route path="/Tab_enroll" element={<Tab_enroll user={user} />} />
-
-            <Route path="/Open_course" element={<Open_course />} />
-            <Route path="/Enrollment_info" element={<Enrollment_info user={user} />} />
-            <Route path="/Enrollment_info_EP" element={<Enrollment_info_EP user={user} />} />
-
-            <Route path="/CheckEnroll_status" element={<CheckEnroll_status Email={login_Email}/>} />
-            
-            <Route path="/Student_menu" element={<Student_menu />} />
-            <Route path="/Checkgrade_info" element={<Checkgrade_info login_Email={login_Email}/>} />
-
-            <Route path="/Parent_menu" element={<Parent_menu Role={Role}/>} />
-            <Route path="/Checkgrade" element={<Checkgrade user={user} Role={Role}/>} />
-            <Route path="/Request_cert" element={<Request_cert login_Email={login_Email}/>} />
-            <Route path="/History_request" element={<History_request login_Email={login_Email}/>} />
-            <Route path="/Health_result" element={<Check_health_result login_Email={login_Email}/>} />
-
-            {/* <Route path ="/Login_personnel" element={<Login_personnel />} /> */}
-          
-            {/* <Route path="/Login_personnel/Class_instrctor_menu" element={<Class_instructor_menu />} /> */}
-            <Route path="/Personnel_menu" element={<Personnel_menu Role={Role}/>} />
-
-            <Route path="/Education_information" element={<Education_information />} />
-            <Route path="/Student_List_Information" element={<Student_List_Information />} />
-            <Route path="/Filter_student_information" element={<Filter_student_information login_Email={login_Email}/>} />
-            <Route path="/Personnel_page" element={<Personnel_page />} />
-            {/* <Route path="/Sidebar" element={<Sidebar />} /> */}
-
-            <Route path="/Subject_Score_Record" element={<Subject_Score_Record Role={Role} Email={login_Email}/>} />
-            
-            <Route path="/Check_Certification_Request" element={<Check_Certification_Request />} />
-            <Route path="/Check_Applicant_Information" element={<Check_Applicant_Information />} />
-            <Route path="/OpenCourse_period" element={<OpenCourse_period />} />
-            <Route path="/Enrollment_Status" element={<Enrollment_Status />} />
-            <Route path="/Upload_Enrollment_Status" element={<Upload_Enrollment_Status />} />
-            <Route path="/Upload_applicant_scores" element={<UploadScores_According_toApplicantNames />} />
-            <Route path="/Admission_Results" element={<Admission_Results />} />
-            <Route path="/Manage_health_data" element={<Manage_health_data />} />
-            <Route path="/PostNews" element={<PostNews />} />
 
 
-            <Route path="/Student_info" element={<Student_info />} />
-            <Route path="/Parent_Information" element={<Parent_Information />} />
-            <Route path="/Student_Information" element={<Student_Information />} />
-            <Route path="/Student_Address" element={<Student_Address />} />
 
-            <Route path="/Health_info" element={<Health_info />} />
-            <Route path="/Medical_History" element={<Medical_History />} />
-            <Route path="/Result_health_data" element={<Result_health_data />} />
-            <Route path="/Health_Checkup" element={<Health_Checkup />} />
-            <Route path="/Growth_nutrition" element={<Growth_nutrition />} />
+            {user ? (
+                    <>{Role === "Student" ? (
+                <>
+                  <Route path="/Student_menu" element={<Student_menu />} />
+                  <Route path="/Checkgrade" element={<Checkgrade user={user} Role={Role}/>} />
+                </>
+
+            ) : Role === "NewParent" ? (
+            <>
+              <Route path="/Parent_menu" element={<Parent_menu Role={Role}/>} /> 
+              <Route path="/Open_course" element={<Open_course />} />
+              <Route path="/Enrollment_info_EP" element={<Enrollment_info_EP user={user} />} />
+              <Route path="/Enrollment_info" element={<Enrollment_info user={user} />} />
+              <Route path="/CheckEnroll_status" element={<CheckEnroll_status Email={login_Email}/>} />
+            </>
+
+            ) : Role === "Parent" ? (
+            <>
+              <Route path="/Parent_menu" element={<Parent_menu Role={Role}/>} /> 
+              <Route path="/Open_course" element={<Open_course />} />
+              <Route path="/Enrollment_info_EP" element={<Enrollment_info_EP user={user} />} />
+              <Route path="/Enrollment_info" element={<Enrollment_info user={user} />} />
+              <Route path="/CheckEnroll_status" element={<CheckEnroll_status Email={login_Email}/>} />
+              <Route path="/Checkgrade_info" element={<Checkgrade_info login_Email={login_Email}/>} />
+              <Route path="/Request_cert" element={<Request_cert login_Email={login_Email}/>} />
+              <Route path="/History_request" element={<History_request login_Email={login_Email}/>} />
+              <Route path="/Health_result" element={<Check_health_result login_Email={login_Email}/>} />
+
+            </>
+
+            ) : Role === "ClassTeacher" ? (
+            <> 
+              <Route path="/Personnel_menu" element={<Personnel_menu Role={Role}/>} />
+              <Route path="/Filter_student_information" element={<Filter_student_information login_Email={login_Email}/>} />
+              <Route path="/Student_List_Information" element={<Student_List_Information />} />
+              <Route path="/Education_information" element={<Education_information />} />
+              <Route path="/Health_info" element={<Health_info />} />
+              <Route path="/Subject_Score_Record" element={<Subject_Score_Record Role={Role} Email={login_Email}/>} />
+            </>
+
+            ) : Role === "SubjectTeacher" ? (
+            <> 
+              <Route path="/Personnel_menu" element={<Personnel_menu Role={Role}/>} />
+              <Route path="/Subject_Score_Record" element={<Subject_Score_Record Role={Role} Email={login_Email}/>} />
+            </>
+
+            ) : Role === "Administrative" ? (
+            <> 
+              <Route path="/Personnel_menu" element={<Personnel_menu Role={Role}/>} />
+              <Route path="/PostNews" element={<PostNews />} />
+              <Route path="/Check_Certification_Request" element={<Check_Certification_Request />} />
+              <Route path="/Check_Applicant_Information" element={<Check_Applicant_Information />} />
+              <Route path="/OpenCourse_period" element={<OpenCourse_period />} />
+              <Route path="/AddStudentID" element={<AddStudentID />} />
+            </>
+
+            ) : Role === "Administrator" ? (
+            <>
+                  <Route path="/Register_info" element={<Register_info />} />
+                  <Route
+                      exact
+                      path="/Register"
+                      element={user ? <Navigate to="/Register_info" /> : <Register />}
+                    />
+
+                  <Route path="/Personnel_menu" element={<Personnel_menu Role={Role}/>} />
+
+                  <Route path="/Education_information" element={<Education_information />} />
+                  <Route path="/Student_List_Information" element={<Student_List_Information />} />
+                  <Route path="/Filter_student_information" element={<Filter_student_information login_Email={login_Email}/>} />
+                  <Route path="/Personnel_page" element={<Personnel_page />} />
+                  {/* <Route path="/Sidebar" element={<Sidebar />} /> */}
+
+                  <Route path="/Subject_Score_Record" element={<Subject_Score_Record Role={Role} Email={login_Email}/>} />
+                  
+                  <Route path="/Check_Certification_Request" element={<Check_Certification_Request />} />
+                  <Route path="/Check_Applicant_Information" element={<Check_Applicant_Information />} />
+                  <Route path="/OpenCourse_period" element={<OpenCourse_period />} />
+                  <Route path="/Enrollment_Status" element={<Enrollment_Status />} />
+                  <Route path="/Upload_Enrollment_Status" element={<Upload_Enrollment_Status />} />
+                  <Route path="/Upload_applicant_scores" element={<UploadScores_According_toApplicantNames />} />
+                  <Route path="/Admission_Results" element={<Admission_Results />} />
+                  <Route path="/Manage_health_data" element={<Manage_health_data />} />
+                  <Route path="/PostNews" element={<PostNews />} />
 
 
-            <Route path="/AddStudentID" element={<AddStudentID />} />
-            <Route path="/ManageStudentClass" element={<ManageStudentClass />} />
+                  <Route path="/Student_info" element={<Student_info />} />
+                  <Route path="/Parent_Information" element={<Parent_Information />} />
+                  <Route path="/Student_Information" element={<Student_Information />} />
+                  <Route path="/Student_Address" element={<Student_Address />} />
+
+                  <Route path="/Health_info" element={<Health_info />} />
+                  <Route path="/Medical_History" element={<Medical_History />} />
+                  <Route path="/Result_health_data" element={<Result_health_data />} />
+                  <Route path="/Health_Checkup" element={<Health_Checkup />} />
+                  <Route path="/Growth_nutrition" element={<Growth_nutrition />} />
 
 
+                  <Route path="/AddStudentID" element={<AddStudentID />} />
+                  <Route path="/ManageStudentClass" element={<ManageStudentClass />} />
+            </>
+
+          ): null}        
           </>
-        ) : (
-            // ส่วนเส้นทางที่ใช้เมื่อไม่มีผู้ใช้ล็อคอิน
-            <Route path="/" element={<Navigate to="/Login" />} />
-        )}
+              ) : (
+                  // ส่วนเส้นทางที่ใช้เมื่อไม่มีผู้ใช้ล็อคอิน
+                  <Route path="/" element={<Navigate to="/Login" />} />
+              )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         {/* <Route
             path="/*"
             element={
@@ -288,6 +344,15 @@ const updateProfile = (newProfile) => {
               )
             }
           /> */}
+
+      {/* {user ? (
+          <>
+
+          </>
+        ) : (
+            <Route path="/" element={<Navigate to="/Login" />} />
+        )} */}
+
             </Routes>
         </UserContext.Provider>
 
