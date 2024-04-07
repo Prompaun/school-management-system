@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { Link ,useNavigate} from 'react-router-dom';
 import school_logo from "../images/IMG_5416.png";
 import Navbar from "../components/Navbar";
 import eye_open from "../images/eye-open.png";
 import eye_closed from "../images/eye-closed.png";
 import Header from '../components/Header';
 import GoogleIMG from '../images/google.png'
-import dotenv from 'dotenv';
-dotenv.config();
+import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import {gapi} from 'gapi-script';
+
 // require("dotenv").config();
 const Login_parent = () => {
 
@@ -81,11 +82,27 @@ const google = () => {
     window.open("http://localhost:8080/auth/google", "_self");
 };
 
-// const google = () => {
-//     window.open(`${process.env.API_URL}/auth/google?scope=email profile`, "_self");
-// };
+const ClientID = process.env.GOOGLE_CLIENT_ID;
+    useEffect(() => {
+        const initClient = () => {
+        gapi.client.init({
+            cliendId: ClientID,
+            scope: ''
+        })
+    }
+    gapi.load("client:auth2", initClient)
+    },[])
 
+    const onSuccess = () => {
+        navigate("/")
+    };
+    const onFailure = () => {
+        alert("Log In failed")
+    };
+
+console.log(ClientID,"ClientID")
     return (
+
         <>
             {/* <Navbar/> */}
             <Header header="ระบบบริการข้อมูล" subhead="สำหรับผู้ปกครองและบุคลากรภายในโรงเรียน"/>
@@ -183,11 +200,18 @@ const google = () => {
                                     
                                </div> */}
                                <div className="d-flex justify-content-center" style={{flexWrap:"wrap"}}>
-                               <button className="google_btn" onClick={google} >
+                               {/* <button className="google_btn" onClick={GoogleLogin} >
                                         <img src={GoogleIMG} alt="google icon" />
                                         <span style={{fontSize:"20px"}}>เข้าสู่ระบบด้วย Google</span>
-                                    </button>
-                                    
+                                    </button> */}
+                                    <GoogleLogin clientId={ClientID} 
+                                            buttonText='เข้าสู่ระบบด้วย Google'
+                                            onSuccess={onSuccess}
+                                            onFailure={onFailure}
+                                            cookiePolicy={'single_host_origin'}
+                                            isSignedIn={true}
+                                    />
+                                  
                                </div>
                                
                           
