@@ -416,7 +416,7 @@ const Education_information = () => {
                                     
                                 ) : (
                                 <>
-                                    <div className="align-items-center">
+                                    {/* <div className="align-items-center">
                                         <div className="container d-flex justify-content-end">
                                             <span
                                                 className="btn btn-link"
@@ -442,7 +442,7 @@ const Education_information = () => {
                                             />
                                         
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     <div className="container flex-column align-items-center">
                                         {/* <table className="table-bordered" style={{ textAlign: 'center',fontFamily: 'Kanit, sans-serif'}}> */}
