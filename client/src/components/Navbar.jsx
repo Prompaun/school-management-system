@@ -7,7 +7,7 @@ import {GoogleLogin, GoogleLogout} from 'react-google-login';
 import { Link ,useNavigate} from 'react-router-dom';
 import {gapi} from 'gapi-script';
 
-const Navbar = ({user, Role}) => {
+const Navbar = ({user, studentUser,Role}) => {
   const linkStyle = {
     color: 'gray',
     textDecoration: 'none'
@@ -179,11 +179,21 @@ const Navbar = ({user, Role}) => {
                   <Dropdown.Item>
                   <span>
                     {/* {user.email} */}
-                    {user.givenName}
+                    {user.name}
+                    </span>
+                    <br />
+                    <span> 
                     {user.email}
                   </span>
                   </Dropdown.Item>
-                  <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+                  <Dropdown.Item >
+                    <GoogleLogout
+                      clientId={ClientID} 
+                      buttonText='Log Out'
+                      onLogoutSuccess={onSuccess}
+                      style={{fontFamily:'Kanit, sans-serif'}}
+                    />
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
         </span> ) 

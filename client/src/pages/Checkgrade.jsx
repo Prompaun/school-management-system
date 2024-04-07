@@ -104,7 +104,8 @@ const Checkgrade = ({user, Role}) => {
     const fetchData = async () => {
         try {
               if(Role === "Student"){
-                  const yearSemesters = await getYearSemestersByStudentId(user.displayName);
+                  // const yearSemesters = await getYearSemestersByStudentId(user.displayName);
+                  const yearSemesters = await getYearSemestersByStudentId(user.name);
                 console.log('yearSemesters:', yearSemesters);
 
                 // หา Year และ Semester ที่มีค่ามากที่สุด
@@ -114,12 +115,14 @@ const Checkgrade = ({user, Role}) => {
                     maxYear = Math.max(maxYear, parseInt(Year));
                 });
 
-                const getSemester = await getSemesterByStudentId(user.displayName, maxYear);
+                // const getSemester = await getSemesterByStudentId(user.displayName, maxYear);
+                const getSemester = await getSemesterByStudentId(user.name, maxYear);
                 // console.log('getSemester:', getSemester);
                 const maxSemester = Math.max(...getSemester.map(sem => parseInt(sem)));
                 console.log('getSemester:', getSemester);
                 console.log('maxSemester:', maxSemester);
-                const gradeInfo = await getGradeInfo(user.displayName, maxYear, maxSemester);
+                // const gradeInfo = await getGradeInfo(user.displayName, maxYear, maxSemester);
+                const gradeInfo = await getGradeInfo(user.name, maxYear, maxSemester);
                 const mappedGradeInfo = gradeInfo.map(item => ({
                   id: item.Subject_ID,
                   name: item.Subject_Name,
@@ -138,7 +141,9 @@ const Checkgrade = ({user, Role}) => {
                 setTableHeader(`ปีการศึกษา ${maxYear} ภาคการศึกษาที่ ${maxSemester}`);
                 setSelectedYear(maxYear);
                 setSelectedSemester(maxSemester);
-                const years = await getYearByStudentId(user.displayName);
+
+                // const years = await getYearByStudentId(user.displayName);
+                const years = await getYearByStudentId(user.name);
                 // const semesters = await getSemesterByStudentId(studentID_param, maxYear);
 
                 // setYearData({
@@ -164,7 +169,8 @@ useEffect(() => {
       console.log('useEffect No.3');
       try {
         if(Role === "Student"){
-          const semesters = await getSemesterByStudentId(user.displayName, selectedYear);
+          // const semesters = await getSemesterByStudentId(user.displayName, selectedYear);
+          const semesters = await getSemesterByStudentId(user.name, selectedYear);
           // setSemesters(semesters);
           setYearData(prevState => ({
             ...prevState,
@@ -193,7 +199,8 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         if(Role === "Student"){
-          const gradeInfo = await getGradeInfo(user.displayName, selectedYear, selectedSemester);
+          // const gradeInfo = await getGradeInfo(user.displayName, selectedYear, selectedSemester);
+          const gradeInfo = await getGradeInfo(user.name, selectedYear, selectedSemester);
           console.log('Grade info:', gradeInfo);
           const mappedGradeInfo = gradeInfo.map(item => ({
             id: item.Subject_ID,

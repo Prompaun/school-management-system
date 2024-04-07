@@ -63,6 +63,7 @@ function App() {
 // console.log(ClientID,"ClientID")
 
   const [user, setUser] = useState(null);
+  const [studentUser, setstudentUser] = useState(null);
   const [Role, setRole] = useState('');
   const [login_Email, setlogin_Email] = useState('');
   
@@ -180,8 +181,8 @@ const updateProfile = (newProfile) => {
   return (
       <>
       <BrowserRouter>
-      <Navbar user={user} Role={Role} />
-        <UserContext.Provider value={{ Role, setRole, user, setUser}}>
+      <Navbar user={user} studentUser={studentUser} Role={Role} />
+        <UserContext.Provider value={{ Role, setRole, user, setUser, studentUser, setstudentUser}}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Login" element={<Login />} />
