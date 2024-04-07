@@ -40,6 +40,11 @@ function Card_menu_personnel({user, Role}) {
         //   path: "/Manage_health_data"
         // },
         {
+          text: "ข่าวประชาสัมพันธ์",
+          imageUrl: Postnews, // แทนที่ด้วย URL รูปภาพจริง
+          path: "/PostNews"
+        },
+        {
           text: "ระบบจัดการออกใบรับรอง",
           subtext:"ตรวจสอบคำขอใบรับรอง",
           imageUrl: Request_cert, // แทนที่ด้วย URL รูปภาพจริง
@@ -66,12 +71,7 @@ function Card_menu_personnel({user, Role}) {
           subtext: "ตามปีการศึกษา",
           imageUrl: ClassRoom, // แทนที่ด้วย URL รูปภาพจริง
           path: "/ManageStudentClass"
-        },
-        {
-          text: "ข่าวประชาสัมพันธ์",
-          imageUrl: Postnews, // แทนที่ด้วย URL รูปภาพจริง
-          path: "/PostNews"
-        },
+        }
        
         
        
